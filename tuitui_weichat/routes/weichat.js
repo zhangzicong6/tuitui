@@ -33,7 +33,11 @@ router.use('/:code', function(request, response, next_fun) {
 			 		setOrder(openid,text,res);
 			    }else if(text.search('】http')!=-1){
 			    	getTaobaoke(text,res);
+			    }else{
+			    	res.reply('其他功能疯狂开发中');
 			    }
+			}else{
+				res.reply('其他功能疯狂开发中');
 			}
 		})(request, response, next_fun);
 	}
