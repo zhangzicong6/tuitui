@@ -29,9 +29,9 @@ router.use('/:code', function(request, response, next_fun) {
 			 		getOrders(openid,res);
 			 	}else if(text === '个人信息'){
 			 		getUser(openid,res);
-			 	}else if(/^\d{}18$/.test(text)){
+			 	}else if(/^\d{18}$/.test(text)){
 			 		setOrder(openid,text,res);
-			    }else if(text.search('】http')){
+			    }else if(text.search('】http')!=-1){
 			    	getTaobaoke(text,res);
 			    }
 			}
@@ -115,12 +115,12 @@ function getTaobaoke(text,res){
 			res.reply(str);
 		}else{
 			res.reply("未找到有关商品");
-		}
-		
+		}	
 	});
 }
 //var text= '【遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战警】http://m.tb.cn/h.WGGP8Ig 点击链接，再选择浏览器打开；或复制这条信息￥Ad1j0MpMTu3￥后打开👉手淘👈';
 //getTaobaoke(text,null);
+
 
 module.exports = router;
 
