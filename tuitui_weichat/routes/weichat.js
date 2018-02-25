@@ -15,6 +15,7 @@ router.use('/', function(req, res, next) {
 });
 
 router.use('/:code', function(request, response, next_fun) {
+	console.log(request.params.code);
 	var config=weichat_conf[request.params.code];
 	console.log(config);
 	if(request.query.signature && request.query.nonce){
