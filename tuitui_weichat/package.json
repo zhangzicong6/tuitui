@@ -22,6 +22,7 @@
     "wechat":"~2.1.0",
     "wechat-oauth":"~1.2.1",
     "async":"~2.6.0",
-    "mongoose":"~5.0.7"
+    "mongoose":"~5.0.7",
+    "crypto":"~1.0.1 "
   }
 }
