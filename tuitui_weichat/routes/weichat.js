@@ -89,18 +89,18 @@ function getOrders(openid,res){
 		all_count : 0,
 		list:[]
 	};
-	var str='您共有【'+orders.all_count+'】个订单，近期订单如下: ━┉┉┉┉∞┉┉┉┉━\r\n'+
+	var str='您共有【'+orders.all_count+'】个订单，近期订单如下:\r\n ━┉┉┉┉∞┉┉┉┉━\r\n'+
 	'订单号|日 期|状 态|返 利\r\n';
 	for (var i = 0; i <=orders.list.length - 1; i++) {
 		var order = orders.list[i];
 		str+='*'+order.order_id+'*|'+order.order_date+'|'+order.status+'| -\r\n';
 	}
 	str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过1元输 “提现”提现。';
-	console.log(str);
-	/*res.reply({
+	//console.log(str);
+	res.reply({
 		content: str,
       	type: 'text'
-	});*/
+	});
 }
 
 function setOrder(openid,order_id,res){
@@ -122,7 +122,7 @@ function getTaobaoke(text,res){
 		}	
 	});
 }
-getOrders(null,null);
+
 //var text= '【遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战警】http://m.tb.cn/h.WGGP8Ig 点击链接，再选择浏览器打开；或复制这条信息￥Ad1j0MpMTu3￥后打开👉手淘👈';
 //getTaobaoke(text,null);
 
