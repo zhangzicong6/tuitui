@@ -16,7 +16,8 @@ router.use('/', function(req, res, next) {
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
-	if(request.query.signature&&request.query.nonce){
+	console.log(config);
+	if(request.query.signature && request.query.nonce){
 		console.log('validate');
 		validate(request,response);
 	}else{
