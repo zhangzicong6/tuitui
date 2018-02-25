@@ -75,7 +75,7 @@ function getUser(openid,res){
 	};
 	res.reply({
 		content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user_order.all_count+'笔\r\n已完成数:'+user_order.finished_count+'笔\r\n未完成数:'+user_order.unfinished_count+'笔\r\n'+
-		+'当前余额:'+user_order.current_balance+'元\r\n累计提现:'+user_order.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   温馨提醒◇ ◇ ◇ 收货后，返 会添加到个 账户 余额超过1元，输 “提现”提现',
+		+'当前余额:'+user_order.current_balance+'元\r\n累计提现:'+user_order.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   温馨提醒◇ ◇ ◇ \r\n收货后，返 会添加到个 账户 余额超过1元，输 “提现”提现',
       	type: 'text'
 	});
 }
@@ -86,13 +86,13 @@ function getOrders(openid,res){
 		list:[]
 	};
 
-	var str='您共有【'+all_count+'】个订单，近期订单如下: ━┉┉┉┉∞┉┉┉┉━\r\n'+
+	var str='您共有【'+orders.all_count+'】个订单，近期订单如下: ━┉┉┉┉∞┉┉┉┉━\r\n'+
 	+'订单号|  期|状 态|返 \r\n';
 	for (var i = 0; i <=orders.length - 1; i++) {
 		var order = orders[i];
 		str+='*'+order.order_id+'*|'+order.order_date+'|'+order.status+'| -\r\n';
 	}
-	str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ 回复订单号才能获得返 哦! 商品点击收货后 余额超过1元输 “提现”提现。';
+	str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返 哦! 商品点击收货后 余额超过1元输 “提现”提现。';
 	res.reply({
 		content: str,
       	type: 'text'
@@ -104,14 +104,23 @@ function setOrder(openid,order_id,res){
 }
 
 function getTaobaoke(text,res){
-	var url = text.split('】')[1].split(' ');
-	request_taobao_url(url,function(res){
-		var str ='【'+res.data.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+res.data.price+'元\r\n☞ 优惠:'+res.data.tkCommFee+'元\r\n'+
-				 '☞ 口令:'+res.taokouling+'\r\n☞ 返利 :'+res.data.couponAmount+'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-'◇ ◇ ◇   下单步骤◇ ◇ ◇\r\n 1. 按复制本信息打开淘宝下单\r\n 2.下单后将订单号发送给我\r\n[须知]:商品 可使 淘 币进 抵扣 或使 其他店铺优惠 \r\n━┉┉┉┉∞┉┉┉┉━'
-		res.reply();
+	var url = text.split('】')[1].split(' ')[0];
+	console.log(url);
+	request_taobao_url(url,function(result){
+		if(result){
+			var str ='【'+result.data.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+result.data.price+'元\r\n☞ 优惠:'+result.data.tkCommFee+'元\r\n'+
+				 '☞ 口令:'+result.taokouling+'\r\n☞ 返利 :'+result.data.couponAmount+'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
+				'◇ ◇ ◇   下单步骤◇ ◇ ◇\r\n 1. 按复制本信息打开淘宝下单\r\n 2.下单后将订单号发送给我\r\n[须知]:商品可使淘币进抵扣或使用其他店铺优惠 \r\n━┉┉┉┉∞┉┉┉┉━'
+			//console.log(str);
+			res.reply(str);
+		}else{
+			res.reply("未找到有关商品");
+		}
+		
 	});
 }
+//var text= '【遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战警】http://m.tb.cn/h.WGGP8Ig 点击链接，再选择浏览器打开；或复制这条信息￥Ad1j0MpMTu3￥后打开👉手淘👈';
+//getTaobaoke(text,null);
 
 module.exports = router;
 

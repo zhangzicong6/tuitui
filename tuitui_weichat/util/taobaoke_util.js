@@ -19,6 +19,9 @@ function request_taobao_url(url,next){
 					}//伪造请求头  
 				};
 				request(options, function (error, response, body) {
+					if(error){
+						return callback(error,null);
+					}
 					var str_html=response.body;
 					var str_temp=str_html.split('var url = \'')[1];
 					var str_url= str_temp.split('\'')[0];
@@ -28,7 +31,9 @@ function request_taobao_url(url,next){
 			},
 			function(options,callback){
 				request(options,function(e, res, b){
-					console.log('\r\n-------------\r\n');
+					if(e){
+						return callback(e,null);
+					}
 					var uri_obj = res.request.uri;
 					var tmp_str = uri_obj.path.split('&suid')[0];
 					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
@@ -39,6 +44,9 @@ function request_taobao_url(url,next){
 			},
 			function(options,callback){
 				request(options,function(e, res, b){
+					if(e){
+						return callback(e,null);
+					}
 					var obj = JSON.parse(b);
 					var tmp = obj.data.pageList[0];
 					if(tmp){
@@ -67,7 +75,9 @@ function request_taobao_url(url,next){
 				taokouling(res,callback);
 			}
 		],function(err, results){
-			//console.log(results);
+			if(err){
+				console.log(err);
+			}
 			next(results);
 	});
 }
