@@ -10,10 +10,9 @@ var OAuth = require('wechat-oauth');
 var request_taobao_url =require('../util/taobaoke_util.js').request_taobao_url;
 
 router.use('/:code', function(request, response, next_fun) {
-	console.log(request.params.code);
 	var config=weichat_conf[request.params.code];
-	console.log(config);
-	if(request.query.signature && request.query.nonce){
+	
+	if(!request.query.openid){
 		console.log('validate');
 		validate(request,response);
 	}else{
