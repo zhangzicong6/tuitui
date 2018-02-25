@@ -89,11 +89,10 @@ function getOrders(openid,res){
 		all_count : 0,
 		list:[]
 	};
-
 	var str='您共有【'+orders.all_count+'】个订单，近期订单如下: ━┉┉┉┉∞┉┉┉┉━\r\n'+
 	+'订单号|  期|状 态|返 \r\n';
-	for (var i = 0; i <=orders.length - 1; i++) {
-		var order = orders[i];
+	for (var i = 0; i <=orders.list.length - 1; i++) {
+		var order = orders.list[i];
 		str+='*'+order.order_id+'*|'+order.order_date+'|'+order.status+'| -\r\n';
 	}
 	str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返 哦! 商品点击收货后 余额超过1元输 “提现”提现。';
