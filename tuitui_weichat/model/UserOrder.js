@@ -7,12 +7,18 @@ var UserOrderSchema = new Schema({
   openid: String,
   order_number: String,
   status: Number,
-  timestamps: {
-        createdAt: 'created',
-        updatedAt: 'updated'
+  createAt: {
+      type: Date,
+      default: Date.now
+  },
+  updateAt: {
+      type: Date,
+      default: Date.now
   }
+},{
+    timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' }
 });
 
-var UserOrderModel = db.model('UserOrder', 'UserOrderSchema');
+var UserOrderModel = db.model('UserOrder', UserOrderSchema);
 
 module.exports = UserOrderModel;

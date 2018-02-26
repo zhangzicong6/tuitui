@@ -9,7 +9,9 @@ var taobao_conf = require('../conf/taobao.json');
 var OAuth = require('wechat-oauth');
 var request_taobao_url =require('../util/taobaoke_util.js').request_taobao_url;
 
-var TokenModel = require('');
+var TokenModel = require('../model/Token.js').TokenModel;
+var UserModel = require('../model/User.js').UserModel;
+var UserOrderModel = require('../model/UserOrder.js').UserOrderModel;
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];

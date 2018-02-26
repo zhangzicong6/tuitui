@@ -30,6 +30,6 @@ TokenSchema.statics.setToken = function (openid, token, cb) {
   });
 };
 
-var TokenModel = db.model('Token', 'TokenSchema');
+var TokenModel = db.model('Token', TokenSchema);
 
 module.exports = TokenModel;

@@ -12,10 +12,16 @@ var UserSchema = new Schema({
   city: String,
   country: String,
   headimgurl: String,
-  timestamps: {
-        createdAt: 'created',
-        updatedAt: 'updated'
+  createAt: {
+      type: Date,
+      default: Date.now
+  },
+  updateAt: {
+      type: Date,
+      default: Date.now
   }
+},{
+    timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' }
 });
 
 UserSchema.statics.getUser = function (openid, cb) {
@@ -27,6 +33,6 @@ UserSchema.statics.getUser = function (openid, cb) {
 
 
 
-var UserModel = db.model('User', 'UserSchema');
+var UserModel = db.model('User', UserSchema);
 
 module.exports = UserModel;
