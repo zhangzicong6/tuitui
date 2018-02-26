@@ -91,9 +91,8 @@ function taokouling(obj,next){
 
 	client.execute('taobao.tbk.tpwd.create',
 	    {
-	        'text':'',
-	        'url':'https://detail.tmall.com/item.htm?id=548075169457&price=89-238&sourceType=item&sourceType=item',
-	        'logo':'https://uland.taobao.com/',
+	        'text':obj.data.title,
+	        'url':obj.url,
 	    },
 	    function (error,response) {
 	        if(!error){

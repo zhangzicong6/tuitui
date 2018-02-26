@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var db = mongoose.createConnection('mongodb://127.0.0.1:27017/mingxingshuo'); 
+var connect_url = require('../conf/proj.json').mongodb;
+var db = mongoose.createConnection(connect_url); 
 
 var TokenSchema = new Schema({
   access_token: String,

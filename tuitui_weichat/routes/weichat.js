@@ -9,6 +9,8 @@ var taobao_conf = require('../conf/taobao.json');
 var OAuth = require('wechat-oauth');
 var request_taobao_url =require('../util/taobaoke_util.js').request_taobao_url;
 
+var TokenModel = require('');
+
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
 	
@@ -21,6 +23,7 @@ router.use('/:code', function(request, response, next_fun) {
 			if (message.MsgType === 'text') {
 			    var text = message.Content.trim();
 			    var openid = message.FromUserName;
+			    console.log('openid : '+openid);
 			    var flag = true;
 			 	if(flag){
 			 		//var api = new OAuth(config.appid, config.appsecret);
@@ -41,7 +44,6 @@ router.use('/:code', function(request, response, next_fun) {
 			}
 		})(request, response, next_fun);
 	}
-	
 });
 
 function validate(req,res){
@@ -122,9 +124,6 @@ function getTaobaoke(text,res){
 		}	
 	});
 }
-
-//var text= '【遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战警】http://m.tb.cn/h.WGGP8Ig 点击链接，再选择浏览器打开；或复制这条信息￥Ad1j0MpMTu3￥后打开👉手淘👈';
-//getTaobaoke(text,null);
 
 
 module.exports = router;
