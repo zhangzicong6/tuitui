@@ -111,17 +111,35 @@ function getOrders(openid,res){
 	});
 }
 
-function setOrder(openid,order_id,res){
-	async.waterfall([],function(err,res){
-
+function setOrder(openid,order_number,res){
+	async.waterfall([
+			function(callback){
+				UserOrderModel.findOne({order_number:order_number},function(err,uo){
+					if(uo){
+						return callback('已绑定订单正在跟踪订单,请耐心等候');
+					}
+					callback(null);
+				});
+			},
+			function(callback){
+				UserOrderModel.create({order_number:order_number,openid:openid,status:0});
+				callback(null);
+			}
+		],function(err,res){
+			if(error){
+				res.reply(error);
+			}else{
+				res.reply('订单【'+order_id+'】标记成功，稍候系统将动追踪定单!');
+			}
 	});
-	res.reply('订单【'+order_id+'】标记 成功，稍候系统将 动追踪定单!');
 }
 
 function getTaobaoke(text,res){
 	var url = text.split('】')[1].split(' ')[0];
-	console.log(url);
-	request_taobao_url(url,function(result){
+	request_taobao_url(url,function(err,result){
+		if(err){
+			return res.reply("未找到有关商品优惠信息");
+		}
 		if(result){
 			var str ='【'+result.data.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+result.data.price+'元\r\n☞ 优惠:'+result.data.tkCommFee+'元\r\n'+
 				 '☞ 口令:'+result.taokouling+'\r\n☞ 返利 :'+0.3*result.data.couponAmount+'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
@@ -129,7 +147,7 @@ function getTaobaoke(text,res){
 			//console.log(str);
 			res.reply(str);
 		}else{
-			res.reply("未找到有关商品");
+			res.reply("未找到有关商品优惠信息");
 		}	
 	});
 }

@@ -36,9 +36,11 @@ function request_taobao_url(url,next){
 						return callback(e,null);
 					}
 					var uri_obj = res.request.uri;
-					var tmp_str = uri_obj.path.split('&suid')[0];
+					var tmp_arr = uri_obj.path.split('?id=')
+					var tmp_str = tmp_arr[0]+'?id='+tmp_arr[1].split('&')[0];
 					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
 					options.url='http://pub.alimama.com/items/search.json?q='+encodeURI(param_url);
+					console.log('param_url : '+param_url);
 					options.param_url=param_url;
 					callback(null,options);
 				});
@@ -49,6 +51,7 @@ function request_taobao_url(url,next){
 						return callback(e,null);
 					}
 					var obj = JSON.parse(b);
+					console.log(obj);
 					if(obj.data.pageList && obj.data.pageList[0]){
 						var tmp = obj.data.pageList[0];
 						res={
@@ -78,13 +81,18 @@ function request_taobao_url(url,next){
 		],function(err, results){
 			if(err){
 				console.log(err);
+			}else{
+				next(err,results);
 			}
-			next(results);
+			
 	});
 }
 
 
 function taokouling(obj,next){
+	if(obj.error){
+		return next(obj.error);
+	}
 	var client = new TopClient({
 	    'appkey': '24808252',
 	    'appsecret': '25394001ed7c0f2aff6cb31750e865f0',
@@ -109,5 +117,8 @@ function taokouling(obj,next){
 	    }
 	);
 }
+
+
+request_taobao_url('http://m.tb.cn/h.WuZ4d67');
 
 module.exports.request_taobao_url = request_taobao_url;
