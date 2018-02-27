@@ -3,6 +3,7 @@ require('events').EventEmitter.prototype._maxListeners = 1000;
 var request = require('request');
 var async = require('async');
 ApiClient = require('./taobaoke/index.js').ApiClient;
+TopClient = require('./lib/api/topClient.js').TopClient;
 
 function request_taobao_url(url,next){
 	async.waterfall([
