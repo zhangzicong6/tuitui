@@ -38,17 +38,17 @@ router.use('/:code', function(request, response, next_fun) {
 			    }else if(text.search('】http')!=-1){
 			    	getTaobaoke(text,res);
 			    }else{
-			    	res.reply('其他功能疯狂开发中');
+			    	res.reply('');
 			    }
 			}else if(message.MsgType === 'event'){
 				if(message.Event === 'subscribe' ){
 					res.reply('美淘日记欢迎您！\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/RTu4sqg\r\n一一一一🍒常用指令一一一一\r\n'+
 					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现');
 				}else{
-					res.reply('其他功能疯狂开发中');
+					res.reply('');
 				}
 			}else{
-				res.reply('其他功能疯狂开发中');
+				res.reply('');
 			}
 		})(request, response, next_fun);
 	}
@@ -136,11 +136,11 @@ function setOrder(openid,order_number,res){
 				UserOrderModel.create({order_number:order_number,openid:openid,status:0});
 				callback(null);
 			}
-		],function(err,res){
+		],function(error,res){
 			if(error){
 				res.reply(error);
 			}else{
-				res.reply('订单【'+order_id+'】标记成功，稍候系统将动追踪定单!');
+				res.reply('❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n已记录您的订单，返利功能正在开发中，请您耐心等待！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋');
 			}
 	});
 }
