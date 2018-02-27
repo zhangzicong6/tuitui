@@ -2,16 +2,17 @@
 var express = require('express');
 var router = express.Router();
 var wechat = require('wechat');
+var WechatAPI = require('wechat-api');
 var crypto = require('crypto');
 var taobao_apiClient = require('../util/taobaoke/index.js').ApiClient;
 var weichat_conf = require('../conf/weichat.json');
 var taobao_conf = require('../conf/taobao.json');
-var OAuth = require('wechat-oauth');
 var request_taobao_url =require('../util/taobaoke_util.js').request_taobao_url;
+var async = require('async');
 
-var TokenModel = require('../model/Token.js').TokenModel;
-var UserModel = require('../model/User.js').UserModel;
-var UserOrderModel = require('../model/UserOrder.js').UserOrderModel;
+var TokenModel = require('../model/Token.js');
+var UserModel = require('../model/User.js');
+var UserOrderModel = require('../model/UserOrder.js');
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
@@ -22,14 +23,11 @@ router.use('/:code', function(request, response, next_fun) {
 	}else{
 		wechat(config,function (req, res, next) {
 			var message = req.weixin;
+			console.log(message);
 			if (message.MsgType === 'text') {
 			    var text = message.Content.trim();
 			    var openid = message.FromUserName;
-			    console.log('openid : '+openid);
-			    var flag = true;
-			 	if(flag){
-			 		//var api = new OAuth(config.appid, config.appsecret);
-			 	}
+			    getUserInfo(openid,config);
 			 	if(text === '订单'){
 			 		getOrders(openid,res);
 			 	}else if(text === '个人信息'){
@@ -126,6 +124,73 @@ function getTaobaoke(text,res){
 		}	
 	});
 }
+
+function getUserInfo(openid,config){
+	async.waterfall([
+			function(callback){
+				UserModel.findOne({openid:openid,code:config.code},function(err,user){
+					if(!user){
+						callback(null);
+					}else{
+						callback('已存在用户');
+					}
+				});
+			},function(callback){
+				getAccessToken(config.code,callback);
+			},
+			,function(token,client,callback){
+				client.getUser(openid, function(err,user){
+					user.code=config.code;
+					UserModel.create(user);
+					callback(null,null);
+				});
+			}
+		],function(err,res){
+	});
+	
+}
+
+function getAccessToken(code,callback){
+	var config=weichat_conf[code];
+	var client = new WechatAPI(config.appid, config.appsecret);
+	async.waterfall([
+			function(callback){
+				TokenModel.findOne({code:config.code},function(err,token){
+					if(!token){
+						callback(null,-1,{code:config.code});
+					}else if(token.expireTime<=Date.now()){
+						callback(null,0,token);
+					}else{
+						callback(null,1,token);
+					}
+				});
+			},
+			function(flag,token,callback){
+				if(flag === 1){
+					return callback(null,token);
+				}else{
+					client.getLatestToken(function(err,weichat_token){
+						if(err){
+							console.log(err);
+						}else{
+							console.log(weichat_token);
+							weichat_token.code = token.code
+							if(flag === -1){
+								TokenModel.create(weichat_token);
+							}else{
+								TokenModel.findOneAndUpdate({code:weichat_token.code});
+							}
+							return callback(null,weichat_token);
+						}
+					});
+				}
+			},
+
+		],function(err,token){
+			callback(err,token,client);
+	});
+}
+
 
 
 module.exports = router;
