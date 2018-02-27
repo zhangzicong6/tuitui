@@ -112,6 +112,9 @@ function getOrders(openid,res){
 }
 
 function setOrder(openid,order_id,res){
+	async.waterfall([],function(err,res){
+
+	});
 	res.reply('订单【'+order_id+'】标记 成功，稍候系统将 动追踪定单!');
 }
 
@@ -121,7 +124,7 @@ function getTaobaoke(text,res){
 	request_taobao_url(url,function(result){
 		if(result){
 			var str ='【'+result.data.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+result.data.price+'元\r\n☞ 优惠:'+result.data.tkCommFee+'元\r\n'+
-				 '☞ 口令:'+result.taokouling+'\r\n☞ 返利 :'+result.data.couponAmount+'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
+				 '☞ 口令:'+result.taokouling+'\r\n☞ 返利 :'+0.3*result.data.couponAmount+'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
 				'◇ ◇ ◇   下单步骤◇ ◇ ◇\r\n 1. 按复制本信息打开淘宝下单\r\n 2.下单后将订单号发送给我\r\n[须知]:商品可使淘币进抵扣或使用其他店铺优惠 \r\n━┉┉┉┉∞┉┉┉┉━'
 			//console.log(str);
 			res.reply(str);
@@ -137,7 +140,7 @@ function getUserInfo(openid,config){
 			function(callback){
 				UserModel.findOne({openid:openid,code:config.code},function(err,user){
 					if(!user){
-						console.log('无用户');
+						//console.log('无用户');
 						callback(null);
 					}else{
 						callback('用户存在');
@@ -145,7 +148,7 @@ function getUserInfo(openid,config){
 				});
 			},function(callback){
 				getAccessToken(config.code,function(token){
-					console.log(token);
+					//console.log(token);
 					callback(null,token);
 				});
 			},

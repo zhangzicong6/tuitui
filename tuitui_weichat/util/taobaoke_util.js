@@ -49,8 +49,8 @@ function request_taobao_url(url,next){
 						return callback(e,null);
 					}
 					var obj = JSON.parse(b);
-					var tmp = obj.data.pageList[0];
-					if(tmp){
+					if(obj.data.pageList && obj.data.pageList[0]){
+						var tmp = obj.data.pageList[0];
 						res={
 							url:options.param_url,
 							data:{
