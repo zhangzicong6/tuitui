@@ -40,7 +40,7 @@ function request_taobao_url(url,next){
 					var tmp_str = tmp_arr[0]+'?id='+tmp_arr[1].split('&')[0];
 					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
 					options.url='http://pub.alimama.com/items/search.json?q='+encodeURI(param_url);
-					console.log('param_url : '+param_url);
+					console.log('url : '+options.url);
 					options.param_url=param_url;
 					callback(null,options);
 				});
@@ -79,11 +79,7 @@ function request_taobao_url(url,next){
 				taokouling(res,callback);
 			}
 		],function(err, results){
-			if(err){
-				console.log(err);
-			}
-			next(err,results);
-			
+			next(err,results);		
 	});
 }
 
@@ -116,8 +112,5 @@ function taokouling(obj,next){
 	    }
 	);
 }
-
-
-request_taobao_url('http://m.tb.cn/h.WuZ4d67');
 
 module.exports.request_taobao_url = request_taobao_url;
