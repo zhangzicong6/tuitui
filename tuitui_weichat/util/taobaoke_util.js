@@ -81,9 +81,8 @@ function request_taobao_url(url,next){
 		],function(err, results){
 			if(err){
 				console.log(err);
-			}else{
-				next(err,results);
 			}
+			next(err,results);
 			
 	});
 }
