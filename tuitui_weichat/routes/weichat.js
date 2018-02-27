@@ -23,10 +23,10 @@ router.use('/:code', function(request, response, next_fun) {
 	}else{
 		wechat(config,function (req, res, next) {
 			var message = req.weixin;
+			var openid = message.FromUserName;
 			getUserInfo(openid,config);
 			if (message.MsgType === 'text') {
 			    var text = message.Content.trim();
-			    var openid = message.FromUserName;
 			 	if(text === '订单'){
 			 		getOrders(openid,res);
 			 	}else if(text === '个人信息'){
@@ -171,6 +171,7 @@ function getAccessToken(code,callback){
 			function(callback){
 				TokenModel.findOne({code:config.code},function(err,token){
 					if(!token){
+						console.log('无token');
 						callback(null,-1,{code:config.code});
 					}else if(token.expireTime<=Date.now()){
 						callback(null,0,token);

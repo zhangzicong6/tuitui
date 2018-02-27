@@ -82,22 +82,20 @@ function request_taobao_url(url,next){
 	});
 }
 
+
 function taokouling(obj,next){
-	const client = new ApiClient({
-	    'appkey':'24808252',
-	    'appsecret':'25394001ed7c0f2aff6cb31750e865f0',
-	    'url':'http://gw.api.taobao.com/router/rest'
+	var client = new TopClient({
+	    'appkey': '24808252',
+	    'appsecret': '25394001ed7c0f2aff6cb31750e865f0',
+	    'REST_URL': 'http://gw.api.taobao.com/router/rest'
 	});
 
-	client.execute('taobao.tbk.tpwd.create',
-	    {
-	        'text':obj.data.title,
-	        'url':obj.url,
-	    },
+	client.execute('taobao.wireless.share.tpwd.create',
+	    {'tpwd_param':JSON.stringify({url:obj.url,text:obj.data.title})},
 	    function (error,response) {
 	        if(!error){
-	        	if(response.tbk_tpwd_create_response){
-	        		obj.taokouling = response.tbk_tpwd_create_response.data.model;
+	        	if(response.model){
+	        		obj.taokouling = response.model;
 	        		next(null,obj);
 	        	}else{
 	        		console.log(response);

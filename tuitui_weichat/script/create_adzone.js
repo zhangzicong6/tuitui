@@ -7,13 +7,10 @@ var client = new TopClient({
     'REST_URL': 'http://gw.api.taobao.com/router/rest'
 });
  
-client.execute('taobao.tbk.rebate.order.get', {
-    'fields':'tb_trade_parent_id,tb_trade_id,num_iid,item_title,item_num,price,pay_price,seller_nick,seller_shop_title,commission,commission_rate,unid,create_time,earning_time',
-    'start_time':'2015-03-05 13:52:08',
-    'span':'600',
-    'page_no':'1',
-    'page_size':'20'
+client.execute('taobao.tbk.adzone.create', {
+    'site_id':'42870375',
+    'adzone_name':'微信推广位'
 }, function(error, response) {
     if (!error) console.log(response);
     else console.log(error);
-})
+});
