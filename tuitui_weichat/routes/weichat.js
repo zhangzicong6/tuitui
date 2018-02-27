@@ -31,6 +31,8 @@ router.use('/:code', function(request, response, next_fun) {
 			 		getOrders(openid,res);
 			 	}else if(text === '个人信息'){
 			 		getUser(openid,res);
+			 	}else if(text === '提现'){
+			 		cash(openid,res);
 			 	}else if(/^\d{18}$/.test(text)){
 			 		setOrder(openid,text,res);
 			    }else if(text.search('】http')!=-1){
@@ -40,7 +42,7 @@ router.use('/:code', function(request, response, next_fun) {
 			    }
 			}else if(message.MsgType === 'event'){
 				if(message.Event === 'subscribe' ){
-					res.reply('美淘日记欢迎您！\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/RE5GRzg\r\n一一一一🍒常用指令一一一一\r\n'+
+					res.reply('美淘日记欢迎您！\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/RTu4sqg\r\n一一一一🍒常用指令一一一一\r\n'+
 					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现');
 				}else{
 					res.reply('其他功能疯狂开发中');
@@ -77,6 +79,15 @@ function validate(req,res){
     }
 }
 
+function cash(openid,res){
+	current_balance=0;
+	if(current_balance<1){
+		res.reply('您的余额为【'+current_balance+'】元，要达到【1】元才可以提现哦！');
+	}else{
+		res.reply('您的余额为【'+current_balance+'】元。提现功能正在玩命开发中，两周后和您见面');
+	}
+}
+
 function getUser(openid,res){
 	var user_order={
 		all_count : 0,
@@ -87,7 +98,7 @@ function getUser(openid,res){
 	};
 	res.reply({
 		content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user_order.all_count+'笔\r\n已完成数:'+user_order.finished_count+'笔\r\n未完成数:'+user_order.unfinished_count+'笔\r\n'+
-		+'当前余额:'+user_order.current_balance+'元\r\n累计提现:'+user_order.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   温馨提醒◇ ◇ ◇ \r\n收货后，返 会添加到个 账户 余额超过1元，输 “提现”提现',
+		'当前余额:'+user_order.current_balance+'元\r\n累计提现:'+user_order.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输 “提现”提现',
       	type: 'text'
 	});
 }
@@ -138,7 +149,7 @@ function getTaobaoke(text,res){
 	var url = text.split('】')[1].split(' ')[0];
 	request_taobao_url(url,function(err,result){
 		if(err){
-			return res.reply("未找到有关商品优惠信息");
+			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}
 		if(result){
 			var str ='【'+result.data.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+result.data.price+'元\r\n☞ 优惠:'+result.data.tkCommFee+'元\r\n'+
