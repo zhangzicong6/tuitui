@@ -74,16 +74,15 @@ function request_taobao_url(url,next){
 
 function taokouling(obj,next){
 	const client = new ApiClient({
-	    'appkey':'23404313',
-	    'appsecret':'1f108b360582f72126b1e92a2fc0fbaf',
+	    'appkey':'24808252',
+	    'appsecret':'25394001ed7c0f2aff6cb31750e865f0',
 	    'url':'http://gw.api.taobao.com/router/rest'
 	});
 
 	client.execute('taobao.tbk.tpwd.create',
 	    {
-	        'text':'',
-	        'url':'https://detail.tmall.com/item.htm?id=548075169457&price=89-238&sourceType=item&sourceType=item',
-	        'logo':'https://uland.taobao.com/',
+	        'text':'遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战',
+	        'url':'https://detail.tmall.com/item.htm?id=548075169457&price=99-238&sourceType=item&sourceType=item&suid=16ce3805-08e2-42e2-8fe6-2a77a4b5d57d&ut_sk=1.WnAvJF9OzjkDAMXuoooN+nTQ_21646297_1519550684281.Copy.1&un=7ae99b92e9d73e5f862a58ce32fa627c&share_crt_v=1&cpp=1&shareurl=true&spm=a313p.22.1zv.934639662268&short_name=h.WGGP8Ig&app=chrome&sku_properties=5919063:6536025',
 	    },
 	    function (error,response) {
 	        if(!error){

@@ -23,11 +23,10 @@ router.use('/:code', function(request, response, next_fun) {
 	}else{
 		wechat(config,function (req, res, next) {
 			var message = req.weixin;
-			console.log(message);
+			getUserInfo(openid,config);
 			if (message.MsgType === 'text') {
 			    var text = message.Content.trim();
 			    var openid = message.FromUserName;
-			    getUserInfo(openid,config);
 			 	if(text === '订单'){
 			 		getOrders(openid,res);
 			 	}else if(text === '个人信息'){
@@ -39,6 +38,13 @@ router.use('/:code', function(request, response, next_fun) {
 			    }else{
 			    	res.reply('其他功能疯狂开发中');
 			    }
+			}else if(message.MsgType === 'event'){
+				if(message.Event === 'subscribe' ){
+					res.reply('美淘日记欢迎您！\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/RE5GRzg\r\n一一一一🍒常用指令一一一一\r\n'+
+					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现');
+				}else{
+					res.reply('其他功能疯狂开发中');
+				}
 			}else{
 				res.reply('其他功能疯狂开发中');
 			}
@@ -126,28 +132,36 @@ function getTaobaoke(text,res){
 }
 
 function getUserInfo(openid,config){
+	var client = new WechatAPI(config.appid, config.appsecret);
 	async.waterfall([
 			function(callback){
 				UserModel.findOne({openid:openid,code:config.code},function(err,user){
 					if(!user){
+						console.log('无用户');
 						callback(null);
 					}else{
-						callback('已存在用户');
+						callback('用户存在');
 					}
 				});
 			},function(callback){
-				getAccessToken(config.code,callback);
+				getAccessToken(config.code,function(token){
+					console.log(token);
+					callback(null,token);
+				});
 			},
-			,function(token,client,callback){
+			function(token,callback){
 				client.getUser(openid, function(err,user){
 					user.code=config.code;
 					UserModel.create(user);
+					console.log(user);
 					callback(null,null);
 				});
 			}
 		],function(err,res){
+			if(err){
+				console.log(err);
+			}
 	});
-	
 }
 
 function getAccessToken(code,callback){
@@ -171,14 +185,17 @@ function getAccessToken(code,callback){
 				}else{
 					client.getLatestToken(function(err,weichat_token){
 						if(err){
-							console.log(err);
+							callback(err);
 						}else{
-							console.log(weichat_token);
 							weichat_token.code = token.code
 							if(flag === -1){
-								TokenModel.create(weichat_token);
+								TokenModel.create(weichat_token,function(err){
+									console.log('create');
+								});
 							}else{
-								TokenModel.findOneAndUpdate({code:weichat_token.code});
+								TokenModel.findOneAndUpdate({code:weichat_token.code,function(err){
+									console.log('update');
+								}});
 							}
 							return callback(null,weichat_token);
 						}
@@ -187,11 +204,12 @@ function getAccessToken(code,callback){
 			},
 
 		],function(err,token){
-			callback(err,token,client);
+			callback(token);
 	});
 }
 
 
+//getUserInfo('o3qBK0RXH4BlFLEIksKOJEzx08og',weichat_conf['1']);
 
 module.exports = router;
 

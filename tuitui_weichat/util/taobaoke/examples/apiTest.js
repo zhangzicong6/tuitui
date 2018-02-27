@@ -5,8 +5,8 @@
 ApiClient = require('../index.js').ApiClient;
 
 const client = new ApiClient({
-    'appkey':'23404313',
-    'appsecret':'1f108b360582f72126b1e92a2fc0fbaf',
+    'appkey':'24808252',
+    'appsecret':'25394001ed7c0f2aff6cb31750e865f0',
     'url':'http://gw.api.taobao.com/router/rest'
 });
 
