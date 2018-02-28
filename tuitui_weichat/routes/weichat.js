@@ -136,7 +136,7 @@ function setOrder(openid,order_number,res){
 				UserOrderModel.create({order_number:order_number,openid:openid,status:0});
 				callback(null);
 			}
-		],function(error,res){
+		],function(error,result){
 			if(error){
 				res.reply(error);
 			}else{
