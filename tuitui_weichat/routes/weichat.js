@@ -92,7 +92,7 @@ function getCode(openid,text,res){
 				if(result){
 					callback('你已绑定邀请码'+result.auction+',请不要重复绑定！');
 				}else{
-					var cash = parseDouble((Math.random()*0.8).toFixed(2));
+					var cash = parseFloat((Math.random()*0.8).toFixed(2));
 					callback(null,cash);
 				}
 			});
@@ -106,7 +106,7 @@ function getCode(openid,text,res){
 								callback(error,user);
 							});
 						},function(user,callback){
-							var bind_cash = parseDouble((Math.random()*0.5).toFixed(2));
+							var bind_cash = parseFloat((Math.random()*0.5).toFixed(2));
 							AddFreeOrderModel.create({openid:user.openid,type:3,cash:bind_cash,auction:user.auction});
 							user.current_balance += bind_cash;
 							user.save();
