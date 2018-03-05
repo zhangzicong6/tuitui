@@ -251,7 +251,7 @@ function getTaobaoke(config,openid,text,res){
 		if(result){
 			res.reply('');
 			data = result.data;
-			data.openid = result.openid;
+			data.openid = openid;
 			data.code = config.code;
 			MessageServer.getInstance(null).req_token(data);
 		}else{
