@@ -36,11 +36,17 @@ function request_taobao_url(url,next){
 						return callback(e,null);
 					}
 					var uri_obj = res.request.uri;
-					var tmp_arr = uri_obj.path.split('id=')
-					var tmp_str = tmp_arr[0]+'id='+tmp_arr[1].split('&')[0];
+					var split_str = '?id=';
+					var tmp_arr = uri_obj.path.split(split_str);
+					if(tmp_arr.length == 1){
+						split_str = '&id=';
+						tmp_arr = uri_obj.path.split(split_str);
+					}
+					var itemid = tmp_arr[1].split('&')[0];
+					var tmp_str = uri_obj.path.split('?')[0]+'?id='+itemid;
 					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
 					options.url='http://pub.alimama.com/items/search.json?q='+encodeURI(param_url);
-					//console.log('url : '+options.url);
+					console.log('url : '+options.url);
 					options.param_url=param_url;
 					callback(null,options);
 				});
