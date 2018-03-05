@@ -83,6 +83,75 @@ function request_taobao_url(url,next){
 	});
 }
 
+function request_taobao_token(code,next){
+	async.waterfall([
+			function(callback){
+				request.post('http://api.chaozhi.hk/tb/tklParse', {form:{tkl:code}},function (error, response, body) {
+					if(error){
+						return callback(error,null);
+					}
+					body = JSON.parse(body);
+					var url= body.data.url;
+					callback(null,url);
+				});
+			},
+			function(tmp_url,callback){
+	
+				var split_str = '?id=';
+				var tmp_arr = tmp_url.split(split_str);
+				if(tmp_arr.length == 1){
+					split_str = '&id=';
+					tmp_arr = tmp_url.split(split_str);
+				}
+				var itemid = tmp_arr[1].split('&')[0];
+				var param_url = tmp_url.split('?')[0]+'?id='+itemid;
+				var url='http://pub.alimama.com/items/search.json?q='+encodeURI(param_url);
+				callback(null,url);
+			
+			},
+			function(url,callback){
+				var options = {  
+					url:url, 
+					method:"GET",
+					headers: {  
+						"Accept":"application/json, text/plain, */*",
+					    "Connection": "keep-alive", 
+					    "Content-Type": "text/html; charset=GBK",  
+					    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36"  
+					},
+				};
+				request(options,function(e, res, b){
+					if(e){
+						return callback(e,null);
+					}
+					var obj = JSON.parse(b);
+					if(obj.data.pageList && obj.data.pageList[0]){
+						var tmp = obj.data.pageList[0];
+						res={
+							url:tmp.auctionUrl,
+							data:{
+								title:tmp.title,
+								price:tmp.zkPrice,
+								tkCommFee:tmp.tkCommFee,
+								couponAmount:tmp.couponAmount,
+								itemid:tmp.auctionId
+							}
+						};
+					}else{
+						res={
+								code:1,
+								message:'无优惠信息'
+						};
+					}
+					callback(null,res);
+				});
+			}
+		],function(err, results){
+			next(err,results);		
+	}); 
+}
+
+
 //通过接口获取淘口令，发现优惠券淘口令获取不到
 function taokouling(obj,next){
 	if(obj.error){
@@ -115,3 +184,7 @@ function taokouling(obj,next){
 
 
 module.exports.request_taobao_url = request_taobao_url;
+module.exports.request_taobao_token = request_taobao_token;
+
+
+

@@ -7,7 +7,7 @@ var crypto = require('crypto');
 var taobao_apiClient = require('../util/taobaoke/index.js').ApiClient;
 var weichat_conf = require('../conf/weichat.json');
 var taobao_conf = require('../conf/taobao.json');
-var request_taobao_url =require('../util/taobaoke_util.js').request_taobao_url;
+var TaobaoUtil =require('../util/taobaoke_util.js');
 var async = require('async');
 
 var TokenModel = require('../model/Token.js');
@@ -28,6 +28,7 @@ router.use('/:code', function(request, response, next_fun) {
 			var message = req.weixin;
 			var openid = message.FromUserName;
 			getUserInfo(openid,config);
+			var tkl_match=;
 			if (message.MsgType === 'text') {
 			    var text = message.Content.trim();
 			 	if(text === '订单'){
@@ -42,6 +43,8 @@ router.use('/:code', function(request, response, next_fun) {
 			 		setOrder(openid,text,res);
 			    }else if(text.search('】http')!=-1){
 			    	getTaobaoke(config,openid,text,res);
+			    }else if(/￥[0-9a-zA-Z]{11}￥/.test(text)){
+			    	getTaobaoke_byCode(config,openid,text,res);
 			    }else{
 			    	res.reply('');
 			    }
@@ -84,7 +87,7 @@ function validate(req,res){
     }
 }
 
-//待测试
+
 function getCode(openid,text,res){
 	async.waterfall([
 		function(callback){
@@ -244,9 +247,27 @@ function setOrder(openid,order_number,res){
 	});
 }
 
+function getTaobaoke_byCode(config,openid,text,res){
+	var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
+	TaobaoUtil.request_taobao_token(code,function(err,result){
+		if(err){
+			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
+		}
+		if(result && result.data){
+			res.reply('');
+			data = result.data;
+			data.openid = openid;
+			data.code = config.code;
+			MessageServer.getInstance(null).req_token(data);
+		}else{
+			res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
+		}	
+	});
+}
+
 function getTaobaoke(config,openid,text,res){
 	var url = text.split('】')[1].split(' ')[0];
-	request_taobao_url(url,function(err,result){
+	TaobaoUtil.request_taobao_url(url,function(err,result){
 		if(err){
 			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}
