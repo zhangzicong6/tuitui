@@ -92,7 +92,7 @@ function getCode(openid,text,res){
 				if(result){
 					callback('你已绑定邀请码'+result.auction+',请不要重复绑定！');
 				}else{
-					var cash = parseFloat((Math.random()*0.8).toFixed(2));
+					var cash = parseDouble((Math.random()*0.8).toFixed(2));
 					callback(null,cash);
 				}
 			});
@@ -106,7 +106,7 @@ function getCode(openid,text,res){
 								callback(error,user);
 							});
 						},function(user,callback){
-							var bind_cash = parseFloat((Math.random()*0.5).toFixed(2));
+							var bind_cash = parseDouble((Math.random()*0.5).toFixed(2));
 							AddFreeOrderModel.create({openid:user.openid,type:3,cash:bind_cash,auction:user.auction});
 							user.current_balance += bind_cash;
 							user.save();
@@ -128,7 +128,7 @@ function getCode(openid,text,res){
 			if(error){
 				return res.reply(error);
 			}
-			return res.reply('赠送您【'+cash+'】元\r\n账户余额：【'+(user.current_balance + cash).toFixed(2)+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
+			return res.reply('赠送您【'+cash.toFixed(2)+'】元\r\n账户余额：【'+(user.current_balance + cash).toFixed(2)+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
 							'⼀⼀⼀⼀使⽤攻略⼀⼀⼀⼀\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n教程：http://t.cn/RTu4sqg');
 	});
 
@@ -154,11 +154,12 @@ function getUser(openid,res){
 				]}).sort({auction:-1}).limit(1);
 			query.exec(function(error,tmps){
 				if( tmps.length && tmps[0].auction>10000 ){
-					user.auction = tmp.auction+1;
+					user.auction = tmps[0].auction+1;
 				}else{
 					user.auction = 10000+1;
 				}
 				user.save();
+				
 				res.reply({
 					content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
 					'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
@@ -168,6 +169,7 @@ function getUser(openid,res){
 				
 			});
 		}else{
+			
 			res.reply({
 				content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
 				'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
@@ -347,7 +349,7 @@ router.use('/',function(request, response, next_fun){
 
 */
 
-//getUserInfo('o3qBK0RXH4BlFLEIksKOJEzx08og',weichat_conf['1']);
+getUser('o3qBK0X47Wfngfu_0dmCqSQwwtgU',weichat_conf['1']);
 
 module.exports = router;
 
