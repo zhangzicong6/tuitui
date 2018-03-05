@@ -28,7 +28,6 @@ router.use('/:code', function(request, response, next_fun) {
 			var message = req.weixin;
 			var openid = message.FromUserName;
 			getUserInfo(openid,config);
-			var tkl_match=;
 			if (message.MsgType === 'text') {
 			    var text = message.Content.trim();
 			 	if(text === '订单'){
