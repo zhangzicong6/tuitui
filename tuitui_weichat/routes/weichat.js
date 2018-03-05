@@ -128,7 +128,7 @@ function getCode(openid,text,res){
 			if(error){
 				return res.reply(error);
 			}
-			return res.reply('赠送您【'+cash+'】元\r\n账户余额：【'+user.current_balance+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
+			return res.reply('赠送您【'+cash+'】元\r\n账户余额：【'+(user.current_balance+cash)+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
 							'⼀⼀⼀⼀使⽤攻略⼀⼀⼀⼀\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n教程：http://t.cn/RTu4sqg');
 	});
 
@@ -248,11 +248,11 @@ function getTaobaoke(config,openid,text,res){
 			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}
 		if(result){
-			//res.reply('');
+			res.reply('');
 			data = result.data;
 			data.openid = openid;
 			data.code = config.code;
-			MessageServer.getInstance(null).req_token(data)
+			MessageServer.getInstance(null).req_token(data);
 		}else{
 			res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}	
@@ -334,7 +334,7 @@ function getAccessToken(code,callback){
 	});
 }
 
-getOrders('o3qBK0RXH4BlFLEIksKOJEzx08og',null);
+
 /*
 // 测试使用
 router.use('/',function(request, response, next_fun){
