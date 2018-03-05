@@ -248,7 +248,7 @@ function getTaobaoke(config,openid,text,res){
 		if(err){
 			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}
-		if(result){
+		if(result && result.data){
 			res.reply('');
 			data = result.data;
 			data.openid = openid;
