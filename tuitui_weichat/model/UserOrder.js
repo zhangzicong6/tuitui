@@ -21,6 +21,23 @@ var UserOrderSchema = new Schema({
     timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' }
 });
 
+UserOrderSchema.statics = {
+    fetch(id, cb) {
+        if (id) {
+            return this.find({_id: {$lt: id},status:{$gt:-1,$lt:3}})
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+            }else {
+                return this.find({})
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+            }
+        
+    }
+}   
+
 var UserOrderModel = db.model('UserOrder', UserOrderSchema);
 
 module.exports = UserOrderModel;

@@ -47,7 +47,7 @@ router.use('/:code', function(request, response, next_fun) {
 			    }
 			}else if(message.MsgType === 'event'){
 				if(message.Event === 'subscribe' ){
-					res.reply('美淘日记欢迎您！\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/RTu4sqg\r\n一一一一🍒常用指令一一一一\r\n'+
+					res.reply('美淘日记欢迎您！\r\n回复10000领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/RTu4sqg\r\n一一一一🍒常用指令一一一一\r\n'+
 					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现');
 				}else{
 					res.reply('');
@@ -128,7 +128,7 @@ function getCode(openid,text,res){
 			if(error){
 				return res.reply(error);
 			}
-			return res.reply('赠送您【'+cash+'】元\r\n账户余额：【'+(user.current_balance+cash)+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
+			return res.reply('赠送您【'+cash+'】元\r\n账户余额：【'+(user.current_balance + cash).toFixed(2)+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
 							'⼀⼀⼀⼀使⽤攻略⼀⼀⼀⼀\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n教程：http://t.cn/RTu4sqg');
 	});
 
@@ -154,14 +154,14 @@ function getUser(openid,res){
 				]}).sort({auction:-1}).limit(1);
 			query.exec(function(error,tmps){
 				if( tmps.length && tmps[0].auction>10000 ){
-					user.auction = tmp.auction.auction+1;
+					user.auction = tmp.auction+1;
 				}else{
 					user.auction = 10000+1;
 				}
 				user.save();
 				res.reply({
 					content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
-					'当前余额:'+user.current_balance+'元\r\n累计提现:'+user.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
+					'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
 					'个人邀请码：【'+user.auction+'】'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
 			      	type: 'text'
 				});
@@ -170,7 +170,8 @@ function getUser(openid,res){
 		}else{
 			res.reply({
 				content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
-				'当前余额:'+user.current_balance+'元\r\n累计提现:'+user.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
+				'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
+					'个人邀请码：【'+user.auction+'】'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
 		      	type: 'text'
 			});
 		}
@@ -250,7 +251,7 @@ function getTaobaoke(config,openid,text,res){
 		if(result){
 			res.reply('');
 			data = result.data;
-			data.openid = openid;
+			data.openid = result.openid;
 			data.code = config.code;
 			MessageServer.getInstance(null).req_token(data);
 		}else{
