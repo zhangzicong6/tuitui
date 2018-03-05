@@ -47,7 +47,7 @@ router.use('/:code', function(request, response, next_fun) {
 			    }
 			}else if(message.MsgType === 'event'){
 				if(message.Event === 'subscribe' ){
-					res.reply('美淘日记欢迎您！\r\n回复10000领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/RTu4sqg\r\n一一一一🍒常用指令一一一一\r\n'+
+					res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/RTu4sqg\r\n一一一一🍒常用指令一一一一\r\n'+
 					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现');
 				}else{
 					res.reply('');
@@ -202,8 +202,8 @@ function getOrders(openid,res){
 			str+='*'+order.order_number+'*|'+order.create_at+'|'+getOrderStatus(order.status)+'| '+order.addup_cash?order.addup_cash:'-'+' \r\n';
 		}
 		str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过1元输 “提现”提现。';
-		console.log(str);
-		//res.reply({content: str,type: 'text'});
+		//console.log(str);
+		res.reply({content: str,type: 'text'});
 	});
 }
 

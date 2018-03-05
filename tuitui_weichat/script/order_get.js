@@ -16,6 +16,7 @@ function get_order(){
 	});
 }
 
+
 function update_order(_id){
 	UserOrderModel.fetch(_id,function(err,result){
 		result.each(function(order){
