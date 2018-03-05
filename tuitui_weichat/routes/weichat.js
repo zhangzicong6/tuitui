@@ -13,6 +13,9 @@ var async = require('async');
 var TokenModel = require('../model/Token.js');
 var UserModel = require('../model/User.js');
 var UserOrderModel = require('../model/UserOrder.js');
+var AddFreeOrderModel = require('../model/AddFreeOrder.js');
+
+var MessageServer = require('../message_server.js');
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
@@ -33,10 +36,12 @@ router.use('/:code', function(request, response, next_fun) {
 			 		getUser(openid,res);
 			 	}else if(text === '提现'){
 			 		cash(openid,res);
-			 	}else if(/^\d{18}$/.test(text)){
+			 	}else if(/^\d{5,12}$/.test(text)){
+			 		getCode(openid,text,res);
+			    }else if(/^\d{18}$/.test(text)){
 			 		setOrder(openid,text,res);
 			    }else if(text.search('】http')!=-1){
-			    	getTaobaoke(text,res);
+			    	getTaobaoke(config,openid,text,res);
 			    }else{
 			    	res.reply('');
 			    }
@@ -79,6 +84,57 @@ function validate(req,res){
     }
 }
 
+//待测试
+function getCode(openid,text,res){
+	async.waterfall([
+		function(callback){
+			AddFreeOrderModel.findOne({openid:openid,type:2},function(error,result){
+				if(result){
+					callback('你已绑定邀请码'+result.auction+',请不要重复绑定！');
+				}else{
+					var cash = parseFloat((Math.random()*0.8).toFixed(2));
+					callback(null,cash);
+				}
+			});
+		},
+		function(cash,callback){
+			var auction = parseInt(text);
+			if(auction!=10000){
+				async.waterfall([
+						function(callback){
+							UserModel.findOne({auction:auction},function(error,user){
+								callback(error,user);
+							});
+						},function(user,callback){
+							var bind_cash = parseFloat((Math.random()*0.5).toFixed(2));
+							AddFreeOrderModel.create({openid:user.openid,type:3,cash:bind_cash,auction:user.auction});
+							user.current_balance += bind_cash;
+							user.save();
+							callback(null);
+						}
+					],function(error,result){
+						if(error){
+							console.log(error);
+						}
+				});
+			}
+
+			AddFreeOrderModel.create({openid:openid,type:2,cash:cash,auction:auction});
+			UserModel.findOneAndUpdate({openid:openid},{$inc:{current_balance:cash}},function(error,user){
+				callback(null,cash,user);
+			});
+		}
+		],function(error,cash,user){
+			if(error){
+				return res.reply(error);
+			}
+			return res.reply('赠送您【'+cash+'】元\r\n账户余额：【'+user.current_balance+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
+							'⼀⼀⼀⼀使⽤攻略⼀⼀⼀⼀\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n教程：http://t.cn/RTu4sqg');
+	});
+
+}
+
+//待开发
 function cash(openid,res){
 	current_balance=0;
 	if(current_balance<1){
@@ -88,38 +144,78 @@ function cash(openid,res){
 	}
 }
 
+
 function getUser(openid,res){
-	var user_order={
-		all_count : 0,
-		finished_count : 0,
-		unfinished_count : 0,
-		current_balance : 0,
-		addup_cash : 0,
-	};
-	res.reply({
-		content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user_order.all_count+'笔\r\n已完成数:'+user_order.finished_count+'笔\r\n未完成数:'+user_order.unfinished_count+'笔\r\n'+
-		'当前余额:'+user_order.current_balance+'元\r\n累计提现:'+user_order.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输 “提现”提现',
-      	type: 'text'
+	UserModel.findOne({openid:openid},function(error,user){
+		if(!user.auction){
+			var query = UserModel.find({$or:[
+				{auction:{$ne:0}},
+				{auction:{$ne:null}},
+				]}).sort({auction:-1}).limit(1);
+			query.exec(function(error,tmps){
+				if( tmps.length && tmps[0].auction>10000 ){
+					user.auction = tmp.auction.auction+1;
+				}else{
+					user.auction = 10000+1;
+				}
+				user.save();
+				res.reply({
+					content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
+					'当前余额:'+user.current_balance+'元\r\n累计提现:'+user.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
+					'个人邀请码：【'+user.auction+'】'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
+			      	type: 'text'
+				});
+				
+			});
+		}else{
+			res.reply({
+				content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
+				'当前余额:'+user.current_balance+'元\r\n累计提现:'+user.addup_cash+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
+		      	type: 'text'
+			});
+		}
 	});
 }
 
 function getOrders(openid,res){
-	var orders={
-		all_count : 0,
-		list:[]
-	};
-	var str='您共有【'+orders.all_count+'】个订单，近期订单如下:\r\n ━┉┉┉┉∞┉┉┉┉━\r\n'+
-	'订单号|日 期|状 态|返 利\r\n';
-	for (var i = 0; i <=orders.list.length - 1; i++) {
-		var order = orders.list[i];
-		str+='*'+order.order_id+'*|'+order.order_date+'|'+order.status+'| -\r\n';
-	}
-	str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过1元输 “提现”提现。';
-	//console.log(str);
-	res.reply({
-		content: str,
-      	type: 'text'
+	async.parallel([
+	    //并行同时执行
+	    function(callback) {
+	        UserModel.findOne({openid:openid},callback);
+	    },
+	    function(callback) {
+	       var query= UserOrderModel.find({openid:openid,status:{$ne:0}}).sort({updateAt:-1}).limit(5);
+			query.exec(callback);
+	    }
+	],
+	function(err, results) {
+	   	orders={};
+	   	orders.all_count = results[0].all_count;
+	   	orders.list = results[1]; 
+	   	var str='您共有【'+orders.all_count+'】个订单，近期订单如下:\r\n ━┉┉┉┉∞┉┉┉┉━\r\n'+
+		'订单号|日 期|状 态|返 利\r\n';
+		for (var i = 0; i <=orders.list.length - 1; i++) {
+			var order = orders.list[i];
+			str+='*'+order.order_number+'*|'+order.create_at+'|'+getOrderStatus(order.status)+'| '+order.addup_cash?order.addup_cash:'-'+' \r\n';
+		}
+		str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过1元输 “提现”提现。';
+		console.log(str);
+		//res.reply({content: str,type: 'text'});
 	});
+}
+
+function getOrderStatus(status){
+	if(status == 0){
+		return '待追踪'
+	}else if(status == 1){
+		return '付款'
+	}else if(status == 2){
+		return '成功'
+	}else if(status == 3){
+		return '结算'
+	}else if(status == -1){
+		return '失效'
+	}
 }
 
 function setOrder(openid,order_number,res){
@@ -145,20 +241,20 @@ function setOrder(openid,order_number,res){
 	});
 }
 
-function getTaobaoke(text,res){
+function getTaobaoke(config,openid,text,res){
 	var url = text.split('】')[1].split(' ')[0];
 	request_taobao_url(url,function(err,result){
 		if(err){
 			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}
 		if(result){
-			var str ='【'+result.data.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+result.data.price+'元\r\n☞ 优惠:'+result.data.tkCommFee+'元\r\n'+
-				 '☞ 口令:'+result.taokouling+'\r\n☞ 返利 :'+0.3*result.data.couponAmount+'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-				'◇ ◇ ◇   下单步骤◇ ◇ ◇\r\n 1. 按复制本信息打开淘宝下单\r\n 2.下单后将订单号发送给我\r\n[须知]:商品可使淘币进抵扣或使用其他店铺优惠 \r\n━┉┉┉┉∞┉┉┉┉━'
-			//console.log(str);
-			res.reply(str);
+			//res.reply('');
+			data = result.data;
+			data.openid = openid;
+			data.code = config.code;
+			MessageServer.getInstance(null).req_token(data)
 		}else{
-			res.reply("未找到有关商品优惠信息");
+			res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}	
 	});
 }
@@ -183,7 +279,7 @@ function getUserInfo(openid,config){
 			},
 			function(token,callback){
 				client.getUser(openid, function(err,user){
-					user.code=config.code;
+					user.code = config.code;
 					UserModel.create(user);
 					console.log(user);
 					callback(null,null);
@@ -198,6 +294,7 @@ function getUserInfo(openid,config){
 
 function getAccessToken(code,callback){
 	var config=weichat_conf[code];
+	console.log(config);
 	var client = new WechatAPI(config.appid, config.appsecret);
 	async.waterfall([
 			function(callback){
@@ -221,15 +318,11 @@ function getAccessToken(code,callback){
 							callback(err);
 						}else{
 							weichat_token.code = token.code
-							if(flag === -1){
-								TokenModel.create(weichat_token,function(err){
-									console.log('create');
-								});
-							}else{
-								TokenModel.findOneAndUpdate({code:weichat_token.code,function(err){
-									console.log('update');
-								}});
-							}
+							
+							TokenModel.findOneAndUpdate({code:weichat_token.code},{$set:weichat_token},{upsert:true},function(err){
+								console.log('update');
+							});
+							
 							return callback(null,weichat_token);
 						}
 					});
@@ -241,6 +334,17 @@ function getAccessToken(code,callback){
 	});
 }
 
+getOrders('o3qBK0RXH4BlFLEIksKOJEzx08og',null);
+/*
+// 测试使用
+router.use('/',function(request, response, next_fun){
+	getTaobaoke(weichat_conf['1'],'o3qBK0RXH4BlFLEIksKOJEzx08og',
+	'【遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战警】http://m.tb.cn/h.WtyRn3h 点击链接，再选择浏览器打开；或复制这条信息￥cTMi0n4KTkA￥后打开👉手淘👈',
+	null);
+	response.send('test');
+});
+
+*/
 
 //getUserInfo('o3qBK0RXH4BlFLEIksKOJEzx08og',weichat_conf['1']);
 

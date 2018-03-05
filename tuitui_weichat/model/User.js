@@ -12,6 +12,12 @@ var UserSchema = new Schema({
   city: String,
   country: String,
   headimgurl: String,
+  all_count : { type: Number, default:0} ,
+  finished_count : { type: Number, default:0},
+  unfinished_count : { type: Number, default:0},
+  current_balance : { type: Number, default:0},
+  addup_cash : { type: Number, default:0},
+  auction:{ type: Number, default:0},
   createAt: {
       type: Date,
       default: Date.now

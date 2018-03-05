@@ -3,12 +3,16 @@ var Schema = mongoose.Schema;
 var connect_url = require('../conf/proj.json').mongodb;
 var db = mongoose.createConnection(connect_url); 
 
-var UserOrderSchema = new Schema({
-  openid: String,
-  order_number: String,
-  status: { type: Number, default:0},//0:未追踪 1:付款 2:成功 3:结算 -1:失效 
-  tk_comm_fee: { type: Number, default:0},
-  create_at: String,
+var TaobaoOrderSchema = new Schema({
+  order_id : String,
+  create_at : String,
+  goods_info : String,
+  shop_name : String,
+  goods_reserveprice : String,
+  order_status : String,
+  order_type : String,
+  order_tkCommFee : String,
+  goods_tag : String,
   createAt: {
       type: Date,
       default: Date.now
@@ -21,6 +25,6 @@ var UserOrderSchema = new Schema({
     timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' }
 });
 
-var UserOrderModel = db.model('UserOrder', UserOrderSchema);
+var TaobaoOrderModel = db.model('TaobaoOrder', TaobaoOrderSchema);
 
-module.exports = UserOrderModel;
+module.exports = TaobaoOrderModel;

@@ -36,12 +36,11 @@ function request_taobao_url(url,next){
 						return callback(e,null);
 					}
 					var uri_obj = res.request.uri;
-					console.log(uri_obj.protocol+'//'+uri_obj.hostname+uri_obj.path);
 					var tmp_arr = uri_obj.path.split('id=')
 					var tmp_str = tmp_arr[0]+'id='+tmp_arr[1].split('&')[0];
 					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
 					options.url='http://pub.alimama.com/items/search.json?q='+encodeURI(param_url);
-					console.log('url : '+options.url);
+					//console.log('url : '+options.url);
 					options.param_url=param_url;
 					callback(null,options);
 				});
@@ -52,7 +51,6 @@ function request_taobao_url(url,next){
 						return callback(e,null);
 					}
 					var obj = JSON.parse(b);
-					console.log(obj);
 					if(obj.data.pageList && obj.data.pageList[0]){
 						var tmp = obj.data.pageList[0];
 						res={
@@ -62,29 +60,24 @@ function request_taobao_url(url,next){
 								price:tmp.zkPrice,
 								tkCommFee:tmp.tkCommFee,
 								couponAmount:tmp.couponAmount,
+								itemid:tmp.auctionId
 							}
 						};
 					}else{
 						res={
-							url:options.param_url,
-							error:{
 								code:1,
 								message:'无优惠信息'
-							}
 						};
 					}
 					callback(null,res);
 				});
-			},
-			function(res,callback){
-				taokouling(res,callback);
 			}
 		],function(err, results){
 			next(err,results);		
 	});
 }
 
-
+//通过接口获取淘口令，发现优惠券淘口令获取不到
 function taokouling(obj,next){
 	if(obj.error){
 		return next(obj.error);
@@ -114,8 +107,5 @@ function taokouling(obj,next){
 	);
 }
 
-request_taobao_url('http://m.tb.cn/h.WuZHdva',function(error,res){
-	console.log(res);
-});
 
 module.exports.request_taobao_url = request_taobao_url;
