@@ -163,7 +163,7 @@ function getUser(openid,res){
 				res.reply({
 					content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
 					'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-					'个人邀请码：【'+user.auction+'】'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
+					'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
 			      	type: 'text'
 				});
 				
@@ -173,7 +173,7 @@ function getUser(openid,res){
 			res.reply({
 				content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
 				'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-					'个人邀请码：【'+user.auction+'】'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
+					'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
 		      	type: 'text'
 			});
 		}
@@ -349,7 +349,7 @@ router.use('/',function(request, response, next_fun){
 
 */
 
-getUser('o3qBK0X47Wfngfu_0dmCqSQwwtgU',weichat_conf['1']);
+//getUser('o3qBK0X47Wfngfu_0dmCqSQwwtgU',weichat_conf['1']);
 
 module.exports = router;
 
