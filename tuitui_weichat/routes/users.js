@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var UserModel = require('../model/User.js');
 var UserOrderModel = require('../model/UserOrder.js');
 var TaobaoOrderModel = require('../model/TaobaoOrder.js');
 
@@ -16,6 +17,14 @@ router.use('/data', function(req, res, next) {
 			//console.log('update');
 		})
 	}
+	res.send('success');
+});
+
+
+router.use('/reset', function(req, res, next) {
+	console.log('重置订单');
+	var openid = req.query.openid
+	UserModel.findOneAndUpdate({openid:openid},{finished_count:0,unfinished_count:0,all_count:0});
 	res.send('success');
 });
 

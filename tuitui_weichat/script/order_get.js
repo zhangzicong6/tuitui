@@ -25,7 +25,7 @@ function get_order(){
 
 function update_order(_id,next){
 	UserOrderModel.fetch(_id,function(err,user_orders){
-		console.log('user_orders');
+		console.log('user_orders：'+user_orders.length);
 		async.each(user_orders,
 			function(order,cb){
 				TaobaoOrderModel.findOne({order_id:order.order_number},function(error,taobao){
@@ -45,19 +45,16 @@ function update_order(_id,next){
 												weichat_apis[user.code] = new WechatAPI(config.appid, config.appsecret);
 											}
 											user.all_count += 1;
-											user.unfinished_count +=1;
-											user.save(function(){
-
-											});
+											user.unfinished_count += 1;
+											user.save();
 											var client = weichat_apis[user.code];
 											var str = '恭喜您！订单【'+taobao.order_id+'】【'+taobao.goods_info+'】跟踪成功！\r\n'+
 														'[须知]:商品确认收货后半小时返利会添加到个人账户\r\n\r\n一一一🍉常用指令一一一\r\n'+
 														'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现';
-											/*client.sendText(msg.openid, str, function(err,result){
+											client.sendText(user.openid, str, function(err,result){
 												console.log(err);
-											});*/
-											
-											callback(null);
+												callback(null);
+											});
 										}
 									});
 								}else{
@@ -65,11 +62,10 @@ function update_order(_id,next){
 								}
 							},
 							function(callback){
-								
 								order.status = getOrderStatus(taobao.order_status);
 								if(order.status == -1){
 									UserModel.findOneAndUpdate({openid:order.openid},{$inc:{unfinished_count:-1,finished_count:1}},function(error,u){
-										//console.log(error);
+										console.log(error);
 									});
 								}
 								if( order.status == 3){
@@ -77,14 +73,13 @@ function update_order(_id,next){
 									order.tk_comm_fee = add_cash;
 									AddFreeOrderModel.create({openid:order.openid,type:1,cash:add_cash,order_number:order.order_number});
 									UserModel.findOneAndUpdate({openid:order.openid},{$inc:{current_balance:add_cash,unfinished_count:-1,finished_count:1}},function(error,u){
-										//console.log(error);
+										console.log(error);
 									});
 								}
 								order.save();
 								callback(null);
 							}
 						],function(error,result){
-							
 							return cb(null,null);
 					});
 					
