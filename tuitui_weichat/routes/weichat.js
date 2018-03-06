@@ -33,7 +33,7 @@ router.use('/:code', function(request, response, next_fun) {
 			    var text = message.Content.trim();
 			 	if(text === '帮助'){
 			 		res.reply('图文教程:http://t.cn/RTu4sqg\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n'+
-			 			'2.点击商品名右侧的“分享(有赏)”，分享给我。\r\n3.复制我返回的信息。\r\n 4.打开淘宝放入购物车或付款购买。\r\n 注:不可使用淘金币进行抵扣\r\n'+
+			 			'2.点击商品名右侧的“分享(有赏)”，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n'+
 			 			'5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
 			 	}else if(text === '订单'){
 			 		getOrders(openid,res);
@@ -45,7 +45,7 @@ router.use('/:code', function(request, response, next_fun) {
 			 		getCode(openid,text,res);
 			    }else if(/^\d{15,20}$/.test(text)){
 			 		setOrder(openid,text,res);
-			    }else if(/^\d{9,14}$/.test(text)||/^\d{21,}$/){
+			    }else if(/^\d{9,14}$/.test(text)||/^\d{21,}$/.test(text)){
 			 		res.reply('无效订单号，请您检查订单号!');
 			    }else if(text.search('】http')!=-1){
 			    	getTaobaoke(config,openid,text,res);
