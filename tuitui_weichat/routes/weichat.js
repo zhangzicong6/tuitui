@@ -368,7 +368,7 @@ function getAccessToken(code,callback){
 	});
 }
 
-getOrders('o3qBK0RXH4BlFLEIksKOJEzx08og',null);
+
 /*
 // 测试使用
 router.use('/',function(request, response, next_fun){
