@@ -170,24 +170,34 @@ function getUser(openid,res){
 					user.auction = 10000+1;
 				}
 				user.save();
-				
-				res.reply({
-					content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
-					'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-					'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
-			      	type: 'text'
-				});
-				
 			});
+			sendUserMessage(openid,user,res);	
 		}else{
-			
-			res.reply({
-				content: '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+user.all_count+'笔\r\n已完成数:'+user.finished_count+'笔\r\n未完成数:'+user.unfinished_count+'笔\r\n'+
+			sendUserMessage(openid,user,res);
+		}
+	});
+}
+
+function sendUserMessage(openid,user,res){
+	async.parallel([
+			function(callback){
+				UserOrderModel.count({openid:openid,status:{$ne:0}},callback);
+			},
+			function(callback){
+				UserOrderModel.count({openid:openid,$or:[{status:-1},{status:3}]},callback);
+			},
+			function(callback){
+				UserOrderModel.count({openid:openid,$or:[{status:1},{status:2}]},callback);
+			},
+		],function(err,counts){
+			var str = '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+counts[0]+'笔\r\n已完成数:'+counts[1]+'笔\r\n未完成数:'+counts[2]+'笔\r\n'+
 				'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-					'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现',
+				'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现';
+			//console.log(str);
+			res.reply({
+				content: str,
 		      	type: 'text'
 			});
-		}
 	});
 }
 
@@ -195,7 +205,7 @@ function getOrders(openid,res){
 	async.parallel([
 	    //并行同时执行
 	    function(callback) {
-	        UserModel.findOne({openid:openid},callback);
+	        UserOrderModel.count({openid:openid,status:{$ne:0}},callback);
 	    },
 	    function(callback) {
 	       var query= UserOrderModel.find({openid:openid,status:{$ne:0}}).sort({updateAt:-1}).limit(5);
@@ -204,13 +214,13 @@ function getOrders(openid,res){
 	],
 	function(err, results) {
 	   	orders={};
-	   	orders.all_count = results[0].all_count;
-	   	orders.list = results[1]; 
+	   	orders.all_count = results[0];
+	   	orders.list = results[1];
 	   	var str='您共有【'+orders.all_count+'】个订单，近期订单如下:\r\n ━┉┉┉┉∞┉┉┉┉━\r\n'+
 		'订单号|日 期|状 态|返 利\r\n';
 		for (var i = 0; i <=orders.list.length - 1; i++) {
 			var order = orders.list[i];
-			str += '***'+order.order_number.substr(5,5)+'***|'+order.create_at+'|'+getOrderStatus(order.status)+'| '+(order.tk_comm_fee?order.tk_comm_fee:'-')+' \r\n';
+			str += '***'+order.order_number.substr(5,5)+'***|'+order.create_at.substr(0,10)+'|'+getOrderStatus(order.status)+'| '+(order.tk_comm_fee?order.tk_comm_fee:'-')+' \r\n';
 		}
 		str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过1元输 “提现”提现。';
 		//console.log(str);

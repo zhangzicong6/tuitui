@@ -44,9 +44,6 @@ function update_order(_id,next){
 												var config = weichat_conf[user.code];
 												weichat_apis[user.code] = new WechatAPI(config.appid, config.appsecret);
 											}
-											user.all_count += 1;
-											user.unfinished_count += 1;
-											user.save();
 											var client = weichat_apis[user.code];
 											var str = '恭喜您！订单【'+taobao.order_id+'】【'+taobao.goods_info+'】跟踪成功！\r\n'+
 														'[须知]:商品确认收货后半小时返利会添加到个人账户\r\n\r\n一一一🍉常用指令一一一\r\n'+
@@ -63,16 +60,11 @@ function update_order(_id,next){
 							},
 							function(callback){
 								order.status = getOrderStatus(taobao.order_status);
-								if(order.status == -1){
-									UserModel.findOneAndUpdate({openid:order.openid},{$inc:{unfinished_count:-1,finished_count:1}},function(error,u){
-										console.log(error);
-									});
-								}
 								if( order.status == 3){
 									var add_cash = parseFloat(taobao.order_tkCommFee);
 									order.tk_comm_fee = add_cash;
 									AddFreeOrderModel.create({openid:order.openid,type:1,cash:add_cash,order_number:order.order_number});
-									UserModel.findOneAndUpdate({openid:order.openid},{$inc:{current_balance:add_cash,unfinished_count:-1,finished_count:1}},function(error,u){
+									UserModel.findOneAndUpdate({openid:order.openid},{$inc:{current_balance:add_cash}},function(error,u){
 										console.log(error);
 									});
 								}
