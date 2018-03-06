@@ -353,7 +353,6 @@ function getAccessToken(code,callback){
 							callback(err);
 						}else{
 							weichat_token.code = token.code
-							
 							TokenModel.findOneAndUpdate({code:weichat_token.code},{$set:weichat_token},{upsert:true,rawResult:true},function(err){
 								console.log('update');
 							});
