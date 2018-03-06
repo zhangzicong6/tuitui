@@ -7,5 +7,14 @@
 		"token":"mingxingshuo",
 		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
 		"url":"http://tiexie0.top/weichat/1"
+	},
+	"2":{
+		"code":"2",
+		"name":"种草红宝书",
+		"appid":"wx2f289986bee197b2",
+		"appsecret":"33558f78b99913fbc6e50bcf2b803b39",
+		"token":"mingxingshuo",
+		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
+		"url":"http://tiexie0.top/weichat/2"
 	}
 }
