@@ -4,16 +4,7 @@ var TaobaoOrderModel = require('../model/TaobaoOrder.js');
 var async = require('async');
 
 function get_order(){
-	async.waterfall([
-		function(callback){
-			UserOrderModel.count({status:{$gt:-1,$lt:3}},callback);
-		},
-		function(count,callback){
-
-		},	
-		],function(err,result){
-
-	});
+	update_order(null);
 }
 
 
@@ -33,7 +24,6 @@ function update_order(_id){
 		}
 	});
 }
-
 
 function getOrderStatus(status){
 	if(status == '订单失效'){
