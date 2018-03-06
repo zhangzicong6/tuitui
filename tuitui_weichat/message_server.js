@@ -1,6 +1,7 @@
 var socket = require('socket.io')
 var WechatAPI = require('wechat-api');
 var weichat_conf = require('./conf/weichat.json');
+var weichat_apis ={};
 
 Array.prototype.contains = function(obj) {   
   var i = this.length;   
@@ -47,7 +48,10 @@ MessageServer.prototype.init_io = function(server,self) {
 			var str ='【'+msg.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+msg.price+'元\r\n☞ 优惠:'+msg.couponAmount+'元\r\n'+
 				 '☞ 口令:'+msg.token+'\r\n☞ 返利 :'+ (0.3*msg.tkCommFee).toFixed(2) +'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
 				'◇ ◇ ◇   下单步骤◇ ◇ ◇\r\n 1. 按复制本信息打开淘宝下单\r\n 2.下单后将订单号发送给我\r\n[须知]:商品可使淘币进抵扣或使用其他店铺优惠 \r\n━┉┉┉┉∞┉┉┉┉━'
-			var client = new WechatAPI(config.appid, config.appsecret);
+			if(!weichat_apis[config.code]){
+				weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+			}
+			var client = weichat_apis[config.code];
 			client.sendText(msg.openid, str, function(err,result){
 				console.log(err);
 			});
@@ -57,6 +61,10 @@ MessageServer.prototype.init_io = function(server,self) {
 }
 
 MessageServer.prototype.req_token = function(data){
+	if(this.socket_ids.length == 0){
+		console.err('no socket connect ');
+		return;
+	}
 	var index = parseInt(Math.random()*this.socket_ids.length);
 	var key = this.socket_ids[index];
 	this.sockets[key].emit('getToken',JSON.stringify(data));

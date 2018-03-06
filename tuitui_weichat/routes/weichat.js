@@ -14,8 +14,9 @@ var TokenModel = require('../model/Token.js');
 var UserModel = require('../model/User.js');
 var UserOrderModel = require('../model/UserOrder.js');
 var AddFreeOrderModel = require('../model/AddFreeOrder.js');
-
 var MessageServer = require('../message_server.js');
+
+var weichat_apis ={};
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
@@ -233,7 +234,7 @@ function setOrder(openid,order_number,res){
 			function(callback){
 				UserOrderModel.findOne({order_number:order_number},function(err,uo){
 					if(uo){
-						return callback('已绑定订单正在跟踪订单,请耐心等候');
+						return callback('❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n已绑定订单，正在跟踪订单,请耐心等候\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋');
 					}
 					callback(null);
 				});
@@ -246,7 +247,7 @@ function setOrder(openid,order_number,res){
 			if(error){
 				res.reply(error);
 			}else{
-				res.reply('❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n已记录您的订单，返利功能正在开发中，请您耐心等待！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋');
+				res.reply('❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n订单【'+order_number+'】标记成功，稍后系统将自动追踪订单！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋❋');
 			}
 	});
 }
@@ -288,7 +289,10 @@ function getTaobaoke(config,openid,text,res){
 }
 
 function getUserInfo(openid,config){
-	var client = new WechatAPI(config.appid, config.appsecret);
+	if(!weichat_apis[config.code]){
+		weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+	}
+	var client = weichat_apis[config.code];
 	async.waterfall([
 			function(callback){
 				UserModel.findOne({openid:openid,code:config.code},function(err,user){
@@ -322,8 +326,11 @@ function getUserInfo(openid,config){
 
 function getAccessToken(code,callback){
 	var config=weichat_conf[code];
-	console.log(config);
-	var client = new WechatAPI(config.appid, config.appsecret);
+	if(!weichat_apis[config.code]){
+		weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+	}
+	var client = weichat_apis[config.code];
+	
 	async.waterfall([
 			function(callback){
 				TokenModel.findOne({code:config.code},function(err,token){
