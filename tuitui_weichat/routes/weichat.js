@@ -207,7 +207,7 @@ function getOrders(openid,res){
 		'订单号|日 期|状 态|返 利\r\n';
 		for (var i = 0; i <=orders.list.length - 1; i++) {
 			var order = orders.list[i];
-			str+='*'+order.order_number+'*|'+order.create_at+'|'+getOrderStatus(order.status)+'| '+order.addup_cash?order.addup_cash:'-'+' \r\n';
+			str += '***'+order.order_number.substr(5,5)+'***|'+order.create_at+'|'+getOrderStatus(order.status)+'| '+(order.tk_comm_fee?order.tk_comm_fee:'-')+' \r\n';
 		}
 		str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过1元输 “提现”提现。';
 		//console.log(str);
@@ -368,7 +368,7 @@ function getAccessToken(code,callback){
 	});
 }
 
-
+getOrders('o3qBK0RXH4BlFLEIksKOJEzx08og',null);
 /*
 // 测试使用
 router.use('/',function(request, response, next_fun){
