@@ -32,18 +32,21 @@ router.use('/:code', function(request, response, next_fun) {
 			if (message.MsgType === 'text') {
 			    var text = message.Content.trim();
 			 	if(text === '帮助'){
-			 		res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RTu4sqg\r\n一一一一🍒常用指令一一一一\r\n'+
-					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现');
+			 		res.reply('图 教程:http://t.cn/RTu4sqg\r\n———— 省钱攻  ———— \r\n1.打开 机淘宝，选中购买的产品。\r\n'+
+			 			'2.点击商品名右侧的“分享(有赏)”，分 享给我。\r\n3.复制我返回的信息。\r\n 4.打开淘宝放入购物车或付款购买。\r\n 注:不可使用淘金币进行抵扣\r\n'+
+			 			'5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n 订单查询请回复:订单\r\n 余额提现请回复:提现 \r\n详细教程请回复:帮助');
 			 	}else if(text === '订单'){
 			 		getOrders(openid,res);
 			 	}else if(text === '个人信息'){
 			 		getUser(openid,res);
 			 	}else if(text === '提现'){
 			 		cash(openid,res);
-			 	}else if(/^\d{5,12}$/.test(text)){
+			 	}else if(/^\d{5,8}$/.test(text)){
 			 		getCode(openid,text,res);
-			    }else if(/^\d{18}$/.test(text)){
+			    }else if(/^\d{15,20}$/.test(text)){
 			 		setOrder(openid,text,res);
+			    }else if(/^\d{9,14}$/.test(text)||/^\d{21,}$/){
+			 		res.reply('效订单号，请您检查订单号!');
 			    }else if(text.search('】http')!=-1){
 			    	getTaobaoke(config,openid,text,res);
 			    }else if(/￥[0-9a-zA-Z]{11}￥/.test(text)){
@@ -54,7 +57,7 @@ router.use('/:code', function(request, response, next_fun) {
 			}else if(message.MsgType === 'event'){
 				if(message.Event === 'subscribe' ){
 					res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RTu4sqg\r\n一一一一🍒常用指令一一一一\r\n'+
-					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现');
+					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复:帮助');
 				}else{
 					res.reply('');
 				}
@@ -145,7 +148,7 @@ function cash(openid,res){
 	UserModel.findOne({openid:openid},function(error,user){
 		current_balance=user.current_balance;
 		if(parseFloat(current_balance.toFixed(2))<1){
-			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【1】元才可以提现哦！');
+			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【1.0】元才可以提现哦！');
 		}else{
 			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元。提现功能正在玩命开发中，两周后和您见面');
 		}
