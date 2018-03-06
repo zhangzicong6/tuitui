@@ -24,7 +24,9 @@ router.use('/data', function(req, res, next) {
 router.use('/reset', function(req, res, next) {
 	console.log('重置订单');
 	var openid = req.query.openid
-	UserModel.findOneAndUpdate({openid:openid},{finished_count:0,unfinished_count:0,all_count:0});
+	UserModel.findOneAndUpdate({openid:openid},{finished_count:0,unfinished_count:0,all_count:0},function(err,res){
+		console.log(res);
+	});
 	res.send('success');
 });
 
