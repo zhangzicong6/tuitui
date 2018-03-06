@@ -101,7 +101,7 @@ function getCode(openid,text,res){
 				if(result){
 					callback('你已绑定邀请码'+result.auction+',请不要重复绑定！');
 				}else{
-					var cash = parseFloat((Math.random()*0.8).toFixed(2));
+					var cash = parseFloat((Math.random()*0.7+0.1).toFixed(2));
 					callback(null,cash);
 				}
 			});
@@ -115,7 +115,7 @@ function getCode(openid,text,res){
 								callback(error,user);
 							});
 						},function(user,callback){
-							var bind_cash = parseFloat((Math.random()*0.5).toFixed(2));
+							var bind_cash = parseFloat((Math.random()*0.4+0.1).toFixed(2));
 							AddFreeOrderModel.create({openid:user.openid,type:3,cash:bind_cash,auction:user.auction});
 							user.current_balance += bind_cash;
 							user.save();
@@ -325,6 +325,7 @@ function getUserInfo(openid,config){
 			function(token,callback){
 				client.getUser(openid, function(err,user){
 					user.code = config.code;
+					user.current_balance = 0;
 					UserModel.create(user);
 					console.log(user);
 					callback(null,null);
