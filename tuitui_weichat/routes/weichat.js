@@ -330,7 +330,7 @@ function getAccessToken(code,callback){
 		weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
 	}
 	var client = weichat_apis[config.code];
-	
+
 	async.waterfall([
 			function(callback){
 				TokenModel.findOne({code:config.code},function(err,token){
@@ -354,7 +354,7 @@ function getAccessToken(code,callback){
 						}else{
 							weichat_token.code = token.code
 							
-							TokenModel.findOneAndUpdate({code:weichat_token.code},{$set:weichat_token},{upsert:true},function(err){
+							TokenModel.findOneAndUpdate({code:weichat_token.code},{$set:weichat_token},{upsert:true,rawResult:true},function(err){
 								console.log('update');
 							});
 							

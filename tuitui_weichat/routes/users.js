@@ -6,12 +6,13 @@ var TaobaoOrderModel = require('../model/TaobaoOrder.js');
 
 
 router.use('/data', function(req, res, next) {
+	console.log('上传订单');
 	console.log(req.body.orders);
 	var orders = req.body.orders;
 	orders = JSON.parse(orders);
 	for (var i = orders.length - 1; i >= 0; i--) {
 		order = orders[i];
-		TaobaoOrderModel.findOneAndUpdate({order_id:order.order_id},{$set :order},{upsert:true})
+		TaobaoOrderModel.findOneAndUpdate({order_id:order.order_id},{$set :order},{upsert:true,rawResult:true})
 	}
 	res.send('success');
 });
