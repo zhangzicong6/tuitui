@@ -22,7 +22,7 @@ router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
 	
 	if(!request.query.openid){
-		console.log('validate');
+		//console.log('validate');
 		validate(request,response);
 	}else{
 		wechat(config,function (req, res, next) {
@@ -313,7 +313,7 @@ function getUserInfo(openid,config){
 						//console.log('无用户');
 						callback(null);
 					}else{
-						callback('用户存在');
+						//callback('用户存在');
 					}
 				});
 			},function(callback){
@@ -327,7 +327,7 @@ function getUserInfo(openid,config){
 					user.code = config.code;
 					user.current_balance = 0;
 					UserModel.create(user);
-					console.log(user);
+					//console.log(user);
 					callback(null,null);
 				});
 			}

@@ -49,7 +49,7 @@ function request_taobao_url(url,next){
 					var tmp_str = uri_obj.path.split('?')[0]+'?id='+itemid;
 					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
 					options.url='http://pub.alimama.com/items/search.json?q='+encodeURI(param_url);
-					console.log('url : '+options.url);
+					//console.log('url : '+options.url);
 					options.param_url=param_url;
 					callback(null,options);
 				});
