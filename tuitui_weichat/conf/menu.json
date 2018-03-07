@@ -1,0 +1,25 @@
+{
+  "2": {
+    "button": [
+      {
+        "type": "view",
+        "name": "机器人教程",
+        "url": "http://t.cn/RETghsf"
+      }
+    ]
+  },
+  "3": {
+    "button": [
+       {
+        "type": "view",
+        "name": "照片打印",
+        "url": "http://e.gfd178.com/83bJ2mo0"
+      },
+      {
+        "type": "view",
+        "name": "机器人教程",
+        "url": "http://t.cn/RETghsf"
+      }
+    ]
+  }
+}
