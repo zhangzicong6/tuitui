@@ -42,6 +42,9 @@ function request_taobao_url(url,next){
 						split_str = '&id=';
 						tmp_arr = uri_obj.path.split(split_str);
 					}
+					if(tmp_arr.length==1){
+						callback('无优惠信息');
+					}
 					var itemid = tmp_arr[1].split('&')[0];
 					var tmp_str = uri_obj.path.split('?')[0]+'?id='+itemid;
 					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
@@ -102,6 +105,9 @@ function request_taobao_token(code,next){
 				if(tmp_arr.length == 1){
 					split_str = '&id=';
 					tmp_arr = tmp_url.split(split_str);
+				}
+				if(tmp_arr.length==1){
+					callback('无优惠信息');
 				}
 				var itemid = tmp_arr[1].split('&')[0];
 				var param_url = tmp_url.split('?')[0]+'?id='+itemid;
