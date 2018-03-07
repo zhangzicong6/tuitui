@@ -51,6 +51,8 @@ router.use('/:code', function(request, response, next_fun) {
 			    	getTaobaoke(config,openid,text,res);
 			    }else if(/￥[0-9a-zA-Z]{11}￥/.test(text)){
 			    	getTaobaoke_byCode(config,openid,text,res);
+			    }else if(text === '搜索小说'){
+			    	res.reply('https://wx68113a82c6654025.youshuge.com/lookbook/2724/1095/547202/pop/');
 			    }else{
 			    	res.reply('');
 			    }
