@@ -35,7 +35,7 @@ router.use('/reset', function(req, res, next) {
 	res.send('success');
 });
 
-router.use('create_menu',function(req, res, next){
+router.use('/create_menu',function(req, res, next){
 	var code = req.query.code;
 	if(code){
 		createMenu(code);
