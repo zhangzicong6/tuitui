@@ -44,7 +44,7 @@ MessageServer.prototype.init_io = function(server,self) {
 
 		socket.on('token',function(msg){
 			msg = JSON.parse(msg);
-			var config = weichat_conf[parseInt(msg.code)];
+			var config = weichat_conf[msg.code];
 			var str ='【'+msg.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+msg.price+'元\r\n☞ 优惠:'+msg.couponAmount+'元\r\n'+
 				 '☞ 口令:'+msg.token+'\r\n☞ 返利 :'+ (0.3*msg.tkCommFee).toFixed(2) +'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
 				'◇ ◇ ◇   下单步骤◇ ◇ ◇\r\n 1. 按复制本信息打开淘宝下单\r\n 2.下单后将订单号发送给我\r\n[须知]:商品可使淘币进抵扣或使用其他店铺优惠 \r\n━┉┉┉┉∞┉┉┉┉━'

@@ -48,7 +48,8 @@ router.use('/create_menu',function(req, res, next){
 function createMenu(code) {
 	var config = weichat_conf[code];
 	var api = new WechatAPI(config.appid, config.appsecret);
-	var menu = menus[config];
+	var menu = menus[code];
+	//console.log(menu);
 	api.removeMenu(function(err,res){
 		api.createMenu(menu, function(err,res){
 			console.log(res);
