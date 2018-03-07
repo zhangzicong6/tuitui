@@ -29,7 +29,7 @@ UserOrderSchema.statics = {
                 .sort({'_id':-1})
                 .exec(cb);
             }else {
-                return this.find({})
+                return this.find({status:{$gt:-1,$lt:3}})
                 .limit(50)
                 .sort({'_id':-1})
                 .exec(cb);

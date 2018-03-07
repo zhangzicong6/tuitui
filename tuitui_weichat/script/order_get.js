@@ -61,11 +61,15 @@ function update_order(_id,next){
 							function(callback){
 								order.status = getOrderStatus(taobao.order_status);
 								if( order.status == 3){
-									var add_cash = parseFloat((parseFloat(taobao.order_tkCommFee)*0.3).toFixed(2));
-									order.tk_comm_fee = add_cash;
-									AddFreeOrderModel.create({openid:order.openid,type:1,cash:add_cash,order_number:order.order_number});
-									UserModel.findOneAndUpdate({openid:order.openid},{$inc:{current_balance:add_cash}},function(error,u){
-										console.log(error);
+									AddFreeOrderModel.findOne({order_number:order.order_number},function(err,addOrder){
+										if(!addOrder){
+											var add_cash = parseFloat((parseFloat(taobao.order_tkCommFee)*0.3).toFixed(2));
+											order.tk_comm_fee = add_cash;
+											AddFreeOrderModel.create({openid:order.openid,type:1,cash:add_cash,order_number:order.order_number});
+											UserModel.findOneAndUpdate({openid:order.openid},{$inc:{current_balance:add_cash}},function(error,u){
+												console.log(error);
+											});
+										}
 									});
 								}
 								order.save();
