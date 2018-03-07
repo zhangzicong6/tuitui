@@ -7,7 +7,6 @@ var TaobaoOrderModel = require('../model/TaobaoOrder.js');
 
 var WechatAPI = require('wechat-api');
 var weichat_conf = require('../conf/weichat.json');
-var menus = require('../conf/menu.json');
 
 
 
@@ -46,6 +45,7 @@ router.use('/create_menu',function(req, res, next){
 });
 
 function createMenu(code) {
+	var menus = require('../conf/menu.json');
 	var config = weichat_conf[code];
 	var api = new WechatAPI(config.appid, config.appsecret);
 	var menu = menus[code];
