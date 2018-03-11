@@ -104,7 +104,7 @@ function getCode(openid,text,res){
 				if(result){
 					callback('你已绑定邀请码'+result.auction+',请不要重复绑定！');
 				}else{
-					var cash = parseFloat((Math.random()*0.7+0.1).toFixed(2));
+					var cash = parseFloat((Math.random()*3+12).toFixed(2));
 					callback(null,cash);
 				}
 			});
@@ -118,7 +118,7 @@ function getCode(openid,text,res){
 								callback(error,user);
 							});
 						},function(user,callback){
-							var bind_cash = parseFloat((Math.random()*0.4+0.1).toFixed(2));
+							var bind_cash = parseFloat((Math.random()*0.2+0.3).toFixed(2));
 							AddFreeOrderModel.create({openid:user.openid,type:3,cash:bind_cash,auction:user.auction});
 							user.current_balance += bind_cash;
 							user.save();
@@ -149,8 +149,8 @@ function getCode(openid,text,res){
 function cash(openid,res){
 	UserModel.findOne({openid:openid},function(error,user){
 		current_balance=user.current_balance;
-		if(parseFloat(current_balance.toFixed(2))<1){
-			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【1.0】元才可以提现哦！');
+		if(parseFloat(current_balance.toFixed(2))<20){
+			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【20.0】元才可以提现哦！');
 		}else{
 			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元。提现功能正在玩命开发中，两周后和您见面');
 		}
