@@ -310,7 +310,7 @@ function getUserInfo(openid,config){
 	var client = weichat_apis[config.code];
 	async.waterfall([
 			function(callback){
-				UserModel.findOne({openid:openid,code:config.code},function(err,user){
+				UserModel.findOneAndUpdate({openid:openid,code:config.code},{action_time:Date.now()},function(err,user){
 					if(!user){
 						//console.log('无用户');
 						callback(null);

@@ -18,6 +18,7 @@ var UserSchema = new Schema({
   current_balance : { type: Number, default:0},
   addup_cash : { type: Number, default:0},
   auction:{ type: Number, default:0},
+  action_time:Number,
   createAt: {
       type: Date,
       default: Date.now
