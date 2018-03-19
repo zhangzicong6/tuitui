@@ -10,8 +10,26 @@ var BookContentSchema = new Schema({
 	chapte_name:String,
 	content:String,
 	last_chapte:Number,
-	next_chapte:Number
+	next_chapte:Number,
+	index:Number
 });
+
+BookContentSchema.statics = {
+    fetch(book_id,chapte_id, cb) {
+        if (chapte_id) {
+            return this.find({book_id:book_id,chapte_id: {$gt: chapte_id}},{content:0})
+                .limit(50)
+                .sort({'chapte_id':1})
+                .exec(cb);
+            }else {
+                return this.find({book_id:book_id},{content:0})
+                .limit(50)
+                .sort({'chapte_id':1})
+                .exec(cb);	
+            }
+        
+    }
+}
 
 var BookContentModel = db.model('BookContent', BookContentSchema);
 module.exports = BookContentModel;

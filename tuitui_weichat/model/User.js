@@ -7,6 +7,7 @@ var UserSchema = new Schema({
   openid: String,
   code:String,
   nickname: String,
+  unionid:String,
   sex: String,
   province: String,
   city: String,
@@ -19,6 +20,7 @@ var UserSchema = new Schema({
   addup_cash : { type: Number, default:0},
   auction:{ type: Number, default:0},
   action_time:Number,
+  referee:String,
   createAt: {
       type: Date,
       default: Date.now
@@ -30,13 +32,6 @@ var UserSchema = new Schema({
 },{
     timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' }
 });
-
-UserSchema.statics.getUser = function (openid, cb) {
-  this.findOne({openid:openid}, function (err, result) {
-    if (err) throw err;
-    return cb(null, result);
-  });
-};
 
 
 
