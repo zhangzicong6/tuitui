@@ -34,9 +34,9 @@ function share_img(ticket,qr_name,callback) {
 
 function getQRImg(ticket,callback){
 	memcached.get('qr_'+ticket,function(err,qr){
-		/*if(qr){
+		if(qr){
 			return callback(qr);
-		}*/
+		}
 		var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='+ticket;
 		console.log(qr_url);
 		var qr_name = Date.now()+''+parseInt(Math.random()*10000)+'.jpg';
