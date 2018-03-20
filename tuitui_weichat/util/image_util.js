@@ -4,6 +4,7 @@ var request =require('request');
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
 var exec = require('child_process').exec;
+process.env.PATH+=":/usr/local/GraphicsMagick-1.3.28/bin";
 
 function downloadFile(uri,filename,callback){
     var stream = fs.createWriteStream(filename);
