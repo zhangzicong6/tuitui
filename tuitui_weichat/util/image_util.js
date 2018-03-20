@@ -13,6 +13,9 @@ function share_img(ticket,qr_name,callback) {
 	gm(__dirname+'/qr_image/'+qr_name)
 	.resize(300)
 	.write(__dirname+'/qr_image/small_'+qr_name,function(err){
+		if(err){
+			console.log(err);
+		}
 		gm()
 		 .in('-page', '+0+0')
 		 .in(__dirname+'/qr_image/temp.jpeg')
@@ -20,6 +23,9 @@ function share_img(ticket,qr_name,callback) {
 		 .in(__dirname+'/qr_image/small_'+qr_name)
 		 .mosaic()
 		 .write(__dirname+'/../public/qr_image/'+qr_name, function (err) {
+		 	if(err){
+				console.log(err);
+			}
 		 	memcached.set('qr_'+ticket,qr_name,7*24*60*60,function(err){});
 		    callback(qr_name);
 		 });
@@ -28,9 +34,9 @@ function share_img(ticket,qr_name,callback) {
 
 function getQRImg(ticket,callback){
 	memcached.get('qr_'+ticket,function(err,qr){
-		if(qr){
+		/*if(qr){
 			return callback(qr);
-		}
+		}*/
 		var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='+ticket;
 		console.log(qr_url);
 		var qr_name = Date.now()+''+parseInt(Math.random()*10000)+'.jpg';
