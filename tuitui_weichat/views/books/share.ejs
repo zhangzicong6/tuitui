@@ -4,9 +4,65 @@
 	<title>明星说</title>
 </head>
 <body>
+	<img src="/qr_image/<%= share_img%>">
 	<script type="text/javascript" src="/javascripts/jweixin-1.2.0.js"></script>
+	<script type="text/javascript" src="/javascripts/zepto.min.js"></script>
+	<script type="text/javascript" src="/javascripts/client.min.js"></script>
 	<script type="text/javascript">
-		
-	</script>
+    var config = {
+      "appId": "",
+      success: function(w) {
+        console.log('success');
+//        var w = this;
+        var img = 'http://pic1.ooopic.com/uploadfilepic/shiliang/2009-10-05/OOOPIC_00cyl_20091005e2c6eb1c889e342e.jpg';
+        //sugar method
+        w.shareOnMoment({
+          title: 'test title',
+          type: 'link',
+          success: function() {
+            console.log('share on moment success');
+          },
+          cancel: function() {
+            console.log('share on moment canceled');
+          },
+          imgUrl: img
+        });
+
+        //or call directly
+        w.wx.onMenuShareAppMessage({
+          title: 'test title',
+          type: 'link',
+          desc: 'share description',
+          success: function() {
+            console.log('share on chat success');
+          },
+          cancel: function() {
+            console.log('share on chat canceled');
+          },
+          imgUrl: img
+        });
+      },
+      error: function(err) {
+        console.error(err)
+      },
+      debug: true
+    };
+    $.ajax({
+      type: 'GET',
+      url: '/books/getwx/<%= book_id%>',
+      dataType: 'json',
+      data: {
+        url: location.href
+      },
+      success: function(data) {
+      	config.appId = data.appId;
+        config.nonceStr = data.nonceStr;
+        config.signature = data.signature;
+        config.timestamp = data.timestamp;
+        config.jsApiList = ['hideMenuItems', 'onMenuShareTimeline','onMenuShareAppMessage'];
+        new window.WechatJSSDK(config);
+      }
+    });
+  </script>
 </body>
 </html>

@@ -6,6 +6,7 @@ var WechatAPI = require('wechat-api');
 var crypto = require('crypto');
 var taobao_apiClient = require('../util/taobaoke/index.js').ApiClient;
 var weichat_conf = require('../conf/weichat.json');
+var book_wechat_conf = require('../conf/book_wechat.json');
 var taobao_conf = require('../conf/taobao.json');
 var TaobaoUtil =require('../util/taobaoke_util.js');
 var async = require('async');
@@ -14,13 +15,16 @@ var TokenModel = require('../model/Token.js');
 var UserModel = require('../model/User.js');
 var UserOrderModel = require('../model/UserOrder.js');
 var AddFreeOrderModel = require('../model/AddFreeOrder.js');
+var BookModel = require('../model/Book.js');
 var MessageServer = require('../message_server.js');
-
 var weichat_apis ={};
+
+var NodeCache = require("node-cache");
+var myCache = new NodeCache();
+
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
-	
 	if(!request.query.openid){
 		//console.log('validate');
 		validate(request,response);
@@ -58,8 +62,17 @@ router.use('/:code', function(request, response, next_fun) {
 			    }
 			}else if(message.MsgType === 'event'){
 				if(message.Event === 'subscribe' ){
-					console.log(message);
-					res.reply('');
+					var code_list = book_wechat_conf.book_wechat_list;
+					if(code_list.indexOf(request.params.code)==-1){
+						res.reply('');
+					}else{
+						var book_id = book_wechat_conf.book_wechat_map[request.params.code];
+						replay_book(book_id,message,res);
+						if(message.Ticket){
+							getXiaoshuo(message);
+						}
+					}
+					
 					/*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
 					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
 				}else{
@@ -71,6 +84,22 @@ router.use('/:code', function(request, response, next_fun) {
 		})(request, response, next_fun);
 	}
 });
+
+
+function replay_book(book_id,message,res){
+	BookModel.findOne({book_id:book_id},function(err,book){
+		if(!book){
+			return res.reply('');
+		}
+		res.reply('阅读 &lt;a href="http://tiexie0.top/books/continue/'+book_id+'"&gt;'+book.bookname+'&lt;/a&gt;');
+	});
+}
+
+function getXiaoshuo(message){
+	var content = myCache.get(message.Ticket);
+	var obj = JSON.parse(content);
+
+}
 
 function validate(req,res){
 	var signature = req.query.signature;
@@ -316,7 +345,7 @@ function getUserInfo(openid,config){
 						//console.log('无用户');
 						callback(null);
 					}else{
-						//callback('用户存在');
+						callback('用户存在');
 					}
 				});
 			},function(callback){

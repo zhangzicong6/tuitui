@@ -1,6 +1,8 @@
 var TokenModel = require('../model/Token.js');
 var weichat_conf = require('../conf/weichat.json');
 var WechatAPI = require('wechat-api');
+var NodeCache = require("node-cache");
+var myCache = new NodeCache();
 
 function getClient(code) {
 	var config=weichat_conf[code];
@@ -22,21 +24,29 @@ function getClient(code) {
 
 
 function getQr(code,openid,book_id,next){
-	var client = getClient(code);
-	client.createTmpQRCode(JSON.stringify({openid:openid,book:book_id}),2592000,function(err,reslut){
-		if(err){
-			console.log(err);
-			return next(err);
-		}
-		var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='+reslut.ticket; 
-		console.log(qr_url);
+	var content = JSON.stringify({openid:openid,book:book_id});
+	var ticket = myCache.get(content);
+	if(ticket){
+		var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='+ticket; 
 		next(null,qr_url);
-	});
+	}else{
+		var client = getClient(code);
+		client.createTmpQRCode(content,2592000,function(err,reslut){
+			if(err){
+				console.log(err);
+				return next(err);
+			}
+			var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='+reslut.ticket; 
+			myCache.set(content,reslut.ticket,2592000);
+			myCache.set(reslut.ticket,content,2592000);
+			next(null,qr_url);
+		});
+	}
 }
 
 function QRCode(){
 	var client = getClient(['1']);
-	client.createLimitQRCode(JSON.stringify({openid:'o3qBK0RXH4BlFLEIksKOJEzx08og',book:'239'}), function(err,reslut){
+	client.createLimitQRCode('book_id:239',function(err,reslut){
 		if(err){
 			console.log(err);
 		}
