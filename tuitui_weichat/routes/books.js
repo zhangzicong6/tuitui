@@ -13,8 +13,6 @@ var Wechat = require('wechat-jssdk');
 var FileStore = require('wechat-jssdk').FileStore;
 var request = require('request');
 var async = require('async');
-var NodeCache = require("node-cache");
-var myCache = new NodeCache();
 
 
 router.use('/create', function(req, res, next) {
@@ -46,9 +44,14 @@ router.use('/read/:book_id', function(req, res, next) {
 
 
 router.use('/share/:book_id',function(req, res, next){
-	var conf = book_wechat_conf[req.params.book_id];
-	return res.render('books/share',{share_img:'1521444776242567.jpg',book_id:req.params.book_id});
-	getOpenid(req,res,showQr)
+	var book_id = req.params.book_id;
+	WechatUtil.getQr(book_wechat_conf[book_id].code,'o3qBK0RXH4BlFLEIksKOJEzx08og',book_id,function(err,tiket){
+		ImageUtil.getQRImg(tiket,function(qr_name){
+			req.session['user_share_'+req.params.book_id] = qr_name;
+			res.render('books/share',{share_img:qr_name,book_id:book_id});
+		});
+	});
+	//getOpenid(req,res,showQr)
 });
 
 router.use('/getwx/:book_id',function(req, res, next){
@@ -94,9 +97,9 @@ function getOpenid(req,res,callback){
 
 function showQr(req,res){
 	var openid = req.session.openid;
-	var book_id = req.params.book_id
-	WechatUtil.getQr(book_wechat_conf[book_id].code,openid,req.params.book_id,function(err,qr_url){
-		ImageUtil.getQRImg(qr_url,function(qr_name){
+	var book_id = req.params.book_id;
+	WechatUtil.getQr(book_wechat_conf[book_id].code,openid,book_id,function(err,tiket){
+		ImageUtil.getQRImg(tiket,function(qr_name){
 			req.session['user_share_'+req.params.book_id] = qr_name;
 			res.render('books/share',{share_img:qr_name,book_id:book_id});
 		});

@@ -19,9 +19,8 @@ var BookModel = require('../model/Book.js');
 var MessageServer = require('../message_server.js');
 var weichat_apis ={};
 
-var NodeCache = require("node-cache");
-var myCache = new NodeCache();
-
+var Memcached = require('memcached');
+var memcached = new Memcached('127.0.0.1:11211');
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
@@ -96,8 +95,12 @@ function replay_book(book_id,message,res){
 }
 
 function getXiaoshuo(message){
-	var content = myCache.get(message.Ticket);
-	var obj = JSON.parse(content);
+	memcached.get(message.Ticket,function(err,content){
+		if(!content){
+			var obj = JSON.parse(content);
+		}
+	});
+	
 
 }
 
