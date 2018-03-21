@@ -71,10 +71,10 @@ router.use('/getwx/:book_id',function(req, res, next){
 });
 
 router.use('/geturl',function(req,res,next){
-	var bookname = decodeURIComponent(req.query.bookname);
+	var bookname = decodeURIComponent(req.query.bookname).trim();
 	console.log(bookname);
 	if(bookname){
-		BookContentModel.findOne({bookname:bookname,index:3},function(err,chapte){
+		BookContentModel.findOne({index:3,bookname:bookname},function(err,chapte){
 			if(!chapte){
 				res.send('未找到章节');
 			}else{
