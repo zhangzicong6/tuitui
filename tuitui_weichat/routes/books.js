@@ -70,6 +70,21 @@ router.use('/getwx/:book_id',function(req, res, next){
 	});
 });
 
+router.use('geturl',function(req,res,next){
+	var bookname = req.query.bookname;
+	if(bookname){
+		BookContentModel.findOne({bookname:bookname,index:3},function(err,chapte){
+			if(!chapte){
+				res.send('未找到章节');
+			}else{
+				res.send('http://tiexie0.top/books/read/'+book.id+'?chapte_id='+chapte.chapte_id);
+			}
+		});
+	}else{
+		res.send('缺少参数');
+	}
+	
+});
 
 
 function getOpenid(req,res,callback){
