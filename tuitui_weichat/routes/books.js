@@ -74,7 +74,7 @@ router.use('/geturl',function(req,res,next){
 	var book_id = decodeURIComponent(req.query.book_id).trim();
 	console.log(book_id);
 	if(book_id){
-		BookContentModel.findOne({index:3,book_id:book_id},function(err,chapte){
+		BookContentModel.findOne({index:4,book_id:book_id},function(err,chapte){
 			if(!chapte){
 				res.send('未找到章节');
 			}else{
