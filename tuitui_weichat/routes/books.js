@@ -109,6 +109,7 @@ function showQr(req,res){
 
 function read_continue(req,res){
 	var openid = req.session.openid;
+	console.log(openid);
 	var book_id = req.params.book_id;
 	UserReadModel.findOne({book_id:book_id,openid:openid},function(error,read){
 		if(!read){
@@ -189,7 +190,7 @@ function check10V(chapte,req,res,next){
 						book_id:book_id,
 						openid:openid,
 						can_read:20
-					});
+					},function(error){if(error)console.log(error)});
 				}
 				if(chapte.index<=20){
 					res.render('books/content', { chapte: chapte});	
@@ -203,11 +204,11 @@ function check10V(chapte,req,res,next){
 }
 
 function check20V(chapte,req,res){
-	console.log('check20V');
+	console.log('check20V openid: '+openid);
 	var openid = req.session.openid;
 	var book_id = req.params.book_id;
 	UserBookAuthorityModel.findOne({openid:openid,book_id:book_id},function(err,auth){
-		console.log(auth);
+		
 		if(chapte.index<=auth.can_read){
 			res.render('books/content', { chapte: chapte});
 		}else{

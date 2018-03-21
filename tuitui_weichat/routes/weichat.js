@@ -89,7 +89,7 @@ router.use('/:code', function(request, response, next_fun) {
 
 function replay_book(book_id,message,res){
 	var conf = book_wechat_conf[book_id];
-	if(!message.Ticket){
+	if(message.Ticket){
 		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n';
 		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">《'+conf.bookname+'》</a>\r\n';
 		for (var i =  0; i < conf.other_books.length; i++) {
