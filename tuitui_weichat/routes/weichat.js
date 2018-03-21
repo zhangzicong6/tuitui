@@ -144,12 +144,6 @@ function getXiaoshuo(message,code){
 	
 }
 
-reset();
-function reset(){
-	UserBookAuthorityModel.findOneAndUpdate({book_id:587,openid:'o3qBK0RXH4BlFLEIksKOJEzx08og'},{$pull:{invitees:'o3qBK0RXH4BlFLEIksKOJEzx08og'}},{upsert: true, new: true},function(err,auth){
-			console.log(auth);	
-	});
-}
 
 function sendBookMessage(auth,code){
 	var config = weichat_conf[code];
