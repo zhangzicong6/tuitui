@@ -142,7 +142,15 @@ function read_chapter(req,res){
 	var openid = req.session.openid;
 	var book_id = req.params.book_id;
 	var chapte_id = req.query.chapte_id;
-	BookContentModel.findOne({book_id:book_id,chapte_id:chapte_id},function(err,chapte){
+	var index = req.query.index;
+	var con = {book_id:book_id};
+	if(chapte_id){
+		con.chapte_id = chapte_id;
+	}
+	if(index){
+		con.index = index;
+	}
+	BookContentModel.findOne(,function(err,chapte){
 		if(!chapte){
 		}else{
 			var read = {book_id:book_id,openid:openid,chapte_id:chapte.chapte_id,index:chapte.index,bookname:chapte.bookname};
