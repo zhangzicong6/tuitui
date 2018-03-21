@@ -90,7 +90,7 @@ router.use('/geturl',function(req,res,next){
 
 function getOpenid(req,res,callback){
 	var book_id = req.params.book_id;
-	var openid = req.session.openid;
+	var openid = req.session[book_id];
 	var code = req.query.code;
 	if(!openid){
 		/*req.session.openid = 'o3qBK0RXH4BlFLEIksKOJEzx08og';
@@ -103,7 +103,7 @@ function getOpenid(req,res,callback){
 			request(api_url,function(err,response,body){
 				console.log(body);
 				body = JSON.parse(body);
-				req.session.openid = body.openid;
+				req.session[req.params.book_id]=openid;
 				callback(req,res);
 			});
 		}
@@ -113,8 +113,8 @@ function getOpenid(req,res,callback){
 }
 
 function showQr(req,res){
-	var openid = req.session.openid;
 	var book_id = req.params.book_id;
+	var openid = req.session[book_id];
 	WechatUtil.getQr(book_wechat_conf[book_id].code,openid,book_id,function(err,tiket){
 		ImageUtil.getQRImg(tiket,function(qr_name){
 			req.session['user_share_'+req.params.book_id] = qr_name;
@@ -124,9 +124,8 @@ function showQr(req,res){
 }
 
 function read_continue(req,res){
-	var openid = req.session.openid;
-	console.log(openid);
 	var book_id = req.params.book_id;
+	var openid = req.session[book_id];
 	UserReadModel.findOne({book_id:parseInt(book_id),openid:openid},function(error,read){
 		if(!read){
 			BookContentModel.findOne({book_id:book_id,index:1},function(err,chapte){
@@ -139,8 +138,8 @@ function read_continue(req,res){
 }
 
 function read_chapter(req,res){
-	var openid = req.session.openid;
 	var book_id = req.params.book_id;
+	var openid = req.session[book_id];
 	var chapte_id = req.query.chapte_id;
 	var index = req.query.index;
 	var con = {book_id:book_id};
@@ -181,8 +180,8 @@ function read_chapter(req,res){
 
 function check10V(chapte,req,res,next){
 	var user_sub = req.session.user_sub;
-	var openid = req.session.openid;
 	var book_id = req.params.book_id;
+	var openid = req.session[book_id];
 
 	if(user_sub){
 		if(chapte.index<=20){
@@ -227,8 +226,8 @@ function check10V(chapte,req,res,next){
 }
 
 function check20V(chapte,req,res){
-	var openid = req.session.openid;
 	var book_id = req.params.book_id;
+	var openid = req.session[book_id];
 	console.log('check20V openid: '+openid);
 	UserBookAuthorityModel.findOne({book_id:parseInt(book_id),openid:openid},function(err,auth){
 		console.log('auth');
