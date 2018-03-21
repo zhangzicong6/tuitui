@@ -16,6 +16,8 @@ var UserModel = require('../model/User.js');
 var UserOrderModel = require('../model/UserOrder.js');
 var AddFreeOrderModel = require('../model/AddFreeOrder.js');
 var BookModel = require('../model/Book.js');
+var UserBookAuthorityModel = require('../model/UserBookAuthority.js');
+
 var MessageServer = require('../message_server.js');
 var weichat_apis ={};
 
@@ -68,7 +70,7 @@ router.use('/:code', function(request, response, next_fun) {
 						var book_id = book_wechat_conf.book_wechat_map[request.params.code];
 						replay_book(book_id,message,res);
 						if(message.Ticket){
-							getXiaoshuo(message);
+							getXiaoshuo(message,request.params.code);
 						}
 					}
 					
@@ -86,22 +88,61 @@ router.use('/:code', function(request, response, next_fun) {
 
 
 function replay_book(book_id,message,res){
-	BookModel.findOne({book_id:book_id},function(err,book){
-		if(!book){
-			return res.reply('');
+	var conf = book_wechat_conf[book_id];
+	if(!message.Ticket){
+		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n';
+		str +=  '&lt;a href="http://tiexie0.top/books/continue/'+conf.book_id+'"&gt;《'+conf.bookname+'》&lt;/a&gt;\r\n';
+		for (var i =  0; i < conf.other_books.length; i++) {
+			var book = conf.other_books[i];
+			str += '&lt;a href="http://tiexie0.top/books/continue/'+book.book_id+'"&gt;《'+book.bookname+'》&lt;/a&gt;\r\n'
 		}
-		res.reply('阅读 &lt;a href="http://tiexie0.top/books/continue/'+book_id+'"&gt;'+book.bookname+'&lt;/a&gt;');
-	});
+		res.reply(str);
+	}else{
+		var str = '欢迎关注「'+conf.name+'」，您正在阅读《'+conf.bookname+'》\r\n';
+		str +=  '&lt;a href="http://tiexie0.top/books/continue/'+conf.book_id+'"&gt;'+点我继续阅读+'&lt;/a&gt;\r\n\r\n\r\n';
+		str += '猜您喜欢：\r\n';
+		for (var i =  0; i < conf.other_books.length; i++) {
+			var book = conf.other_books[i];
+			str += '&lt;a href="http://tiexie0.top/books/continue/'+book.book_id+'"&gt;《'+book.bookname+'》&lt;/a&gt;\r\n'
+		}
+		res.reply(str);
+	}	
 }
 
-function getXiaoshuo(message){
+function getXiaoshuo(message,code){
 	memcached.get(message.Ticket,function(err,content){
 		if(!content){
 			var obj = JSON.parse(content);
+			UserBookAuthorityModel.findOneAndUpdate(obj,{$addToSet:{invitees:message.FromUserName}},{upsert: true, new: true},function(err,auth){
+				if(auth.invitees.length == 2){
+					sendBookMessage(auth,code);
+				}
+				if(auth.invitees.length == 5){
+					auth.can_read=30;
+					auth.save();
+					sendBookMessage(auth,code);
+				}
+			});
 		}
 	});
 	
+}
 
+function sendBookMessage(auth,code){
+	var config = weichat_conf[code];
+	if(!weichat_apis[config.code]){
+		weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+	}
+	var client = weichat_apis[config.code];
+	var str = '进度';
+	if(auth.invitees.length<5){
+		
+	}else{
+		str +=  '&lt;a href="http://tiexie0.top/books/continue/'+auth.book_id+'"&gt;【'+点我继续阅读+'】&lt;/a&gt;\r\n';	
+	}
+	client.sendText(auth.openid, str, function(err,result){
+		console.log(err);
+	});
 }
 
 function validate(req,res){

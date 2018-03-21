@@ -35,23 +35,23 @@ router.use('/chaptes/:book_id', function(req, res, next) {
 });
 
 router.use('/continue/:book_id',function(req, res, next){
-	getOpenid(req,res,read_chapter);
+	getOpenid(req,res,read_continue);
 });
 
 router.use('/read/:book_id', function(req, res, next) {
-	getOpenid(req,res,read_continue);
+	getOpenid(req,res,read_chapter);
 });
 
 
 router.use('/share/:book_id',function(req, res, next){
-	var book_id = req.params.book_id;
+	/*var book_id = req.params.book_id;
 	WechatUtil.getQr(book_wechat_conf[book_id].code,'o3qBK0RXH4BlFLEIksKOJEzx08og',book_id,function(err,tiket){
 		ImageUtil.getQRImg(tiket,function(qr_name){
 			req.session['user_share_'+req.params.book_id] = qr_name;
 			res.render('books/share',{share_img:qr_name,book_id:book_id});
 		});
-	});
-	//getOpenid(req,res,showQr)
+	});*/
+	getOpenid(req,res,showQr);
 });
 
 router.use('/getwx/:book_id',function(req, res, next){
@@ -71,12 +71,14 @@ router.use('/getwx/:book_id',function(req, res, next){
 });
 
 
-//待开发
+
 function getOpenid(req,res,callback){
 	var book_id = req.params.book_id;
 	var openid = req.session.openid;
 	var code = req.query.code;
 	if(!openid){
+		/*req.session.openid = 'o3qBK0RXH4BlFLEIksKOJEzx08og';
+		return callback(req,res);*/
 		if(!code){
 			var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+book_wechat_conf[book_id].appid+"&redirect_uri="+encodeURIComponent('http://'+req.hostname+req.originalUrl)+"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
 			res.redirect(url);
@@ -84,9 +86,6 @@ function getOpenid(req,res,callback){
 			var api_url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+book_wechat_conf[book_id].appid+"&secret="+book_wechat_conf[book_id].appsecret+"&code="+code+"&grant_type=authorization_code";
 			request(api_url,function(err,response,body){
 				req.session.openid = body.openid;
-				UserModel.findOne({openid:body.openid},['openid'],function(err,user){
-
-				});
 				callback(req,res);
 			});
 		}
@@ -125,21 +124,31 @@ function read_chapter(req,res){
 	var book_id = req.params.book_id;
 	var chapte_id = req.query.chapte_id;
 	BookContentModel.findOne({book_id:book_id,chapte_id:chapte_id},function(err,chapte){
-		UserReadModel.findOneAndUpdate({book_id:book_id,openid:openid},
-			{$set:{book_id:book_id,openid:openid,chapte_id:chapte_id}},
-			{upsert:true,rawResult:true},function(err,read){
-				if(error){
-					console.log(err);
-				}
-			});
-		if(chapte.index >10 ){
-			check10V(chapte,req,res,function(result){
-				if(result){
-					check20V(chapte,req,res);
-				}
-			});
+		if(!chapte){
 		}else{
-			res.render('books/content', { chapte: chapte});
+			var read = {book_id:book_id,openid:openid,chapte_id:chapte.chapte_id,index:chapte.index,bookname:chapte.bookname};
+			console.log(read);
+			UserReadModel.findOneAndUpdate(
+				{book_id:book_id,openid:openid},
+				{$set:read},
+				{upsert:true,rawResult:true},
+				function(error,read){
+					if(error){
+						console.log(error);
+					}
+				}
+			);
+			console.log(chapte.index);
+			if(chapte.index >10 ){
+				check10V(chapte,req,res,function(result){
+					console.log(result);
+					if(result){
+						check20V(chapte,req,res);
+					}
+				});
+			}else{
+				res.render('books/content', { chapte: chapte});
+			}
 		}
 	});
 }
@@ -148,20 +157,27 @@ function check10V(chapte,req,res,next){
 	var user_sub = req.session.user_sub;
 	var openid = req.session.openid;
 	var book_id = req.params.book_id;
+
 	if(user_sub){
 		if(chapte.index<=20){
 			res.render('books/content', { chapte: chapte});
-			next(null);	
+			next(null);
 		}else{
 			next('1');
 		}
 		return;
 	}
-	var client = WechatUtil.getClient(book_wechat_conf[book_id].code);
+	var conf = book_wechat_conf[book_id];
+	var client = WechatUtil.getClient(conf.code);
+	
 	client.getUser(openid,function(error,result){
+		if(error){
+			console.log(error);
+		}
 		if(result.subscribe == 0){
 			//关注公众号页面
-			res.render('books/subscribe',{});
+			console.log('关注');
+			res.render('books/subscribe',{name:conf.name});
 			next(null);
 		}else{
 			req.session.user_sub = '1';
@@ -185,14 +201,16 @@ function check10V(chapte,req,res,next){
 }
 
 function check20V(chapte,req,res){
+	console.log('check20V');
 	var openid = req.session.openid;
 	var book_id = req.params.book_id;
 	UserBookAuthorityModel.findOne({openid:openid,book_id:book_id},function(err,auth){
+		console.log(auth);
 		if(chapte.index<=auth.can_read){
 			res.render('books/content', { chapte: chapte});
 		}else{
 			if(auth.can_read<=20){
-				res.redirect('books/share/'+book_id);
+				res.redirect('/books/share/'+book_id);
 			}else{
 				res.render('books/content', { chapte: chapte});	
 			}

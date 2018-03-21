@@ -6,16 +6,8 @@ var db = mongoose.createConnection(connect_url);
 var UserBookAuthoritySchema = new Schema({
 	book_id:Number,
 	openid:String,
-	invitees:[
-		{
-			openid:String
-		}
-	],
-	follows:[
-		{
-			code:String
-		}
-	],
+	invitees:[String],
+	follows:[String],
 	can_read:Number,
 	createAt: {
       type: Date,

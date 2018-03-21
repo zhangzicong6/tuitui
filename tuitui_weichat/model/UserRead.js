@@ -7,6 +7,8 @@ var UserReadSchema = new Schema({
 	book_id:Number,
 	chapte_id:Number,
 	openid:String,
+	index:Number,
+	bookname:String,
 	createAt: {
       type: Date,
       default: Date.now
