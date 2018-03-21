@@ -92,9 +92,6 @@ function replay_book(book_id,message,res){
 	var openid = message.FromUserName;
 	console.log(openid+" , "+book_id);
 	UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
-		if(err){
-			console.log(err);
-		}
 		if(!auth){
 			UserBookAuthorityModel.create({
 				book_id:book_id,
@@ -127,9 +124,11 @@ function replay_book(book_id,message,res){
 
 function getXiaoshuo(message,code){
 	memcached.get(message.Ticket,function(err,content){
+		console.log(content);
 		if(!content){
 			var obj = JSON.parse(content);
 			UserBookAuthorityModel.findOneAndUpdate(obj,{$addToSet:{invitees:message.FromUserName}},{upsert: true, new: true},function(err,auth){
+				console.log(auth);
 				if(auth.invitees.length == 2){
 					sendBookMessage(auth,code);
 				}
@@ -152,7 +151,6 @@ function sendBookMessage(auth,code){
 	var client = weichat_apis[config.code];
 	var str = '进度';
 	if(auth.invitees.length<5){
-		
 	}else{
 		str +=  '<a href="http://tiexie0.top/books/continue/'+auth.book_id+'">【'+点我继续阅读+'】</a>\r\n';	
 	}
