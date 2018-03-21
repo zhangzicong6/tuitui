@@ -91,19 +91,19 @@ function replay_book(book_id,message,res){
 	var conf = book_wechat_conf[book_id];
 	if(!message.Ticket){
 		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n';
-		str +=  '&lt;a href="http://tiexie0.top/books/continue/'+conf.book_id+'"&gt;《'+conf.bookname+'》&lt;/a&gt;\r\n';
+		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">《'+conf.bookname+'》</a>\r\n';
 		for (var i =  0; i < conf.other_books.length; i++) {
 			var book = conf.other_books[i];
-			str += '&lt;a href="http://tiexie0.top/books/continue/'+book.book_id+'"&gt;《'+book.bookname+'》&lt;/a&gt;\r\n'
+			str += '<a href="http://tiexie0.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n'
 		}
 		res.reply(str);
 	}else{
 		var str = '欢迎关注「'+conf.name+'」，您正在阅读《'+conf.bookname+'》\r\n';
-		str +=  '&lt;a href="http://tiexie0.top/books/continue/'+conf.book_id+'"&gt;'+点我继续阅读+'&lt;/a&gt;\r\n\r\n\r\n';
+		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">'+点我继续阅读+'</a>\r\n\r\n\r\n';
 		str += '猜您喜欢：\r\n';
 		for (var i =  0; i < conf.other_books.length; i++) {
 			var book = conf.other_books[i];
-			str += '&lt;a href="http://tiexie0.top/books/continue/'+book.book_id+'"&gt;《'+book.bookname+'》&lt;/a&gt;\r\n'
+			str += '<a href="http://tiexie0.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n'
 		}
 		res.reply(str);
 	}	
@@ -138,7 +138,7 @@ function sendBookMessage(auth,code){
 	if(auth.invitees.length<5){
 		
 	}else{
-		str +=  '&lt;a href="http://tiexie0.top/books/continue/'+auth.book_id+'"&gt;【'+点我继续阅读+'】&lt;/a&gt;\r\n';	
+		str +=  '<a href="http://tiexie0.top/books/continue/'+auth.book_id+'">【'+点我继续阅读+'】</a>\r\n';	
 	}
 	client.sendText(auth.openid, str, function(err,result){
 		console.log(err);
