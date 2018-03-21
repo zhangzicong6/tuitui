@@ -127,7 +127,7 @@ function getXiaoshuo(message,code){
 		console.log(content);
 		if(content){
 			var obj = JSON.parse(content);
-			UserBookAuthorityModel.findOneAndUpdate(obj,{$addToSet:{invitees:message.FromUserName}},{upsert: true, new: true},function(err,auth){
+			UserBookAuthorityModel.findOneAndUpdate({book_id:obj.book,openid:obj.openid},{$addToSet:{invitees:message.FromUserName}},{upsert: true, new: true},function(err,auth){
 				console.log(auth);
 				if(auth.invitees.length == 2){
 					sendBookMessage(auth,code);
