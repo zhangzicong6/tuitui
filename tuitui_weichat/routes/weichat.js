@@ -68,7 +68,7 @@ router.use('/:code', function(request, response, next_fun) {
 						res.reply('');
 					}else{
 						var book_id = book_wechat_conf.book_wechat_map[request.params.code];
-						console.log('code : '+request.params.code+" , book_id : "+book_id);
+						
 						replay_book(book_id,message,res);
 						if(message.Ticket){
 							getXiaoshuo(message,request.params.code);
@@ -90,9 +90,7 @@ router.use('/:code', function(request, response, next_fun) {
 
 function replay_book(book_id,message,res){
 	var conf = book_wechat_conf[''+book_id];
-	console.log(conf.name);
 	var openid = message.FromUserName;
-	console.log(openid+" , "+book_id);
 	UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
 		if(!auth){
 			UserBookAuthorityModel.create({
@@ -126,7 +124,7 @@ function replay_book(book_id,message,res){
 
 function getXiaoshuo(message,code){
 	memcached.get(message.Ticket,function(err,content){
-		console.log(content);
+		
 		if(content){
 			var obj = JSON.parse(content);
 			UserBookAuthorityModel.findOneAndUpdate({book_id:obj.book,openid:obj.openid},{$addToSet:{invitees:message.FromUserName}},{upsert: true, new: true},function(err,auth){
@@ -149,10 +147,8 @@ function getXiaoshuo(message,code){
 
 function sendBookMessage(auth,code){
 	var config = weichat_conf[code];
-	if(!weichat_apis[config.code]){
-		weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
-	}
-	var client = weichat_apis[config.code];
+	
+	var client = new WechatAPI(config.appid, config.appsecret);
 	var str = '';
 	if(auth.invitees.length<5){
 		str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成'+auth.invitees.length+'/5\r\n';
