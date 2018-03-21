@@ -95,17 +95,15 @@ function replay_book(book_id,message,res){
 		if(err){
 			console.log(err);
 		}
-		console.log("auth:");
-		console.log(auth);
-			if(!auth){
-				UserBookAuthorityModel.create({
-					book_id:book_id,
-					openid:openid,
-					can_read:20
-				},function(error,res){
-					console.log(res);
-				});
-			}
+		if(!auth){
+			UserBookAuthorityModel.create({
+				book_id:book_id,
+				openid:openid,
+				can_read:20
+			},function(error,res){
+				console.log(res);
+			});
+		}
 	});
 	if(message.Ticket){
 		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n';

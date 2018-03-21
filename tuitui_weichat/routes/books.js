@@ -206,7 +206,8 @@ function check20V(chapte,req,res){
 	var openid = req.session.openid;
 	var book_id = req.params.book_id;
 	console.log('check20V openid: '+openid);
-	UserBookAuthorityModel.findOne({openid:openid,book_id:book_id},function(err,auth){
+	UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
+		console.log('auth');
 		console.log(auth);
 		if(chapte.index<=auth.can_read){
 			res.render('books/content', { chapte: chapte});
