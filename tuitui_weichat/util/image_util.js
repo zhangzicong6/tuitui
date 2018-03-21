@@ -32,12 +32,12 @@ function share_img(ticket,qr_name,callback) {
 		    callback(qr_name);
 		 });
 	});*/
-	var resize_cmd ='gm "convert" "'+__dirname+'/qr_image/'+qr_name+'" "-resize" "300x" "'+__dirname+'/qr_image/small_'+qr_name+'"';
+	var resize_cmd ='gm "convert" "'+__dirname+'/qr_image/'+qr_name+'" "-resize" "164x" "'+__dirname+'/qr_image/small_'+qr_name+'"';
 	exec(resize_cmd, function(error, stdout, stderr) {
 	  if(error){
 	  	console.log(error);
 	  }
-	  var mosaic_cmd = 'gm "convert" "-page" "+0+0" "'+__dirname+'/qr_image/temp.jpeg" "-page" "+270+500" "'+__dirname+'/qr_image/small_'+qr_name+'" "-mosaic" "'+__dirname+'/../public/qr_image/'+qr_name+'"'
+	  var mosaic_cmd = 'gm "convert" "-page" "+0+0" "'+__dirname+'/qr_image/tmp_bg.png" "-page" "+294+1119" "'+__dirname+'/qr_image/small_'+qr_name+'" "-mosaic" "'+__dirname+'/../public/qr_image/'+qr_name+'"'
 	  exec(mosaic_cmd,function(error, stdout, stderr){
 	  	if(error){
 		  	console.log(error);
