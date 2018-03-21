@@ -161,6 +161,7 @@ function sendBookMessage(auth,code){
 		str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成5/5\r\n';
 		str +=  '<a href="http://tiexie0.top/books/continue/'+auth.book_id+'">【点我继续阅读】</a>\r\n';	
 	}
+	console.log('send book message to user');
 	client.sendText(auth.openid, str, function(err,result){
 		console.log(err);
 	});

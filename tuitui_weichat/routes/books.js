@@ -71,8 +71,7 @@ router.use('/getwx/:book_id',function(req, res, next){
 });
 
 router.use('/geturl',function(req,res,next){
-	var book_id = decodeURIComponent(req.query.book_id).trim();
-	console.log(book_id);
+	var book_id = dreq.query.book_id;
 	if(book_id){
 		BookContentModel.findOne({index:4,book_id:parseInt(book_id)},function(err,chapte){
 			if(!chapte){
@@ -101,7 +100,6 @@ function getOpenid(req,res,callback){
 		}else{
 			var api_url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+book_wechat_conf[book_id].appid+"&secret="+book_wechat_conf[book_id].appsecret+"&code="+code+"&grant_type=authorization_code";
 			request(api_url,function(err,response,body){
-				console.log(body);
 				body = JSON.parse(body);
 				req.session[req.params.book_id]=body.openid;
 				callback(req,res);
@@ -153,7 +151,7 @@ function read_chapter(req,res){
 		if(!chapte){
 		}else{
 			var read = {book_id:book_id,openid:openid,chapte_id:chapte.chapte_id,index:chapte.index,bookname:chapte.bookname};
-			console.log(read);
+	
 			UserReadModel.findOneAndUpdate(
 				{book_id:book_id,openid:openid},
 				{$set:read},
@@ -200,7 +198,7 @@ function check10V(chapte,req,res,next){
 		}
 		if(result.subscribe == 0){
 			//关注公众号页面
-			console.log('关注');
+			
 			res.render('books/subscribe',{name:conf.name});
 			next(null);
 		}else{
@@ -227,10 +225,9 @@ function check10V(chapte,req,res,next){
 function check20V(chapte,req,res){
 	var book_id = req.params.book_id;
 	var openid = req.session[book_id];
-	console.log('check20V openid: '+openid);
+	
 	UserBookAuthorityModel.findOne({book_id:parseInt(book_id),openid:openid},function(err,auth){
-		console.log('auth');
-		console.log(auth);
+		
 		if(chapte.index <= auth.can_read){
 			res.render('books/content', { chapte: chapte});
 		}else{
