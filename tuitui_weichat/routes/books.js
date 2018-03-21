@@ -71,14 +71,14 @@ router.use('/getwx/:book_id',function(req, res, next){
 });
 
 router.use('/geturl',function(req,res,next){
-	var bookname = decodeURIComponent(req.query.bookname).trim();
-	console.log(bookname);
-	if(bookname){
-		BookContentModel.findOne({index:3,bookname:bookname},function(err,chapte){
+	var book_id = decodeURIComponent(req.query.book_id).trim();
+	console.log(book_id);
+	if(book_id){
+		BookContentModel.findOne({index:3,book_id:book_id},function(err,chapte){
 			if(!chapte){
 				res.send('未找到章节');
 			}else{
-				res.send('http://tiexie0.top/books/read/'+book.id+'?chapte_id='+chapte.chapte_id);
+				res.send('http://tiexie0.top/books/read/'+chapte.book_id+'?chapte_id='+chapte.chapte_id);
 			}
 		});
 	}else{
