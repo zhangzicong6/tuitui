@@ -141,7 +141,7 @@ function read_chapter(req,res){
 					}
 				}
 			);
-			console.log(chapte.index);
+			
 			if(chapte.index >10 ){
 				check10V(chapte,req,res,function(result){
 					if(result == '1'){

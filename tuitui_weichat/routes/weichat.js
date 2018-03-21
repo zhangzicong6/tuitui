@@ -89,6 +89,12 @@ router.use('/:code', function(request, response, next_fun) {
 
 function replay_book(book_id,message,res){
 	var conf = book_wechat_conf[book_id];
+	var openid = message.FromUserName;
+	UserBookAuthorityModel.create({
+		book_id:book_id,
+		openid:openid,
+		can_read:20
+	},function(error){if(error)console.log(error)});
 	if(message.Ticket){
 		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n';
 		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">《'+conf.bookname+'》</a>\r\n';
@@ -99,7 +105,7 @@ function replay_book(book_id,message,res){
 		res.reply(str);
 	}else{
 		var str = '欢迎关注「'+conf.name+'」，您正在阅读《'+conf.bookname+'》\r\n';
-		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">'+点我继续阅读+'</a>\r\n\r\n\r\n';
+		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">点我继续阅读</a>\r\n\r\n\r\n';
 		str += '猜您喜欢：\r\n';
 		for (var i =  0; i < conf.other_books.length; i++) {
 			var book = conf.other_books[i];
