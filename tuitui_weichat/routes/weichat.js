@@ -149,9 +149,12 @@ function sendBookMessage(auth,code){
 		weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
 	}
 	var client = weichat_apis[config.code];
-	var str = '进度';
+	var str = '';
 	if(auth.invitees.length<5){
+		str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成'+auth.invitees.length+'/5\r\n';
+		str += '目前关注人数：'+auth.invitees.length+'\r\n还需关注人数：'+5-auth.invitees.length;
 	}else{
+		str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成5/5\r\n';
 		str +=  '<a href="http://tiexie0.top/books/continue/'+auth.book_id+'">【'+点我继续阅读+'】</a>\r\n';	
 	}
 	client.sendText(auth.openid, str, function(err,result){
