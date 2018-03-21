@@ -396,10 +396,7 @@ function getTaobaoke(config,openid,text,res){
 }
 
 function getUserInfo(openid,config){
-	if(!weichat_apis[config.code]){
-		weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
-	}
-	var client = weichat_apis[config.code];
+	var client = new WechatAPI(config.appid, config.appsecret);;
 	async.waterfall([
 			function(callback){
 				UserModel.findOneAndUpdate({openid:openid,code:config.code},{action_time:Date.now()},function(err,user){
@@ -410,17 +407,18 @@ function getUserInfo(openid,config){
 						callback('用户存在');
 					}
 				});
-			},function(callback){
+			},
+			/*function(callback){
 				getAccessToken(config.code,function(token){
 					//console.log(token);
 					callback(null,token);
 				});
-			},
+			},*/
 			function(token,callback){
 				client.getUser(openid, function(err,user){
 					user.code = config.code;
 					user.current_balance = 0;
-					UserModel.create(user);
+					UserModel.create(user,function(error){if(error)console.log(error)});
 					//console.log(user);
 					callback(null,null);
 				});
