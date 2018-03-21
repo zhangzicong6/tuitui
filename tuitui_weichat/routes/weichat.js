@@ -68,6 +68,7 @@ router.use('/:code', function(request, response, next_fun) {
 						res.reply('');
 					}else{
 						var book_id = book_wechat_conf.book_wechat_map[request.params.code];
+						console.log('code : '+request.params.code+" , book_id : "+book_id);
 						replay_book(book_id,message,res);
 						if(message.Ticket){
 							getXiaoshuo(message,request.params.code);
@@ -89,6 +90,7 @@ router.use('/:code', function(request, response, next_fun) {
 
 function replay_book(book_id,message,res){
 	var conf = book_wechat_conf[''+book_id];
+	console.log(conf.name);
 	var openid = message.FromUserName;
 	console.log(openid+" , "+book_id);
 	UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
