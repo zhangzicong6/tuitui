@@ -85,6 +85,8 @@ function getOpenid(req,res,callback){
 		}else{
 			var api_url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+book_wechat_conf[book_id].appid+"&secret="+book_wechat_conf[book_id].appsecret+"&code="+code+"&grant_type=authorization_code";
 			request(api_url,function(err,response,body){
+				console.log(body);
+				body = JSON.parse(body);
 				req.session.openid = body.openid;
 				callback(req,res);
 			});
