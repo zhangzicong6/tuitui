@@ -150,7 +150,7 @@ function read_chapter(req,res){
 	if(index){
 		con.index = index;
 	}
-	BookContentModel.findOne(,function(err,chapte){
+	BookContentModel.findOne(con,function(err,chapte){
 		if(!chapte){
 		}else{
 			var read = {book_id:book_id,openid:openid,chapte_id:chapte.chapte_id,index:chapte.index,bookname:chapte.bookname};
