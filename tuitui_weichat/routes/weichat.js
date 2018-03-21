@@ -414,7 +414,7 @@ function getUserInfo(openid,config){
 					callback(null,token);
 				});
 			},*/
-			function(token,callback){
+			function(callback){
 				client.getUser(openid, function(err,user){
 					user.code = config.code;
 					user.current_balance = 0;
