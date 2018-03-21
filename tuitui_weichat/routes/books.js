@@ -144,8 +144,7 @@ function read_chapter(req,res){
 			console.log(chapte.index);
 			if(chapte.index >10 ){
 				check10V(chapte,req,res,function(result){
-					console.log(result);
-					if(result){
+					if(result == '1'){
 						check20V(chapte,req,res);
 					}
 				});
@@ -204,11 +203,11 @@ function check10V(chapte,req,res,next){
 }
 
 function check20V(chapte,req,res){
-	console.log('check20V openid: '+openid);
 	var openid = req.session.openid;
 	var book_id = req.params.book_id;
+	console.log('check20V openid: '+openid);
 	UserBookAuthorityModel.findOne({openid:openid,book_id:book_id},function(err,auth){
-		
+		console.log(auth);
 		if(chapte.index<=auth.can_read){
 			res.render('books/content', { chapte: chapte});
 		}else{
