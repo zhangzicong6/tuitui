@@ -125,7 +125,7 @@ function replay_book(book_id,message,res){
 function getXiaoshuo(message,code){
 	memcached.get(message.Ticket,function(err,content){
 		console.log(content);
-		if(!content){
+		if(content){
 			var obj = JSON.parse(content);
 			UserBookAuthorityModel.findOneAndUpdate(obj,{$addToSet:{invitees:message.FromUserName}},{upsert: true, new: true},function(err,auth){
 				console.log(auth);
