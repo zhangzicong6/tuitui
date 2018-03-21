@@ -103,7 +103,7 @@ function getOpenid(req,res,callback){
 			request(api_url,function(err,response,body){
 				console.log(body);
 				body = JSON.parse(body);
-				req.session[req.params.book_id]=openid;
+				req.session[req.params.book_id]=body.openid;
 				callback(req,res);
 			});
 		}
@@ -179,10 +179,9 @@ function read_chapter(req,res){
 }
 
 function check10V(chapte,req,res,next){
-	var user_sub = req.session.user_sub;
 	var book_id = req.params.book_id;
 	var openid = req.session[book_id];
-
+	var user_sub = req.session['sub_'+book_id];
 	if(user_sub){
 		if(chapte.index<=20){
 			res.render('books/content', { chapte: chapte});
@@ -205,7 +204,7 @@ function check10V(chapte,req,res,next){
 			res.render('books/subscribe',{name:conf.name});
 			next(null);
 		}else{
-			req.session.user_sub = '1';
+			req.session['sub_'+book_id] = '1';
 			UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
 				if(!auth){
 					UserBookAuthorityModel.create({
