@@ -90,11 +90,17 @@ router.use('/:code', function(request, response, next_fun) {
 function replay_book(book_id,message,res){
 	var conf = book_wechat_conf[book_id];
 	var openid = message.FromUserName;
-	UserBookAuthorityModel.create({
-		book_id:book_id,
-		openid:openid,
-		can_read:20
-	},function(error){if(error)console.log(error)});
+	UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
+			if(!auth){
+				UserBookAuthorityModel.create({
+					book_id:book_id,
+					openid:openid,
+					can_read:20
+				},function(error,res){
+					console.log(res);
+				});
+			}
+	});
 	if(message.Ticket){
 		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n';
 		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">《'+conf.bookname+'》</a>\r\n';
