@@ -70,7 +70,7 @@ router.use('/getwx/:book_id',function(req, res, next){
 	});
 });
 
-router.use('geturl',function(req,res,next){
+router.use('/geturl',function(req,res,next){
 	var bookname = req.query.bookname;
 	if(bookname){
 		BookContentModel.findOne({bookname:bookname,index:3},function(err,chapte){
