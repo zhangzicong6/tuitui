@@ -103,11 +103,11 @@ function replay_book(book_id,message,res){
 		}
 	});
 	if(message.Ticket){
-		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n';
-		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">《'+conf.bookname+'》</a>\r\n';
+		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n\r\n';
+		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">《'+conf.bookname+'》</a>\r\n\r\n';
 		for (var i =  0; i < conf.other_books.length; i++) {
 			var book = conf.other_books[i];
-			str += '<a href="http://tiexie0.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n'
+			str += '<a href="http://tiexie0.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n\r\n'
 		}
 		res.reply(str);
 	}else{
@@ -116,7 +116,7 @@ function replay_book(book_id,message,res){
 		str += '猜您喜欢：\r\n';
 		for (var i =  0; i < conf.other_books.length; i++) {
 			var book = conf.other_books[i];
-			str += '<a href="http://tiexie0.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n'
+			str += '<a href="http://tiexie0.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n\r\n'
 		}
 		res.reply(str);
 	}	
@@ -154,7 +154,7 @@ function sendBookMessage(auth,code){
 	var str = '';
 	if(auth.invitees.length<5){
 		str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成'+auth.invitees.length+'/5\r\n';
-		str += '目前关注人数：'+auth.invitees.length+'\r\n还需关注人数：'+5-auth.invitees.length;
+		str += '目前关注人数：'+auth.invitees.length+'\r\n还需关注人数：'+(5-auth.invitees.length);
 	}else{
 		str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成5/5\r\n';
 		str +=  '<a href="http://tiexie0.top/books/continue/'+auth.book_id+'">【点我继续阅读】</a>\r\n';	

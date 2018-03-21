@@ -233,7 +233,7 @@ function check20V(chapte,req,res){
 	UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
 		console.log('auth');
 		console.log(auth);
-		if(chapte.index<=auth.can_read){
+		if(chapte.index <= auth.can_read){
 			res.render('books/content', { chapte: chapte});
 		}else{
 			if(auth.can_read<=20){
