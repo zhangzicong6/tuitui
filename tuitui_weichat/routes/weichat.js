@@ -128,19 +128,27 @@ function getXiaoshuo(message,code){
 		if(content){
 			var obj = JSON.parse(content);
 			UserBookAuthorityModel.findOneAndUpdate({book_id:obj.book,openid:obj.openid},{$addToSet:{invitees:message.FromUserName}},{upsert: true, new: true},function(err,auth){
-				console.log(auth);
 				if(auth.invitees.length == 2){
 					sendBookMessage(auth,code);
 				}
 				if(auth.invitees.length == 5){
 					auth.can_read=30;
-					auth.save();
+					auth.save(function(error){
+						console.log(error);
+					});
 					sendBookMessage(auth,code);
 				}
 			});
 		}
 	});
 	
+}
+
+reset();
+function reset(){
+	UserBookAuthorityModel.findOneAndUpdate({book_id:587,openid:'o3qBK0RXH4BlFLEIksKOJEzx08og'},{$pull:{invitees:'o3qBK0RXH4BlFLEIksKOJEzx08og'}},{upsert: true, new: true},function(err,auth){
+			console.log(auth);	
+	});
 }
 
 function sendBookMessage(auth,code){
@@ -155,7 +163,7 @@ function sendBookMessage(auth,code){
 		str += '目前关注人数：'+auth.invitees.length+'\r\n还需关注人数：'+5-auth.invitees.length;
 	}else{
 		str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成5/5\r\n';
-		str +=  '<a href="http://tiexie0.top/books/continue/'+auth.book_id+'">【'+点我继续阅读+'】</a>\r\n';	
+		str +=  '<a href="http://tiexie0.top/books/continue/'+auth.book_id+'">【点我继续阅读】</a>\r\n';	
 	}
 	client.sendText(auth.openid, str, function(err,result){
 		console.log(err);
