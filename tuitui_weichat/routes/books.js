@@ -29,7 +29,7 @@ router.use('/create', function(req, res, next) {
 
 router.use('/chaptes/:book_id', function(req, res, next) {
 	var book_id = req.params.book_id;
-	BookContentModel.find({book_id:book_id},{content:0},function(err,chaptes){
+	BookContentModel.find({book_id:parseInt(book_id)},{content:0},function(err,chaptes){
 		res.render('books/dir', { chaptes: chaptes,book_id: req.params.book_id});
 	});
 });
@@ -48,7 +48,7 @@ router.use('/share/:book_id',function(req, res, next){
 	WechatUtil.getQr(book_wechat_conf[book_id].code,'o3qBK0RXH4BlFLEIksKOJEzx08og',book_id,function(err,tiket){
 		ImageUtil.getQRImg(tiket,function(qr_name){
 			req.session['user_share_'+req.params.book_id] = qr_name;
-			res.render('books/share',{share_img:qr_name,book_id:book_id});
+			res.render('books/share',{share_img:qr_name,book_id:parseInt(book_id)});
 		});
 	});*/
 	getOpenid(req,res,showQr);
@@ -74,7 +74,7 @@ router.use('/geturl',function(req,res,next){
 	var book_id = decodeURIComponent(req.query.book_id).trim();
 	console.log(book_id);
 	if(book_id){
-		BookContentModel.findOne({index:4,book_id:book_id},function(err,chapte){
+		BookContentModel.findOne({index:4,book_id:parseInt(book_id)},function(err,chapte){
 			if(!chapte){
 				res.send('未找到章节');
 			}else{
@@ -118,7 +118,7 @@ function showQr(req,res){
 	WechatUtil.getQr(book_wechat_conf[book_id].code,openid,book_id,function(err,tiket){
 		ImageUtil.getQRImg(tiket,function(qr_name){
 			req.session['user_share_'+req.params.book_id] = qr_name;
-			res.render('books/share',{share_img:qr_name,book_id:book_id});
+			res.render('books/share',{share_img:qr_name,book_id:parseInt(book_id)});
 		});
 	});
 }
@@ -127,7 +127,7 @@ function read_continue(req,res){
 	var openid = req.session.openid;
 	console.log(openid);
 	var book_id = req.params.book_id;
-	UserReadModel.findOne({book_id:book_id,openid:openid},function(error,read){
+	UserReadModel.findOne({book_id:parseInt(book_id),openid:openid},function(error,read){
 		if(!read){
 			BookContentModel.findOne({book_id:book_id,index:1},function(err,chapte){
 				return res.redirect('/books/read/'+book_id+'?chapte_id='+chapte.chapte_id);
@@ -230,7 +230,7 @@ function check20V(chapte,req,res){
 	var openid = req.session.openid;
 	var book_id = req.params.book_id;
 	console.log('check20V openid: '+openid);
-	UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
+	UserBookAuthorityModel.findOne({book_id:parseInt(book_id),openid:openid},function(err,auth){
 		console.log('auth');
 		console.log(auth);
 		if(chapte.index <= auth.can_read){

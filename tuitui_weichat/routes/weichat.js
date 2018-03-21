@@ -88,7 +88,7 @@ router.use('/:code', function(request, response, next_fun) {
 
 
 function replay_book(book_id,message,res){
-	var conf = book_wechat_conf[book_id];
+	var conf = book_wechat_conf[''+book_id];
 	var openid = message.FromUserName;
 	console.log(openid+" , "+book_id);
 	UserBookAuthorityModel.findOne({book_id:book_id,openid:openid},function(err,auth){
