@@ -19,5 +19,22 @@ var UserActionMiaoShaSchema = new Schema({
 	timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' }
 });
 
+UserActionMiaoShaModel.statics = {
+    fetch(id, cb) {
+        if (id) {
+            return this.find({_id: {$lt: id}})
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+            }else {
+                return this.find({})
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+            }
+        
+    }
+}
+
 var UserActionMiaoShaModel = db.model('UserActionMiaoSha', UserActionMiaoShaSchema);
 module.exports = UserActionMiaoShaModel;
