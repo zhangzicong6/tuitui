@@ -19,7 +19,7 @@ var UserActionMiaoShaSchema = new Schema({
 	timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' }
 });
 
-UserActionMiaoShaModel.statics = {
+UserActionMiaoShaSchema.statics = {
     fetch(id, cb) {
         if (id) {
             return this.find({_id: {$lt: id}})
