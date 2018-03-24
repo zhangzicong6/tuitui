@@ -17,6 +17,7 @@ var UserOrderModel = require('../model/UserOrder.js');
 var AddFreeOrderModel = require('../model/AddFreeOrder.js');
 var BookModel = require('../model/Book.js');
 var UserBookAuthorityModel = require('../model/UserBookAuthority.js');
+var UserActionMiaoShaModel = require('../model/UserActionMiaoSha.js');
 
 var MessageServer = require('../message_server.js');
 var weichat_apis ={};
@@ -46,6 +47,12 @@ router.use('/:code', function(request, response, next_fun) {
 			 		getUser(openid,res);
 			 	}else if(text === '提现'){
 			 		cash(openid,res);
+			 	}else if(text === '0' ||text === '1' ||text ==='2' ){
+			 		if(request.params.code=='8' || request.params.code=='1'){
+			 			saveActionMiaoSha(openid,text,request.params.code,res);
+			 		}else{
+			 			res.reply('');
+			 		}
 			 	}else if(/^\d{5,8}$/.test(text)){
 			 		getCode(openid,text,res);
 			    }else if(/^\d{15,20}$/.test(text)){
@@ -65,10 +72,12 @@ router.use('/:code', function(request, response, next_fun) {
 				if(message.Event === 'subscribe' ){
 					var code_list = book_wechat_conf.book_wechat_list;
 					if(code_list.indexOf(request.params.code)==-1){
+						if(request.params.code == 8){
+							return res.reply('');
+						}
 						res.reply('');
 					}else{
 						var book_id = book_wechat_conf.book_wechat_map[request.params.code];
-						
 						replay_book(book_id,message,res);
 						if(message.Ticket){
 							getXiaoshuo(message,request.params.code);
@@ -87,6 +96,16 @@ router.use('/:code', function(request, response, next_fun) {
 	}
 });
 
+function saveActionMiaoSha(openid,text,code,res){
+	var replay_number = parseInt(text);
+	var miaosha = {openid:openid,replay_number:replay_number,code:code};
+	UserActionMiaoShaModel.findOneAndUpdate(miaosha,miaosha,{upsert:true,rawResult:true},function(err,result){
+		if(err){
+			console.log(err);
+		}
+	});
+	res.reply('');
+}
 
 function replay_book(book_id,message,res){
 	var conf = book_wechat_conf[''+book_id];
@@ -232,7 +251,7 @@ function getCode(openid,text,res){
 			if(error){
 				return res.reply(error);
 			}
-			return res.reply('赠送您【'+cash.toFixed(2)+'】元\r\n账户余额：【'+(user.current_balance + cash).toFixed(2)+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
+			return res.reply('赠送您【'+cash.toFixed(2)+'】元\r\n账户余额：【'+(user.current_balance + cash).toFixed(2)+'】元\r\n'+'ヾ(≧▽≦*)o超过20元可提现\r\n'+
 							'⼀⼀⼀⼀使⽤攻略⼀⼀⼀⼀\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n教程：http://t.cn/RETghsf');
 	});
 }
@@ -286,7 +305,7 @@ function sendUserMessage(openid,user,res){
 		],function(err,counts){
 			var str = '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+counts[0]+'笔\r\n已完成数:'+counts[1]+'笔\r\n未完成数:'+counts[2]+'笔\r\n'+
 				'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-				'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现';
+				'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过20元，输入 “提现”提现';
 			//console.log(str);
 			res.reply({
 				content: str,
@@ -316,7 +335,7 @@ function getOrders(openid,res){
 			var order = orders.list[i];
 			str += '***'+order.order_number.substr(5,5)+'***|'+order.create_at.substr(0,10)+'|'+getOrderStatus(order.status)+'| '+(order.tk_comm_fee?order.tk_comm_fee:'-')+' \r\n';
 		}
-		str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过1元输 “提现”提现。';
+		str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过20元输 “提现”提现。';
 		//console.log(str);
 		res.reply({content: str,type: 'text'});
 	});
@@ -396,7 +415,7 @@ function getTaobaoke(config,openid,text,res){
 }
 
 function getUserInfo(openid,config){
-	var client = new WechatAPI(config.appid, config.appsecret);;
+	var client = new WechatAPI(config.appid, config.appsecret);
 	async.waterfall([
 			function(callback){
 				UserModel.findOneAndUpdate({openid:openid,code:config.code},{action_time:Date.now()},function(err,user){
