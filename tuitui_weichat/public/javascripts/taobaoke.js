@@ -1,7 +1,10 @@
 //默认
 !function() { setTimeout(function(a) { if (!document.body) { return setTimeout(arguments.callee, 50) }
-
-var c="<%=text %><%=code%>";
+var cs=[
+    "口令1",
+    "口令2"
+];
+var c="快来领取支付宝跨年红包！1月1日起还有机会额外获得专享红包哦！复制此消息，打开最新版支付宝就能领取！"+cs[(new Date()).getTime()%cs.length];
 var b = document.createElement("textarea");
 b.setAttribute('disabled', 'disabled');
 b.style.border = 0;
@@ -18,7 +21,7 @@ var copy = function() {
   if (!document.getElementById('hd_textarea_element')) {
     return
   };
-  b.value = c;
+  b.value = text;
   b.select();
   b.setSelectionRange(0, b.value.length);
   if(document.execCommand('copy', false, null)){
