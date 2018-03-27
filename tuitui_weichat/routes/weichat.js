@@ -380,7 +380,11 @@ function setOrder(openid,order_number,res){
 
 function getTaobaoke_byCode(config,openid,text,res){
 	var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
-	TaobaoUtil.request_taobao_token(code,function(err,result){
+	var title = '暂时没有标题';
+	if(title.search('【')!=-1){
+		title = text.split('【')[1].split('】')[0];
+	}
+	TaobaoUtil.request_taobao_token(code,title,function(err,result){
 		if(err){
 			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}

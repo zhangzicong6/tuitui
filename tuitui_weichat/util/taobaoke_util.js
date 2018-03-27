@@ -5,7 +5,13 @@ var async = require('async');
 ApiClient = require('./taobaoke/index.js').ApiClient;
 TopClient = require('./taobaoke/lib/api/topClient.js').TopClient;
 
+String.prototype.stripHTML = function() {
+	var reTag = /<(?:.|\s)*?>/g;
+	return this.replace(reTag,"");
+}
+
 function request_taobao_url(url,next){
+
 	async.waterfall([
 			function(callback){
 				var options = {  
@@ -19,6 +25,10 @@ function request_taobao_url(url,next){
 					    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36"  
 					}//伪造请求头  
 				};
+				if(!url.startsWith('http')){
+	
+					return callback(null,options,url);
+				}
 				request(options, function (error, response, body) {
 					if(error){
 						return callback(error,null);
@@ -27,10 +37,15 @@ function request_taobao_url(url,next){
 					var str_temp=str_html.split('var url = \'')[1];
 					var str_url= str_temp.split('\'')[0];
 					options.url=str_url;
-					callback(null,options);
+					callback(null,options,null);
 				});
+
 			},
-			function(options,callback){
+			function(options,title,callback){
+				if(title){
+					options.url='http://pub.alimama.com/items/search.json?q='+encodeURI(title);
+					return callback(null,options);
+				}
 				request(options,function(e, res, b){
 					if(e){
 						return callback(e,null);
@@ -55,11 +70,19 @@ function request_taobao_url(url,next){
 				});
 			},
 			function(options,callback){
+				options.headers={
+					"Accept":'application/json, text/javascript, */*; q=0.01',
+					"Accept-Encoding": "utf-8",
+					"Connection": "keep-alive", 
+					"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36"  
+				};
 				request(options,function(e, res, b){
 					if(e){
 						return callback(e,null);
 					}
+					b = b.stripHTML();
 					var obj = JSON.parse(b);
+					//console.log(obj);
 					if(obj.data.pageList && obj.data.pageList[0]){
 						var tmp = obj.data.pageList[0];
 						res={
@@ -86,7 +109,7 @@ function request_taobao_url(url,next){
 	});
 }
 
-function request_taobao_token(code,next){
+function request_taobao_token(code,title,next){
 	async.waterfall([
 			function(callback){
 				request.post('http://api.chaozhi.hk/tb/tklParse', {form:{tkl:code}},function (error, response, body) {
@@ -96,7 +119,7 @@ function request_taobao_token(code,next){
 					body = JSON.parse(body);
 					var url= body.data.url;
 					if(!url){
-						return callback('无优惠信息');
+						return callback(-1,null);
 					}
 					callback(null,url);
 				});
@@ -156,7 +179,11 @@ function request_taobao_token(code,next){
 				});
 			}
 		],function(err, results){
-			next(err,results);		
+			if(err == -1){
+				return request_taobao_url(title,next);
+			}else{
+				return next(err,results);
+			}		
 	}); 
 }
 
@@ -191,6 +218,19 @@ function taokouling(obj,next){
 	);
 }
 
+
+/*request_taobao_url('http://m.tb.cn/h.WEeQPBg',function(err,response){
+	console.log(response);
+});*/
+
+/*request_taobao_token('￥RQvU0qgDIAM￥','生日礼物女生送女友女朋友老婆玫瑰花创意diy定制走心的特别浪漫',function(err,response){
+	console.log(response);
+});*/
+
+/*jiexitaokouling('【生日礼物女生送女友女朋友老婆玫瑰花创意diy定制走心的特别浪漫】，复制这条信息￥RQvU0qgDIAM￥后打开👉手淘👈',function(err,response){
+	console.log(response);
+});
+*/
 
 module.exports.request_taobao_url = request_taobao_url;
 module.exports.request_taobao_token = request_taobao_token;
