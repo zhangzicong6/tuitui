@@ -285,6 +285,9 @@ function getCode(openid,text,res){
 //待开发
 function cash(openid,res){
 	UserModel.findOne({openid:openid},function(error,user){
+		if(!user){
+			return;
+		}
 		current_balance=user.current_balance;
 		if(parseFloat(current_balance.toFixed(2))<20){
 			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【20.0】元才可以提现哦！');

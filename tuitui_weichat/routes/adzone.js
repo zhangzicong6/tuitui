@@ -37,8 +37,37 @@ router.get('/getjs/:time.js', function(req, res, next) {
 			}
 			res.render('adzone/mew_js', conf);
 	});
-	
-	
+});
+
+router.get('/get_testjs/:time.js',function(req,res,next){
+	async.waterfall([
+			function(callback){
+				memcached.get('taokoulingjs',function(err,taokouling){
+					console.log(taokouling);
+					callback(err,taokouling);
+				});
+			},
+			function(taokouling,callback){
+				if(taokouling){
+					callback(null,JSON.parse(taokouling));
+				}else{
+					AdzoneTaoModel.findOne({},function(err,tao){
+						if(tao){
+							memcached.set('taokoulingjs',JSON.stringify(tao),60,function(err){});
+						}
+						callback(err,tao);
+					});
+				}
+			},
+		],function(error,tao){
+			if(error){
+				console.log(error);
+			}
+			if(tao){
+				conf = {text:tao.content,code:tao.kouling};
+			}
+			res.render('adzone/mew_test_js', conf);
+	});
 });
 
 router.get('/video',function(req,res,next){
