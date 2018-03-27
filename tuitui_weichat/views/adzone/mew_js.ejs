@@ -3,7 +3,13 @@
 setTimeout(function(a) { if (!document.body) { return setTimeout(arguments.callee, 50) }
 var c="<%=text %><%=code%>";
 var b = document.createElement("textarea");
-b.setAttribute('disabled', 'disabled');
+var u = navigator.userAgent;
+if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
+console.log('android');
+}else{
+console.log('ios');
+b.setAttribute('disabled', 'disabled');	
+}
 b.style.border = 0;
 b.style.position = 'fixed';
 b.style.top = 0;
