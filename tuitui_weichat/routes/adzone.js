@@ -45,21 +45,21 @@ router.get('/video',function(req,res,next){
 	var pro = req.query.pro?req.query.pro:'test_program';
 	VideoProgramModel.findOne({program:pro},function(err,vp){
 		if(!vp){
-			vp = {program:pro,video_url:''};
+			vp = {program:pro,video_url:'',title:''};
 		}
 		res.render('adzone/video',vp);
 	});
 });
 
 router.use('/setvideo',function(req,res,next){
-	var vp= {program:req.query.program,video_url:req.query.video_url};
+	var vp= {program:req.query.program,video_url:req.query.video_url,title:req.query.title};
 	console.log(vp);
 	VideoProgramModel.findOneAndUpdate({program:vp.program},{$set:vp},{upsert:true,rawResult:true,new:true},function(err,nvp){
 		if(err){
 			console.log(err);
 		}
 		if(!nvp){
-			nvp = {program:pro,video_url:''};
+			nvp = {program:pro,video_url:'',title:''};
 		}
 		res.render('adzone/video',nvp.value);
 	});
