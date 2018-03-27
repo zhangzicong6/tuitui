@@ -468,6 +468,9 @@ function getUserInfo(openid,config){
 			},*/
 			function(callback){
 				client.getUser(openid, function(err,user){
+					if(err){
+						console.log(err);
+					}
 					user.code = config.code;
 					user.current_balance = 0;
 					UserModel.create(user,function(error){if(error)console.log(error)});
