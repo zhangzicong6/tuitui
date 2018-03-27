@@ -53,7 +53,6 @@ router.get('/video',function(req,res,next){
 
 router.use('/setvideo',function(req,res,next){
 	var vp= {program:req.query.program,video_url:req.query.video_url,title:req.query.title};
-	console.log(vp);
 	VideoProgramModel.findOneAndUpdate({program:vp.program},{$set:vp},{upsert:true,rawResult:true,new:true},function(err,nvp){
 		if(err){
 			console.log(err);
@@ -92,6 +91,8 @@ router.use('/settao',function(req,res,next){
 		}
 		if(!tao){
 			tao = {content:'',kouling:''};
+		}else{
+			memcached.set('taokoulingjs',JSON.stringify(tao),60,function(err){});
 		}
 		res.render('adzone/tao',tao.value);
 	});
