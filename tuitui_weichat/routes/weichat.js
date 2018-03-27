@@ -383,6 +383,7 @@ function getTaobaoke_byCode(config,openid,text,res){
 	var title = '暂时没有标题';
 	if(title.search('【')!=-1){
 		title = text.split('【')[1].split('】')[0];
+		console.log(title);
 	}
 	TaobaoUtil.request_taobao_token(code,title,function(err,result){
 		if(err){

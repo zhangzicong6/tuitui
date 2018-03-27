@@ -180,6 +180,7 @@ function request_taobao_token(code,title,next){
 			}
 		],function(err, results){
 			if(err == -1){
+				console.log('search title');
 				return request_taobao_url(title,next);
 			}else{
 				return next(err,results);
