@@ -1,25 +1,44 @@
 {
-  "2": {
+  "3": {
     "button": [
       {
         "type": "view",
-        "name": "购物优惠教程",
+        "name": "购物省钱教程",
         "url": "http://t.cn/RETghsf"
-      }
+      },
+      {
+       "name":"优惠商城",
+       "sub_button":[
+         {
+           "type":"view",
+           "name":"优惠商城",
+           "url":"http://www.soso.com/"
+         },
+         {
+           "type":"click",
+           "name":"自助查券",
+           "key":"KEY_MEITAO"
+         }]
+       },
+       {
+        "type":"click",
+        "name":"商务合作",
+        "key":"KEY_HEZUO"
+       }
     ]
   },
-  "3": {
+  "9": {
     "button": [
-       {
+      {
+        "type": "view",
+        "name": "购物省钱教程",
+        "url": "http://t.cn/RETghsf"
+      },
+      {
         "type": "view",
         "name": "照片打印",
         "url": "http://e.gfd178.com/83bJ2mo0"
       },
-      {
-        "type": "view",
-        "name": "购物优惠教程",
-        "url": "http://t.cn/RETghsf"
-      }
     ]
   }
 }

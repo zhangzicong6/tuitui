@@ -86,6 +86,32 @@ router.use('/:code', function(request, response, next_fun) {
 					
 					/*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
 					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
+				}else if(message.Event.toLowerCase() == 'click'){
+					if(message.EventKey == 'KEY_MEITAO'){
+						if(request.params.code == 3){
+							res.reply({
+							  type: "image",
+							  content: {
+							    mediaId: 'Za0yRodBTW-tqxBDZL73BHzOCht6lW7M__gbthmFqSo'
+							  }
+							});
+						}else{
+							res.reply('');
+						}
+					}else if(message.EventKey == 'KEY_HEZUO'){
+						if(request.params.code == 3){
+							res.reply({
+							  type: "image",
+							  content: {
+							    mediaId: 'Za0yRodBTW-tqxBDZL73BAOXP3XOsqh2tcFKwc3kkyc'
+							  }
+							});
+						}else{
+							res.reply('');
+						}
+					}else{
+						res.reply('');
+					}
 				}else{
 					res.reply('');
 				}
