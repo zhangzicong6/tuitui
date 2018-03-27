@@ -95,6 +95,9 @@ function request_taobao_token(code,next){
 					}
 					body = JSON.parse(body);
 					var url= body.data.url;
+					if(!url){
+						return callback('无优惠信息');
+					}
 					callback(null,url);
 				});
 			},
