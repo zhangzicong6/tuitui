@@ -53,7 +53,7 @@ function createMenu(code) {
 	api.removeMenu(function(err,res){
 		api.createMenu(menu, function(err,res){
 			api.getMenu(function(err,res_m){
-				console.log(res_m);
+				console.log(JSON.stringify(res_m));
 			});
 		});
 	});
