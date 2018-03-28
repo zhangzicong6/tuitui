@@ -6,7 +6,8 @@ var db = mongoose.createConnection(connect_url);
 var VideoProgramSchema = new Schema({
 	program:String,
 	video_url:String,
-	title:String
+	title:String,
+	share:Boolean
 });
 
 var VideoProgramModel = db.model('VideoProgram', VideoProgramSchema);
