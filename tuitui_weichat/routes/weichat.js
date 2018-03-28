@@ -463,6 +463,7 @@ function getUserInfo(openid,config,message,request,w_req,w_res,next){
 			},
 			function(callback){
 				user= {}
+				user.nickname = '';
 				user.openid = openid;
 				user.code = config.code;
 				user.current_balance = 0;
