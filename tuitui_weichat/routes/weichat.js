@@ -34,78 +34,81 @@ router.use('/:code', function(request, response, next_fun) {
 		wechat(config,function (req, res, next) {
 			var message = req.weixin;
 			var openid = message.FromUserName;
-			getUserInfo(openid,config);
-			if (message.MsgType === 'text') {
-			    var text = message.Content.trim();
-			 	if(text === '帮助'){
-			 		res.reply('图文教程:http://t.cn/RETghsf\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n'+
-			 			'2.点击商品名右侧的“分享(有赏)”，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n'+
-			 			'5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
-			 	}else if(text === '订单'){
-			 		getOrders(openid,res);
-			 	}else if(text === '个人信息'){
-			 		getUser(openid,res);
-			 	}else if(text === '提现'){
-			 		cash(openid,res);
-			 	}else if(text === '0' ||text === '1' ||text ==='2' ){
-			 		if(request.params.code=='8' || request.params.code=='1'){
-			 			saveActionMiaoSha(openid,text,request.params.code,res);
-			 		}else{
-			 			res.reply('');
-			 		}
-			 	}else if(/^\d{5,8}$/.test(text)){
-			 		getCode(openid,text,res);
-			    }else if(/^\d{15,20}$/.test(text)){
-			 		setOrder(openid,text,res);
-			    }else if(/^\d{9,14}$/.test(text)||/^\d{21,}$/.test(text)){
-			 		res.reply('无效订单号，请您检查订单号!');
-			    }else if(text.search('】http')!=-1){
-			    	getTaobaoke(config,openid,text,res);
-			    }else if(/￥[0-9a-zA-Z]{11}￥/.test(text)){
-			    	getTaobaoke_byCode(config,openid,text,res);
-			    }else if(text === '搜索小说'){
-			    	res.reply('https://wx68113a82c6654025.youshuge.com/lookbook/2724/1095/547202/pop/');
-			    }else{
-			    	res.reply('');
-			    }
-			}else if(message.MsgType === 'event'){
-				if(message.Event === 'subscribe' ){
-					var code_list = book_wechat_conf.book_wechat_list;
-					if(code_list.indexOf(request.params.code)==-1){
-						if(request.params.code == 8){
-							return res.reply('');
-						}
-						res.reply('');
-					}else{
-						var book_id = book_wechat_conf.book_wechat_map[request.params.code];
-						replay_book(book_id,message,res);
-						if(message.Ticket){
-							getXiaoshuo(message,request.params.code);
-						}
-					}
-					
-					/*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
-					'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
-				}else if(message.Event.toLowerCase() == 'click'){
-					if(message.EventKey == 'KEY_MEITAO'){
-						if(request.params.code == 3){
-							res.reply({
-							  type: "image",
-							  content: {
-							    mediaId: 'Za0yRodBTW-tqxBDZL73BHzOCht6lW7M__gbthmFqSo'
-							  }
-							});
-						}else{
+			getUserInfo(openid,config,message,request,req,res,function(openid,config,message,request,req,res){
+				if (message.MsgType === 'text') {
+				    var text = message.Content.trim();
+				 	if(text === '帮助'){
+				 		res.reply('图文教程:http://t.cn/RETghsf\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n'+
+				 			'2.点击商品名右侧的“分享(有赏)”，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n'+
+				 			'5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
+				 	}else if(text === '订单'){
+				 		getOrders(openid,res);
+				 	}else if(text === '个人信息'){
+				 		getUser(openid,res);
+				 	}else if(text === '提现'){
+				 		cash(openid,res);
+				 	}else if(text === '0' ||text === '1' ||text ==='2' ){
+				 		if(request.params.code=='8' || request.params.code=='1'){
+				 			saveActionMiaoSha(openid,text,request.params.code,res);
+				 		}else{
+				 			res.reply('');
+				 		}
+				 	}else if(/^\d{5,8}$/.test(text)){
+				 		getCode(openid,text,res);
+				    }else if(/^\d{15,20}$/.test(text)){
+				 		setOrder(openid,text,res);
+				    }else if(/^\d{9,14}$/.test(text)||/^\d{21,}$/.test(text)){
+				 		res.reply('无效订单号，请您检查订单号!');
+				    }else if(text.search('】http')!=-1){
+				    	getTaobaoke(config,openid,text,res);
+				    }else if(/￥[0-9a-zA-Z]{11}￥/.test(text)){
+				    	getTaobaoke_byCode(config,openid,text,res);
+				    }else if(text === '搜索小说'){
+				    	res.reply('https://wx68113a82c6654025.youshuge.com/lookbook/2724/1095/547202/pop/');
+				    }else{
+				    	res.reply('');
+				    }
+				}else if(message.MsgType === 'event'){
+					if(message.Event === 'subscribe' ){
+						var code_list = book_wechat_conf.book_wechat_list;
+						if(code_list.indexOf(request.params.code)==-1){
+							if(request.params.code == 8){
+								return res.reply('');
+							}
 							res.reply('');
+						}else{
+							var book_id = book_wechat_conf.book_wechat_map[request.params.code];
+							replay_book(book_id,message,res);
+							if(message.Ticket){
+								getXiaoshuo(message,request.params.code);
+							}
 						}
-					}else if(message.EventKey == 'KEY_HEZUO'){
-						if(request.params.code == 3){
-							res.reply({
-							  type: "image",
-							  content: {
-							    mediaId: 'Za0yRodBTW-tqxBDZL73BAOXP3XOsqh2tcFKwc3kkyc'
-							  }
-							});
+						
+						/*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
+						'账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
+					}else if(message.Event.toLowerCase() == 'click'){
+						if(message.EventKey == 'KEY_MEITAO'){
+							if(request.params.code == 3){
+								res.reply({
+								  type: "image",
+								  content: {
+								    mediaId: 'Za0yRodBTW-tqxBDZL73BHzOCht6lW7M__gbthmFqSo'
+								  }
+								});
+							}else{
+								res.reply('');
+							}
+						}else if(message.EventKey == 'KEY_HEZUO'){
+							if(request.params.code == 3){
+								res.reply({
+								  type: "image",
+								  content: {
+								    mediaId: 'Za0yRodBTW-tqxBDZL73BAOXP3XOsqh2tcFKwc3kkyc'
+								  }
+								});
+							}else{
+								res.reply('');
+							}
 						}else{
 							res.reply('');
 						}
@@ -115,9 +118,7 @@ router.use('/:code', function(request, response, next_fun) {
 				}else{
 					res.reply('');
 				}
-			}else{
-				res.reply('');
-			}
+			});
 		})(request, response, next_fun);
 	}
 });
@@ -447,8 +448,8 @@ function getTaobaoke(config,openid,text,res){
 	});
 }
 
-function getUserInfo(openid,config){
-	var client = new WechatAPI(config.appid, config.appsecret);
+function getUserInfo(openid,config,message,request,req,res,next){
+	//var client = new WechatAPI(config.appid, config.appsecret);
 	async.waterfall([
 			function(callback){
 				UserModel.findOneAndUpdate({openid:openid,code:config.code},{action_time:Date.now()},function(err,user){
@@ -460,28 +461,21 @@ function getUserInfo(openid,config){
 					}
 				});
 			},
-			/*function(callback){
-				getAccessToken(config.code,function(token){
-					//console.log(token);
-					callback(null,token);
-				});
-			},*/
 			function(callback){
-				client.getUser(openid, function(err,user){
-					if(err){
-						console.log(err);
-					}
-					user.code = config.code;
-					user.current_balance = 0;
-					UserModel.create(user,function(error){if(error)console.log(error)});
-					//console.log(user);
-					callback(null,null);
-				});
+				user= {}
+				user.openid = openid;
+				user.code = config.code;
+				user.current_balance = 0;
+				UserModel.create(user,function(error){if(error)console.log(error)});
+				//console.log(user);
+				callback(null,null);
+				
 			}
 		],function(err,res){
 			if(err){
 				console.log(err);
 			}
+			next(openid,config,message,request,req,res);
 	});
 }
 
