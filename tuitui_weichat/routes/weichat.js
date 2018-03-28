@@ -448,7 +448,7 @@ function getTaobaoke(config,openid,text,res){
 	});
 }
 
-function getUserInfo(openid,config,message,request,req,res,next){
+function getUserInfo(openid,config,message,request,w_req,w_res,next){
 	//var client = new WechatAPI(config.appid, config.appsecret);
 	async.waterfall([
 			function(callback){
@@ -475,7 +475,7 @@ function getUserInfo(openid,config,message,request,req,res,next){
 			if(err){
 				console.log(err);
 			}
-			next(openid,config,message,request,req,res);
+			next(openid,config,message,request,w_req,w_res);
 	});
 }
 
