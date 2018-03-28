@@ -52,7 +52,9 @@ function createMenu(code) {
 	//console.log(menu);
 	api.removeMenu(function(err,res){
 		api.createMenu(menu, function(err,res){
-			console.log(res);
+			api.getMenu(function(err,res_m){
+				console.log(res_m);
+			});
 		});
 	});
 	
