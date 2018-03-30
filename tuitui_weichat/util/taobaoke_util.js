@@ -83,7 +83,7 @@ function request_taobao_url(url,next){
 					b = b.stripHTML();
 					var obj = JSON.parse(b);
 					//console.log(obj);
-					if(obj.data.pageList && obj.data.pageList[0]){
+					if(obj.data && obj.data.pageList && obj.data.pageList[0]){
 						var tmp = obj.data.pageList[0];
 						res={
 							url:tmp.auctionUrl,
