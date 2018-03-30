@@ -157,7 +157,7 @@ function request_taobao_token(code,title,next){
 						return callback(e,null);
 					}
 					var obj = JSON.parse(b);
-					if(obj.data.pageList && obj.data.pageList[0]){
+					if(obj.data && obj.data.pageList && obj.data.pageList[0]){
 						var tmp = obj.data.pageList[0];
 						res={
 							url:tmp.auctionUrl,
