@@ -59,11 +59,14 @@ router.use('/:code', function(request, response, next_fun) {
 				 		setOrder(openid,text,res);
 				    }else if(/^\d{9,14}$/.test(text)||/^\d{21,}$/.test(text)){
 				 		res.reply('无效订单号，请您检查订单号!');
-				    }else if(text.search('】http')!=-1){
+				    }else if(text.search('【')!=-1){
+				    	getTaobaoke_byCode(config,openid,text,res);
+				    }
+				    /*else if(text.search('】http')!=-1){
 				    	getTaobaoke(config,openid,text,res);
 				    }else if(/￥[0-9a-zA-Z]{11}￥/.test(text)){
 				    	getTaobaoke_byCode(config,openid,text,res);
-				    }else if(text === '搜索小说'){
+				    }*/else if(text === '搜索小说'){
 				    	res.reply('https://wx68113a82c6654025.youshuge.com/lookbook/2724/1095/547202/pop/');
 				    }else{
 				    	res.reply('');
@@ -409,12 +412,15 @@ function setOrder(openid,order_number,res){
 }
 
 function getTaobaoke_byCode(config,openid,text,res){
-	var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
-	var title = '暂时没有标题';
-	if(text.search('【')!=-1){
-		title = text.split('【')[1].split('】')[0];
-	}
-	TaobaoUtil.request_taobao_token(code,title,function(err,result){
+	//var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
+	res.reply('');
+	title = text.split('【')[1].split('】')[0];
+	data = {};
+	data.openid = openid;
+	data.code = config.code;
+	data.title = title;
+	MessageServer.getInstance(null).req_title_token(data);
+	/*TaobaoUtil.request_taobao_token(code,title,function(err,result){
 		if(err){
 			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}
@@ -427,7 +433,7 @@ function getTaobaoke_byCode(config,openid,text,res){
 		}else{
 			res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
 		}	
-	});
+	});*/
 }
 
 function getTaobaoke(config,openid,text,res){
@@ -525,16 +531,16 @@ function getAccessToken(code,callback){
 }
 
 
-/*
+
 // 测试使用
-router.use('/',function(request, response, next_fun){
-	getTaobaoke(weichat_conf['1'],'o3qBK0RXH4BlFLEIksKOJEzx08og',
+/*router.use('/',function(request, response, next_fun){
+	getTaobaoke_byCode(weichat_conf['1'],'o3qBK0RXH4BlFLEIksKOJEzx08og',
 	'【遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战警】http://m.tb.cn/h.WtyRn3h 点击链接，再选择浏览器打开；或复制这条信息￥cTMi0n4KTkA￥后打开👉手淘👈',
 	null);
 	response.send('test');
-});
+});*/
 
-*/
+
 
 //getUser('o3qBK0X47Wfngfu_0dmCqSQwwtgU',weichat_conf['1']);
 

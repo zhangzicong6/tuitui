@@ -44,6 +44,7 @@ function request_taobao_url(url,next){
 			function(options,title,callback){
 				if(title){
 					options.url='http://pub.alimama.com/items/search.json?q='+encodeURI(title);
+					console.log(options.url);
 					return callback(null,options);
 				}
 				request(options,function(e, res, b){
@@ -112,6 +113,9 @@ function request_taobao_url(url,next){
 function request_taobao_token(code,title,next){
 	async.waterfall([
 			function(callback){
+				if(!code){
+					return callback(-1,null);
+				}
 				request.post('http://api.chaozhi.hk/tb/tklParse', {form:{tkl:code}},function (error, response, body) {
 					if(error){
 						return callback(error,null);
@@ -125,7 +129,41 @@ function request_taobao_token(code,title,next){
 				});
 			},
 			function(tmp_url,callback){
-	
+				var options = {  
+					maxRedirects:16,
+					url:tmp_url, 
+					method:"GET",
+					headers: {  
+						"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+					    "Connection": "keep-alive", 
+					    "Content-Type": "text/html; charset=GBK",  
+					    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36"  
+					}//伪造请求头  
+				};
+
+				request(options,function(e, res, b){
+					if(e){
+						return callback(e,null);
+					}
+					var uri_obj = res.request.uri;
+					var split_str = '?id=';
+					var tmp_arr = uri_obj.path.split(split_str);
+					if(tmp_arr.length == 1){
+						split_str = '&id=';
+						tmp_arr = uri_obj.path.split(split_str);
+					}
+					if(tmp_arr.length==1){
+						return callback('无优惠信息');
+					}
+					var itemid = tmp_arr[1].split('&')[0];
+					var tmp_str = uri_obj.path.split('?')[0]+'?id='+itemid;
+					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
+					var url='http://pub.alimama.com/items/search.json?q='+encodeURI(param_url);
+					console.log('url : '+url);
+					callback(null,url);
+				});
+			},
+			/*function(param_url,callback){
 				var split_str = '?id=';
 				var tmp_arr = tmp_url.split(split_str);
 				if(tmp_arr.length == 1){
@@ -139,16 +177,15 @@ function request_taobao_token(code,title,next){
 				var param_url = tmp_url.split('?')[0]+'?id='+itemid;
 				var url='http://pub.alimama.com/items/search.json?q='+encodeURI(param_url);
 				callback(null,url);
-			
-			},
+			},*/
 			function(url,callback){
 				var options = {  
 					url:url, 
 					method:"GET",
 					headers: {  
-						"Accept":"application/json, text/plain, */*",
+						"Accept":"application/json, text/javascript, */*; q=0.01",
 					    "Connection": "keep-alive", 
-					    "Content-Type": "text/html; charset=GBK",  
+					    "Content-Type": "utf-8",  
 					    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36"  
 					},
 				};
@@ -156,6 +193,7 @@ function request_taobao_token(code,title,next){
 					if(e){
 						return callback(e,null);
 					}
+					console.log(b);
 					var obj = JSON.parse(b);
 					if(obj.data && obj.data.pageList && obj.data.pageList[0]){
 						var tmp = obj.data.pageList[0];
@@ -219,12 +257,29 @@ function taokouling(obj,next){
 	);
 }
 
+function search_title(title){
+	var client = new TopClient({
+	   'appkey': '24808252',
+	   'appsecret': '25394001ed7c0f2aff6cb31750e865f0',
+	   'REST_URL': 'hhttp://gw.api.taobao.com/router/rest'
+	});
+	 
+	client.execute('taobao.tbk.item.get', {
+	    'fields':'num_iid,title,pict_url,reserve_price,zk_final_price,item_url,tk_rate,tk_comm_fee,coupon_amount',
+	    'q':title,
+		'page_size':1
+	}, function(error, response) {
+	    if (!error) console.log(JSON.stringify(response));
+	    else console.log(error);
+	});
+}
 
+//search_title('夹克外套女春秋假两件亮片棒球服外套韩板宽松bf网纱防晒衫学生');
 /*request_taobao_url('http://m.tb.cn/h.WEeQPBg',function(err,response){
 	console.log(response);
 });*/
 
-/*request_taobao_token('￥RQvU0qgDIAM￥','生日礼物女生送女友女朋友老婆玫瑰花创意diy定制走心的特别浪漫',function(err,response){
+/*request_taobao_token('￥rmPz0J0InTO￥','夹克外套女春秋假两件亮片棒球服外套韩板宽松bf网纱防晒衫学生',function(err,response){
 	console.log(response);
 });*/
 
