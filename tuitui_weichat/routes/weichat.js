@@ -256,6 +256,9 @@ function getCode(openid,text,res){
 				async.waterfall([
 						function(callback){
 							UserModel.findOne({auction:auction},function(error,user){
+								if(!user){
+									return;
+								}
 								callback(error,user);
 							});
 						},function(user,callback){
