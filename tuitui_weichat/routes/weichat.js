@@ -75,10 +75,7 @@ router.use('/:code', function(request, response, next_fun) {
 					if(message.Event === 'subscribe' ){
 						var code_list = book_wechat_conf.book_wechat_list;
 						if(code_list.indexOf(request.params.code)==-1){
-							if(request.params.code == 8){
-								return res.reply('');
-							}
-							res.reply('');
+							res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
 						}else{
 							var book_id = book_wechat_conf.book_wechat_map[request.params.code];
 							replay_book(book_id,message,res);
