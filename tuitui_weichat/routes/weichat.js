@@ -276,8 +276,8 @@ function getCode(openid,text,res){
 									console.log(err);
 								}
 								console.log(res);
+								callback(null);
 							});
-							callback(null);
 						}
 					],function(error,result){
 						if(error){
