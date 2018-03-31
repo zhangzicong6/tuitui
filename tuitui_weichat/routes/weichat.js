@@ -245,7 +245,7 @@ function getCode(openid,text,res){
 				if(result){
 					callback('你已绑定邀请码'+result.auction+',请不要重复绑定！');
 				}else{
-					var cash = parseFloat((Math.random()*3+12).toFixed(2));
+					var cash = parseFloat((Math.random()*3+0.5).toFixed(2));
 					callback(null,cash);
 				}
 			});
@@ -263,6 +263,14 @@ function getCode(openid,text,res){
 							AddFreeOrderModel.create({openid:user.openid,type:3,cash:bind_cash,auction:user.auction});
 							user.current_balance += bind_cash;
 							user.save();
+							var conf = weichat_conf[user.code];
+							var api = WechatAPI(conf.appid,conf.appsecret);
+							var str = '你邀请的好友，已经绑定你的邀请码，账户金额为你增加'+bind_cash+'元，你现在的账户金额为'+user.current_balance+'元';
+							api.sendText(user.openid,str,function(err,res){
+								if(err){
+									console.log(err);
+								}
+							});
 							callback(null);
 						}
 					],function(error,result){
@@ -281,7 +289,7 @@ function getCode(openid,text,res){
 			if(error){
 				return res.reply(error);
 			}
-			return res.reply('赠送您【'+cash.toFixed(2)+'】元\r\n账户余额：【'+(user.current_balance + cash).toFixed(2)+'】元\r\n'+'ヾ(≧▽≦*)o超过20元可提现\r\n'+
+			return res.reply('赠送您【'+cash.toFixed(2)+'】元\r\n账户余额：【'+(user.current_balance + cash).toFixed(2)+'】元\r\n'+'ヾ(≧▽≦*)o超过1元可提现\r\n'+
 							'⼀⼀⼀⼀使⽤攻略⼀⼀⼀⼀\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n教程：http://t.cn/RETghsf');
 	});
 }
@@ -293,8 +301,8 @@ function cash(openid,res){
 			return;
 		}
 		current_balance=user.current_balance;
-		if(parseFloat(current_balance.toFixed(2))<20){
-			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【20.0】元才可以提现哦！');
+		if(parseFloat(current_balance.toFixed(2))<1){
+			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【1.0】元才可以提现哦！');
 		}else{
 			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元。提现功能正在玩命开发中，两周后和您见面');
 		}
@@ -338,7 +346,7 @@ function sendUserMessage(openid,user,res){
 		],function(err,counts){
 			var str = '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+counts[0]+'笔\r\n已完成数:'+counts[1]+'笔\r\n未完成数:'+counts[2]+'笔\r\n'+
 				'当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-				'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过20元，输入 “提现”提现';
+				'个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现';
 			//console.log(str);
 			res.reply({
 				content: str,
@@ -368,7 +376,7 @@ function getOrders(openid,res){
 			var order = orders.list[i];
 			str += '***'+order.order_number.substr(5,5)+'***|'+order.create_at.substr(0,10)+'|'+getOrderStatus(order.status)+'| '+(order.tk_comm_fee?order.tk_comm_fee:'-')+' \r\n';
 		}
-		str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过20元输 “提现”提现。';
+		str += '━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇   提醒◇ ◇ ◇ \r\n回复订单号才能获得返利哦! 商品点击收货后 余额超过1元输 “提现”提现。';
 		//console.log(str);
 		res.reply({content: str,type: 'text'});
 	});
