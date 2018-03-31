@@ -267,12 +267,15 @@ function getCode(openid,text,res){
 							user.current_balance += bind_cash;
 							user.save();
 							var conf = weichat_conf[user.code];
+							console.log(conf);
 							var api = WechatAPI(conf.appid,conf.appsecret);
+							console.log(user);
 							var str = '你邀请的好友，已经绑定你的邀请码，账户金额为你增加'+bind_cash+'元，你现在的账户金额为'+user.current_balance+'元';
 							api.sendText(user.openid,str,function(err,res){
 								if(err){
 									console.log(err);
 								}
+								console.log(res);
 							});
 							callback(null);
 						}
