@@ -245,7 +245,7 @@ function getCode(openid,text,res){
 				if(result){
 					callback('你已绑定邀请码'+result.auction+',请不要重复绑定！');
 				}else{
-					var cash = parseFloat((Math.random()*3+0.5).toFixed(2));
+					var cash = parseFloat((Math.random()*0.3+0.5).toFixed(2));
 					callback(null,cash);
 				}
 			});
