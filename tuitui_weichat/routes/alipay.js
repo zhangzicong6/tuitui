@@ -40,9 +40,7 @@ router.use('/redirect/:wechat',function(req, res, next){
 router.post('/cash',function(req,res,next){
 	var wechat = req.body.wechat;
 	var openid = req.session['wechat_'+wechat];
-
-	req.session['wechat_'+wechat] = 'o3qBK0RXH4BlFLEIksKOJEzx08og';
-
+	//req.session['wechat_'+wechat] = 'o3qBK0RXH4BlFLEIksKOJEzx08og';
 	if(!openid){
 		return res.send({code:-1,message:'操作超时，请重试'});
 	}
