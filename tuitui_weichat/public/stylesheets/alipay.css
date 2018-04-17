@@ -66,7 +66,7 @@ header span:first-child{
 }
 
 .money{
-    font-size: 0.18rem;
+    font-size: 0.25rem;
 }
 /* 提现金额 */
 /* 提现账户信息 */
@@ -100,7 +100,7 @@ header span:first-child{
 .tips a{
     width: 50%;
     height: 0.4rem;
-    border: 0.01rem solid #ccc;
+    border: 0.01rem solid #cac7c7;
     margin: 0.3rem auto 0.1rem;
     display: block;
     line-height: 0.4rem;

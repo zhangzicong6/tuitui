@@ -59,14 +59,14 @@
         <!-- 提现金额 -->
         <div class="pocket">
             <img src="/images/pocket.png" alt="">
-            <p class="money">￥<span><%= user.current_balance%></span></p>
+            <p class="money">￥<span style="font-size: 0.25rem;"><%= user.current_balance%></span></p>
             <p>可提现金额</p>
         </div>
         <!-- 提现金额 -->
         <!-- 提现账户信息 -->
         <ul class="list">
             <li>
-                <label for="">微信号：</label>
+                <label for="">微信号：</label><%=cashs[0].wechat_number%>
                 <input id="wechat_number" type="text" placeholder="请填写提现微信号" 
                 <%if(cashs.length>0){%> value="<%=cashs[0].wechat_number%>"<%}%> />
             </li>
