@@ -33,6 +33,7 @@ router.use('/redirect/:wechat',function(req, res, next){
 				next(error);
 			}
 			//return res.send({user:user,cashs:cashs});
+			
 			return res.render('alipay/index',{user:user,cashs:cashs,wechat:req.params.wechat});
 	});
 });
@@ -93,7 +94,7 @@ router.post('/cash',function(req,res,next){
 });
 
 router.get('/script',function(req,res,next){
-	var s = cash.send_money(null);
+	var s = cash.exec_cash();
 	if(!s){
 		s = '提现请求成功'
 	}
