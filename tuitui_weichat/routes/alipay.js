@@ -156,8 +156,8 @@ function getOpenid(req,res,callback){
 	var openid = req.session['wechat_'+wechat];
 	var code = req.query.code;
 	if(!openid){
-		req.session['wechat_'+wechat] = 'o3qBK0RXH4BlFLEIksKOJEzx08og';
-		return callback();
+		/*req.session['wechat_'+wechat] = 'o3qBK0RXH4BlFLEIksKOJEzx08og';
+		return callback();*/
 		if(!code){
 			var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+weichat_conf[wechat].appid+"&redirect_uri="+encodeURIComponent('http://'+req.hostname+req.originalUrl)+"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
 			res.redirect(url);
