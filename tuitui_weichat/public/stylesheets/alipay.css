@@ -22,6 +22,9 @@ input,textarea{
 	border: 0;
 	padding-left: 4px;
 }
+input[disabled]{
+    background-color: #fff;
+}
 .container{
     display: -webkit-flex;
     display: flex;
@@ -61,6 +64,10 @@ header span:first-child{
 .pocket p{
     padding-bottom: 0.15rem;
 }
+
+.money{
+    font-size: 0.18rem;
+}
 /* 提现金额 */
 /* 提现账户信息 */
 .list{
@@ -93,7 +100,7 @@ header span:first-child{
 .tips a{
     width: 50%;
     height: 0.4rem;
-    border: 0.01rem solid #eee;
+    border: 0.01rem solid #ccc;
     margin: 0.3rem auto 0.1rem;
     display: block;
     line-height: 0.4rem;
