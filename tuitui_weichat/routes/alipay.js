@@ -6,6 +6,7 @@ var UserAlipayCashModel = require('../model/UserAlipayCash.js');
 var weichat_conf = require('../conf/weichat.json');
 var async = require('async');
 var cash = require('../script/cash');
+var request = require('request');
 
 
 router.use('/redirect/:wechat',function(req, res, next){
