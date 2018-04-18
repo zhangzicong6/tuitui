@@ -49,7 +49,7 @@ router.post('/cash',function(req,res,next){
 	cash.wechat_number = req.body.wechat_number;
 	cash.payee_real_name = req.body.payee_real_name;
 	cash.payee_account = req.body.payee_account;
-	cash.price = req.body.price;
+	cash.price = parseFloat(req.body.price);
 	cash.openid = openid;
 	cash.out_biz_no = uuid(16,16);
 	cash.code = wechat;
