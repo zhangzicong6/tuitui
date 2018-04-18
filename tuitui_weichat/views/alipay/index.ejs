@@ -59,7 +59,7 @@
         <!-- 提现金额 -->
         <div class="pocket">
             <img src="/images/pocket.png" alt="">
-            <p class="money">￥<span style="font-size: 0.25rem;"><%= user.current_balance%></span></p>
+            <p class="money">￥<span style="font-size: 0.25rem;"><%= user.current_balance.toFixed(2)%></span></p>
             <p>可提现金额</p>
         </div>
         <!-- 提现金额 -->
@@ -82,7 +82,7 @@
             </li>
             <li>
                 <label for="">提现金额：</label>
-                <input id="price" type="text" placeholder="请填写提现金额" disabled="" value="<%= user.current_balance%>" />
+                <input id="price" type="text" placeholder="请填写提现金额" disabled="" value="<%= user.current_balance.toFixed(2)%>" />
             </li>
             <input type="hidden" id="wechat" value="<%=wechat%>">
         </ul>
@@ -136,6 +136,11 @@
 
     $(function () {  
         $('.tips a').click(function(){
+            var $this = $(this);
+            if($this.attr("disabled")){
+                return;
+            }
+            $this.attr('disabled',true);
             var money = $('.money span').text();
             var amount = $('#price').val();
             var inps = $('.list li input');
@@ -162,10 +167,22 @@
                 wechat_number : $('#wechat_number').val().trim(),
             };
             $.post('/alipay/cash', data, function(response,status){
-                
+                if(status!=200){
+                    alert('网络请求出错');
+                    $this.removeAttr('disabled'); 
+                }else{
+                    if(response.code==-1){
+                        alert(response.message);
+                        $this.removeAttr('disabled');
+                    }else{
+                        location.reload();
+                    }
+                }
             })
         })
     });
+
+    
 
 </script>
 

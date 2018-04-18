@@ -63,7 +63,7 @@ router.post('/cash',function(req,res,next){
 					if(error){
 						return callback(error,null);
 					}
-					if(user.current_balance >= cash.price){
+					if(parseFloat(user.current_balance.toFixed(2)) >=parseFloat(cash.price.toFixed(2))){
 						user.current_balance = parseFloat((user.current_balance - cash.price).toFixed(2));
 						user.save();
 						return callback(null,user);
