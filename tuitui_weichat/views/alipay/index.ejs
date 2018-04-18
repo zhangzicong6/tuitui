@@ -167,17 +167,16 @@
                 wechat_number : $('#wechat_number').val().trim(),
             };
             $.post('/alipay/cash', data, function(response,status){
-                if(status!=200){
-                    alert('网络请求出错');
-                    $this.removeAttr('disabled'); 
-                }else{
-                    if(response.code==-1){
-                        alert(response.message);
-                        $this.removeAttr('disabled');
-                    }else{
-                        location.reload();
-                    }
+                if(!response){
+                    return alert('网络问题');
                 }
+                if(response.code==-1){
+                    alert(response.message);
+                    $this.removeAttr('disabled');
+                }else{
+                    location.reload();
+                }
+                
             })
         })
     });
