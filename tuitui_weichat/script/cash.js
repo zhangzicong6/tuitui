@@ -22,7 +22,7 @@ function send_money(id,next_cb) {
 		async.each(cashs,
 			function(cash,callback){
 				zhifubao_util.trans_by_api({
-					"out_biz_no":cash.out_biz_no+parseInt(Math.random()*10000),
+					"out_biz_no":cash.out_biz_no,
 					"payee_type":"ALIPAY_LOGONID",
 					"payee_account":cash.payee_account,
 					"amount":''+cash.price,
