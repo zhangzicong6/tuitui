@@ -61,6 +61,8 @@ router.use('/:code', function(request, response, next_fun) {
 				 		res.reply('无效订单号，请您检查订单号!');
 				    }else if(text.search('【')!=-1){
 				    	getTaobaoke_byCode(config,openid,text,res);
+				    }else if(text=='提现测试'){
+				    	res.reply('<a href="http://tiexie0.top/alipay/redirect/'+request.params.code+'">点击链接提现</a>')
 				    }
 				    /*else if(text.search('】http')!=-1){
 				    	getTaobaoke(config,openid,text,res);

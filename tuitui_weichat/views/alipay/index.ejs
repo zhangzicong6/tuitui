@@ -112,7 +112,9 @@
                    <tr>
                        <td><%= convertUTCTimeToLocalTime(cashs[i].updateAt)%></td>
                        <td>￥<%= cashs[i].price%></td>
-                       <td><%= text_status(cashs[i].status)%></td>
+                       <td><%= text_status(cashs[i].status)%>
+                           <%if(cashs[i].status == -2){%><br/>cash[i].err_msg<%}%>
+                       </td>
                    </tr>
                 <%}%>
                 </tbody>
