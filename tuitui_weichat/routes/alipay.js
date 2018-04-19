@@ -24,7 +24,7 @@ router.use('/redirect/:wechat',function(req, res, next){
 				});
 			},
 			function(user,callback){
-				UserAlipayCashModel.find({openid:user.openid},{price:1,updateAt:1,status:1,wechat_number:1,payee_real_name:1,payee_account:1},{sort:{updateAt:-1},limit:10},function(error,cashs){
+				UserAlipayCashModel.find({openid:user.openid},{price:1,updateAt:1,status:1,wechat_number:1,payee_real_name:1,payee_account:1,err_msg:1},{sort:{updateAt:-1},limit:10},function(error,cashs){
 					callback(error,user,cashs);
 				});
 			}
