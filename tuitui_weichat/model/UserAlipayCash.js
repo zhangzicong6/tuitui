@@ -10,7 +10,7 @@ var UserAlipayCashSchema = new Schema({
   payee_real_name: String,
   wechat_number: String,
   price : Number,
-  status : {type:Number,default:0},//0:审核中 1:审核成功 2:提现提交请求 3:提现成功  -1:审核不成功 -2:提现失败 
+  status : {type:Number,default:0},//0:审核中 1:审核成功 2:提现成功  -1:审核不成功 -2:提现失败 
   pay_date : String,
   order_id : String,
   out_biz_no : String,
