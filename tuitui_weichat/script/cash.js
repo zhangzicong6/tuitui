@@ -31,14 +31,17 @@ function send_money(id,next_cb) {
 					"remark":"购物提现"
 				},function(err,res){
 					console.log('-------response---------');
-					if(err){
+					if(err||(res && res.code==-1)){
 						console.log('--------response  error--------');
 						console.log(err);
 						cash.status = -2;
-						cash.err_msg = err.data.sub_msg;
+						if(res && res.code==-1){
+							cash.err_msg = res.data.sub_msg;
+						}else{
+							cash.err_msg = '服务器错误';
+						}
+						
 						cash.save(function(e,cash){
-							console.log('-----err------');
-							console.log(e);
 						});
 						User.findOneAndUpdate({openid:cash.openid},{$inc:{current_balance:cash.price}},function(e,user){
 							callback(null,null);
@@ -46,7 +49,6 @@ function send_money(id,next_cb) {
 					}else{
 						console.log('--------response  right--------');
 						console.log(res);
-
 						cash.status = 2;
 						cash.order_id = res.data.order_id;
 						cash.save(function(error,cash){

@@ -108,23 +108,26 @@ function transfer(trans_obj){
 */
 
 function trans_by_api(trans_obj,next){
-	service.toaccountTransfer(trans_obj).then(function(error,res){
-		next(error,res);
-	});
+	service.toaccountTransfer(trans_obj).then(function(res){
+		next(null,res);
+	}).catch(function(err){
+        next(err,null)
+    });
 }
 
 module.exports.trans_by_api = trans_by_api;
 
 /*trans_by_api({
-		"out_biz_no":"3142321423432",
+		"out_biz_no":"3142321423431",
 		"payee_type":"ALIPAY_LOGONID",
 		"payee_account":"zhangzicong6@gmail.com",
 		"amount":"0.1",
 		"payer_show_name":"明星说",
 		"payee_real_name":"张子丛",
 		"remark":"购物提现"
-	},function(error,res){
-		console.log(error);
+	},function(err,res){
+		console.log(err);
 		console.log('\r\n---------------\r\n');
 		console.log(res);
-	});*/
+	});
+s*/
