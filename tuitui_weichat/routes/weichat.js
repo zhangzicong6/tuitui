@@ -63,6 +63,8 @@ router.use('/:code', function(request, response, next_fun) {
 				    	getTaobaoke_byCode(config,openid,text,res);
 				    }else if(text=='提现测试'){
 				    	res.reply('<a href="http://tiexie0.top/alipay/redirect/'+request.params.code+'">点击链接提现</a>')
+				    }else if(text=='测试openid'){
+				    	res.reply(openid);
 				    }
 				    /*else if(text.search('】http')!=-1){
 				    	getTaobaoke(config,openid,text,res);
