@@ -59,27 +59,26 @@ router.use('/:code', function(request, response, next_fun) {
 				 		setOrder(openid,text,res);
 				    }else if(/^\d{9,14}$/.test(text)||/^\d{21,}$/.test(text)){
 				 		res.reply('无效订单号，请您检查订单号!');
+				    }else if(text.search('搜索')==0){
+				    	getSearch(config,openid,text,res);
 				    }else if(text.search('【')!=-1){
+				    	getTaobaoke_byCode(config,openid,text,res);
+				    }else if(/^[\s\S]{10,30}$/.test(text)){
 				    	getTaobaoke_byCode(config,openid,text,res);
 				    }else if(text=='提现测试'){
 				    	res.reply('<a href="http://tiexie0.top/alipay/redirect/'+request.params.code+'">点击链接提现</a>')
 				    }else if(text=='测试openid'){
 				    	res.reply(openid);
 				    }
-				    /*else if(text.search('】http')!=-1){
-				    	getTaobaoke(config,openid,text,res);
-				    }else if(/￥[0-9a-zA-Z]{11}￥/.test(text)){
-				    	getTaobaoke_byCode(config,openid,text,res);
-				    }*/else if(text === '搜索小说'){
-				    	res.reply('https://wx68113a82c6654025.youshuge.com/lookbook/2724/1095/547202/pop/');
-				    }else{
-				    	res.reply('');
-				    }
 				}else if(message.MsgType === 'event'){
 					if(message.Event === 'subscribe' ){
 						var code_list = book_wechat_conf.book_wechat_list;
 						if(code_list.indexOf(request.params.code)==-1){
-							res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rn1uw6o\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+							if(config.sub_replay == 0){
+								res.reply('');
+							}else{
+								res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rn1uw6o\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+							}
 						}else{
 							var book_id = book_wechat_conf.book_wechat_map[request.params.code];
 							replay_book(book_id,message,res);
@@ -126,6 +125,17 @@ router.use('/:code', function(request, response, next_fun) {
 		})(request, response, next_fun);
 	}
 });
+
+function getSearch(config,openid,text,res){
+	var key = text.substr(2,text.length).trim();
+	var url = 'http://mingxinggouwubao.m.zhifujiekou.vip/index/index/sort/8/all_hide/1/key/'+encodeURIComponent(key);
+	var str = '点击下方链接查看【'+key+'】给力优惠券！\r\n'
+        		+'━┉┉┉┉∞┉┉┉┉━\r\n'
+       			+ '<a href="'+url+'">点我查看优惠券</a>\r\n'
+		        +'━┉┉┉┉∞┉┉┉┉━\r\n'
+		        +'买完记得把订单号码发给我领取“返利”哦！';
+	res.reply(str);
+}
 
 function saveActionMiaoSha(openid,text,code,res){
 	var replay_number = parseInt(text);
@@ -426,15 +436,23 @@ function setOrder(openid,order_number,res){
 	});
 }
 
+
+
 function getTaobaoke_byCode(config,openid,text,res){
 	//var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
 	res.reply('');
-	title = text.split('【')[1].split('】')[0];
+	if(text.search('【')!=-1){
+		title = text.split('【')[1].split('】')[0];
+	}else{
+		title = text;
+	}
+	
 	data = {};
 	data.openid = openid;
 	data.code = config.code;
 	data.title = title;
 	MessageServer.getInstance(null).req_title_token(data);
+
 	/*TaobaoUtil.request_taobao_token(code,title,function(err,result){
 		if(err){
 			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
