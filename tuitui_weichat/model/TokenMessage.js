@@ -16,6 +16,7 @@ var TokenMessageSchema = new Schema({
   pictUrl:String,//封面图
   link_url:String,//购买链接
   url:String,//商品链接
+  bizMonth:String,//月销
   createAt: {
       type: Date,
       default: Date.now
