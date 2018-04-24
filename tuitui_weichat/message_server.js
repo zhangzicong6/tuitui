@@ -2,6 +2,7 @@ var socket = require('socket.io')
 var WechatAPI = require('wechat-api');
 var weichat_conf = require('./conf/weichat.json');
 var weichat_apis ={};
+var TokenMessageModel = require('./model/TokenMessage');
 
 String.prototype.stripHTML = function() {
 	var reTag = /<(?:.|\s)*?>/g;
@@ -50,7 +51,7 @@ MessageServer.prototype.init_io = function(server,self) {
 		socket.on('token',function(msg){
 			msg = msg.stripHTML();
 			msg = JSON.parse(msg);
-			var config = weichat_conf[msg.code];
+			
 			var str = '';
 			if(msg.data){
 				str ='【'+msg.data.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+msg.data.price+'元\r\n☞ 优惠:'+msg.data.couponAmount+'元\r\n'+
@@ -60,6 +61,27 @@ MessageServer.prototype.init_io = function(server,self) {
 				str = '❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋';
 			}
 			
+			var message = new TokenMessageModel({
+				title : msg.data.title,
+				price : msg.data.price,
+				reservePrice : msg.data.reservePrice,
+				tkCommFee : (0.2*msg.data.tkCommFee).toFixed(2),
+				code : msg.code,
+				openid : msg.openid,
+				token : msg.token,
+				link_url : msg.link_url,
+				couponAmount : msg.data.couponAmount,
+				shopTitle : msg.data.shopTitle,
+				pictUrl : msg.data.pictUrl,
+				url : msg.url
+			});
+			message.save(function(err,doc){
+				console.log('-------message id------------');
+				console.log(doc._id);
+				console.log('-----------------------------')
+			});
+
+			var config = weichat_conf[msg.code];
 			if(!weichat_apis[config.code]){
 				weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
 			}
