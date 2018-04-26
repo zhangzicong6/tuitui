@@ -445,9 +445,10 @@ function getTaobaoke_byCode(config,openid,text,res){
 	var title= '';
 	res.reply('');
 	if(text.search('【')!=-1){
-		title = text.split('【')[1].split('】')[0];
 		if(title.search('（')!=-1){
 			title = title.split('（')[1].split('）')[0];
+		}else{
+			title = text.split('【')[1].split('】')[0];
 		}
 	}else{
 		title = text;
@@ -469,8 +470,10 @@ function getTaobaoke_byCode(config,openid,text,res){
 	}
 
 	console.log(data);
+	return MessageServer.getInstance(null).req_title_token(data);
 
 	if(code){
+		console.log('code---------------'+code);
 		TaobaoUtil.request_taobao_token(code,function(err,url){
 			if(err||!url){
 
@@ -481,6 +484,7 @@ function getTaobaoke_byCode(config,openid,text,res){
 			}
 		});
 	}else if(str_url){
+		console.log('url---------------'+str_url);
 		TaobaoUtil.request_taobao_url(str_url,function(err,url){
 			if(err||!url){
 
