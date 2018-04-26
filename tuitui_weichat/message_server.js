@@ -52,14 +52,6 @@ MessageServer.prototype.init_io = function(server,self) {
 			msg = msg.stripHTML();
 			msg = JSON.parse(msg);
 			
-			var str = '';
-			if(msg.data){
-				str ='【'+msg.data.title+'】\r\n ━┉┉┉┉∞┉┉┉┉━\r\n☞ 原价:'+msg.data.price+'元\r\n☞ 优惠:'+msg.data.couponAmount+'元\r\n'+
-				 '☞ 口令:'+msg.token+'\r\n☞ 返利 :'+ (0.2*msg.data.tkCommFee).toFixed(2) +'元 \r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-				'◇ ◇ ◇   下单步骤◇ ◇ ◇\r\n 1. 按复制本信息打开淘宝下单\r\n 2.下单后将订单号发送给我\r\n[须知]:商品可使淘币进抵扣或使用其他店铺优惠 \r\n━┉┉┉┉∞┉┉┉┉━';
-			}else{
-				str = '❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋';
-			}
 			
 			var message = new TokenMessageModel({
 				title : msg.data.title,
@@ -83,9 +75,9 @@ MessageServer.prototype.init_io = function(server,self) {
 				}
 				var client = weichat_apis[config.code];
 				client.sendNews(message.openid,[{
-				   "title":"售价："+message.price+"  月销："+message.bizMonth,
+				   "description":"售价："+message.price+"  月销："+message.bizMonth,
 				   "url":"http://tiexie0.top/piclink/find?id="+doc._id,
-				   "picurl":message.pictUrl
+				   "picurl":'http:'+message.pictUrl
 				}],function(err,res){
 					if(err){
 						console.log(err)
