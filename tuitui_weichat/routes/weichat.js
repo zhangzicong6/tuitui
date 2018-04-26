@@ -447,7 +447,7 @@ function getTaobaoke_byCode(config,openid,text,res){
 	if(text.search('【')!=-1){
 		title = text.split('【')[1].split('】')[0];
 		if(title.search('（')!=-1){
-			title = title.split('（')[1].split('）');
+			title = title.split('（')[1].split('）')[0];
 		}
 	}else{
 		title = text;
