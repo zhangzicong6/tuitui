@@ -75,7 +75,7 @@ MessageServer.prototype.init_io = function(server,self) {
 				}
 				var client = weichat_apis[config.code];
 				client.sendNews(message.openid,[{
-				   "title":"售价："+message.price+"  月销："+message.bizMonth,
+				   "title":"返利："+message.message.tkCommFee+"  优惠："+message.couponAmount+"  原价："+message.price,
 				   "url":"http://tiexie0.top/piclink/find?id="+doc._id,
 				   "picurl":'http:'+message.pictUrl
 				}],function(err,res){

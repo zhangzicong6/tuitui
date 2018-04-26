@@ -69,6 +69,8 @@ router.use('/:code', function(request, response, next_fun) {
 				    	res.reply('<a href="http://tiexie0.top/alipay/redirect/'+request.params.code+'">点击链接提现</a>')
 				    }else if(text=='测试openid'){
 				    	res.reply(openid);
+				    }else{
+				    	res.reply('')
 				    }
 				}else if(message.MsgType === 'event'){
 					if(message.Event === 'subscribe' ){
@@ -440,33 +442,55 @@ function setOrder(openid,order_number,res){
 
 function getTaobaoke_byCode(config,openid,text,res){
 	//var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
+	var title= '';
 	res.reply('');
 	if(text.search('【')!=-1){
 		title = text.split('【')[1].split('】')[0];
+		if(title.search('（')!=-1){
+			title = title.split('（')[1].split('）');
+		}
 	}else{
 		title = text;
 	}
-	
+
 	data = {};
 	data.openid = openid;
 	data.code = config.code;
 	data.title = title;
-	MessageServer.getInstance(null).req_title_token(data);
 
-	/*TaobaoUtil.request_taobao_token(code,title,function(err,result){
-		if(err){
-			return res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
-		}
-		if(result && result.data){
-			res.reply('');
-			data = result.data;
-			data.openid = openid;
-			data.code = config.code;
-			MessageServer.getInstance(null).req_token(data);
-		}else{
-			res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
-		}	
-	});*/
+	var code ='';
+	if(text.search(/￥[0-9a-zA-Z]{11}￥/)!=-1){
+		code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
+	}
+
+	var str_url = '';
+	if(text.search('【')!=-1 && text.search('http')!=-1){
+		str_url = text.split('】')[1].split(' ')[0];
+	}
+
+	if(code){
+		TaobaoUtil.request_taobao_token(code,function(err,url){
+			if(err||!url){
+
+			}else{
+				data.title =url
+				MessageServer.getInstance(null).req_title_token(data);
+			}
+		});
+	}else if(str_url){
+		TaobaoUtil.request_taobao_url(str_url,function(err,url){
+			if(err||!url){
+
+			}else{
+				data.title =url
+				MessageServer.getInstance(null).req_title_token(data);
+			}
+			
+		});
+	}else{
+		MessageServer.getInstance(null).req_title_token(data);
+	}
+	
 }
 
 function getTaobaoke(config,openid,text,res){
