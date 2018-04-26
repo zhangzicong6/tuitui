@@ -77,19 +77,20 @@ MessageServer.prototype.init_io = function(server,self) {
 				bizMonth :msg.data.bizMonth
 			});
 			message.save(function(err,doc){
-				//' 测试数据ID  5aded26ff8438a6866e010b1'
-				console.log('-------message id------------');
-				console.log(doc._id);
-				console.log('-----------------------------')
-			});
-
-			var config = weichat_conf[msg.code];
-			if(!weichat_apis[config.code]){
-				weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
-			}
-			var client = weichat_apis[config.code];
-			client.sendText(msg.openid, str, function(err,result){
-				console.log(err);
+				var config = weichat_conf[msg.code];
+				if(!weichat_apis[config.code]){
+					weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+				}
+				var client = weichat_apis[config.code];
+				client.sendNews(message.openid,[{
+				   "title":"售价："+message.price+"  月销："+message.bizMonth,
+				   "url":"http://tiexie0.top/piclink/find?id="+doc._id,
+				   "picurl":message.pictUrl
+				}],function(err,res){
+					if(err){
+						console.log(err)
+					}
+				});
 			});
 		});
 

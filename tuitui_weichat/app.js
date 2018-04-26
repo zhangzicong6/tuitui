@@ -12,6 +12,7 @@ var books = require('./routes/books');
 var weichat = require('./routes/weichat');
 var adzone = require('./routes/adzone');
 var alipay = require('./routes/alipay');
+var piclink = require('./routes/piclink');
 
 var app = express();
 
@@ -39,6 +40,7 @@ app.use('/weichat',weichat);
 app.use('/adzone',adzone);
 app.use('/books',books);
 app.use('/alipay',alipay);
+app.use('/piclink',piclink);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
