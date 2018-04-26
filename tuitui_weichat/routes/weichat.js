@@ -468,12 +468,15 @@ function getTaobaoke_byCode(config,openid,text,res){
 		str_url = text.split('】')[1].split(' ')[0];
 	}
 
+	console.log(data);
+
 	if(code){
 		TaobaoUtil.request_taobao_token(code,function(err,url){
 			if(err||!url){
 
 			}else{
 				data.title =url
+				console.log('code :::::'+url);
 				MessageServer.getInstance(null).req_title_token(data);
 			}
 		});
@@ -483,6 +486,7 @@ function getTaobaoke_byCode(config,openid,text,res){
 
 			}else{
 				data.title =url
+				console.log('url :::::'+url);
 				MessageServer.getInstance(null).req_title_token(data);
 			}
 			
