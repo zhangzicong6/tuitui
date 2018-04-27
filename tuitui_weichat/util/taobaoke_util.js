@@ -70,6 +70,7 @@ function request_taobao_token(code,next){
 						return callback(error,null);
 					}
 					body = JSON.parse(body);
+					//console.log(body)
 					var url= body.data.url;
 					if(!url){
 						return callback(-1,null);
@@ -95,6 +96,7 @@ function request_taobao_token(code,next){
 						return callback(e,null);
 					}
 					var uri_obj = res.request.uri;
+					//console.log(uri_obj)
 					var split_str = '?id=';
 					var tmp_arr = uri_obj.path.split(split_str);
 					if(tmp_arr.length == 1){
@@ -107,7 +109,7 @@ function request_taobao_token(code,next){
 					var itemid = tmp_arr[1].split('&')[0];
 					var tmp_str = uri_obj.path.split('?')[0]+'?id='+itemid;
 					var param_url=uri_obj.protocol+'//'+uri_obj.hostname+tmp_str;
-					callback(param_url)
+					callback(null,param_url);
 				});
 			}
 		],function(err, results){

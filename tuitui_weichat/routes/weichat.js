@@ -443,7 +443,7 @@ function setOrder(openid,order_number,res){
 function getTaobaoke_byCode(config,openid,text,res){
 	//var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
 	var title= '';
-	res.reply('');
+	//res.reply('');
 	if(text.search('【')!=-1){
 		if(text.search('（')!=-1){
 			title = text.split('（')[1].split('）')[0];
@@ -469,33 +469,30 @@ function getTaobaoke_byCode(config,openid,text,res){
 		str_url = text.split('】')[1].split(' ')[0];
 	}
 
-	console.log(data);
-	return MessageServer.getInstance(null).req_title_token(data);
-
-	if(code){
-		console.log('code---------------'+code);
-		TaobaoUtil.request_taobao_token(code,function(err,url){
-			if(err||!url){
-
-			}else{
-				data.title =url
-				console.log('code :::::'+url);
-				MessageServer.getInstance(null).req_title_token(data);
-			}
-		});
-	}else if(str_url){
+	if(str_url){
 		console.log('url---------------'+str_url);
 		TaobaoUtil.request_taobao_url(str_url,function(err,url){
 			if(err||!url){
-
+				MessageServer.getInstance(null).req_title_token(data);
 			}else{
-				data.title =url
-				console.log('url :::::'+url);
+				data.title =url;
 				MessageServer.getInstance(null).req_title_token(data);
 			}
 			
 		});
+		
+	}else if(code){
+		console.log('code---------------'+code);
+		TaobaoUtil.request_taobao_token(code,function(err,url){
+			if(err||!url){
+				MessageServer.getInstance(null).req_title_token(data);
+			}else{
+				data.title =url;
+				MessageServer.getInstance(null).req_title_token(data);
+			}
+		});
 	}else{
+		console.log('--------search title--------')
 		MessageServer.getInstance(null).req_title_token(data);
 	}
 	
@@ -605,6 +602,9 @@ function getAccessToken(code,callback){
 	response.send('test');
 });*/
 
+getTaobaoke_byCode(weichat_conf['1'],'o3qBK0RXH4BlFLEIksKOJEzx08og',
+	'【遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战警】，再选择浏览器打开；或复制这条信息￥EwvM0ssydOc￥后打开👉手淘👈',
+	null);
 
 
 //getUser('o3qBK0X47Wfngfu_0dmCqSQwwtgU',weichat_conf['1']);
