@@ -602,9 +602,9 @@ function getAccessToken(code,callback){
 	response.send('test');
 });*/
 
-getTaobaoke_byCode(weichat_conf['1'],'o3qBK0RXH4BlFLEIksKOJEzx08og',
+/*getTaobaoke_byCode(weichat_conf['1'],'o3qBK0RXH4BlFLEIksKOJEzx08og',
 	'【遥控智能机器人玩具对话儿童男孩小胖会讲故事跳舞新威尔机械战警】，再选择浏览器打开；或复制这条信息￥EwvM0ssydOc￥后打开👉手淘👈',
-	null);
+	null);*/
 
 
 //getUser('o3qBK0X47Wfngfu_0dmCqSQwwtgU',weichat_conf['1']);
