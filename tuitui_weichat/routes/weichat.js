@@ -443,7 +443,7 @@ function setOrder(openid,order_number,res){
 function getTaobaoke_byCode(config,openid,text,res){
 	//var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
 	var title= '';
-	//res.reply('');
+	res.reply('');
 	if(text.search('【')!=-1){
 		if(text.search('（')!=-1){
 			title = text.split('（')[1].split('）')[0];
