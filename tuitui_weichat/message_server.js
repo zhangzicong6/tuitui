@@ -53,7 +53,13 @@ MessageServer.prototype.init_io = function(server,self) {
 		socket.on('token',function(msg){
 			msg = msg.stripHTML();
 			msg = JSON.parse(msg);
-			if(msg.status){
+			var config = weichat_conf[msg.code];
+			if(!weichat_apis[config.code]){
+				weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+			}
+			var client = weichat_apis[config.code];
+
+			if(!msg.data){
 				var str = "主人！！这家店铺太抠门了！没有设置优惠券和补贴！！\r\n-----------------\r\n"
 						+ "主人不妨逛逛我的优惠券网站：http://t.cn/RuiCVc0"
 						+ "点击查看更多优惠！-----------------还可以输入：搜索+商品名（例如：搜索鞋子）即可查找优惠券";
@@ -64,6 +70,7 @@ MessageServer.prototype.init_io = function(server,self) {
 				});
 				return;
 			}
+			
 			var message = new TokenMessageModel({
 				title : msg.data.title,
 				price : msg.data.price,
@@ -80,11 +87,7 @@ MessageServer.prototype.init_io = function(server,self) {
 				bizMonth :msg.data.bizMonth
 			});
 			message.save(function(err,doc){
-				var config = weichat_conf[msg.code];
-				if(!weichat_apis[config.code]){
-					weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
-				}
-				var client = weichat_apis[config.code];
+				
 				client.sendNews(message.openid,[{
 				   "title":"返利："+message.tkCommFee+"  优惠："+message.couponAmount+"  原价："+message.price,
 				   "url":"http://tiexie0.top/piclink/find?id="+doc._id,
