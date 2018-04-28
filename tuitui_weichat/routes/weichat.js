@@ -46,7 +46,7 @@ router.use('/:code', function(request, response, next_fun) {
 				 	}else if(text === '个人信息'){
 				 		getUser(openid,res);
 				 	}else if(text === '提现'){
-				 		cash(openid,res);
+				 		cash(request.params.code,openid,res);
 				 	}else if(text === '0' ||text === '1' ||text ==='2' ){
 				 		if(request.params.code=='8' || request.params.code=='1'){
 				 			saveActionMiaoSha(openid,text,request.params.code,res);
@@ -79,7 +79,7 @@ router.use('/:code', function(request, response, next_fun) {
 							if(config.sub_replay == 0){
 								res.reply('');
 							}else{
-								res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rn1uw6o\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+								res.reply('省钱助手欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一🍒使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rn1uw6o\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
 							}
 						}else{
 							var book_id = book_wechat_conf.book_wechat_map[request.params.code];
@@ -314,7 +314,7 @@ function getCode(openid,text,res){
 }
 
 //待开发
-function cash(openid,res){
+function cash(code,openid,res){
 	UserModel.findOne({openid:openid},function(error,user){
 		if(!user){
 			return;
@@ -323,7 +323,10 @@ function cash(openid,res){
 		if(parseFloat(current_balance.toFixed(2))<1){
 			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【1.0】元才可以提现哦！');
 		}else{
-			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元。提现功能正在玩命开发中，两周后和您见面');
+			var str = '余额超过1元，可以申请提现！\r\n━┉┉┉┉∞┉┉┉┉━┉━━\r\n'+
+						'<a href="http://tiexie0.top/alipay/redirect/'+code+'">点我提现</a>\r\n'+
+						'━┉┉┉┉∞┉┉┉┉━┉━━\r\n申请提现后，24小时内提现到账！'
+			res.reply(str);
 		}
 	});
 }
