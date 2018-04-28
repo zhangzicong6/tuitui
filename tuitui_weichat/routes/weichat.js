@@ -79,7 +79,7 @@ router.use('/:code', function(request, response, next_fun) {
 							if(config.sub_replay == 0){
 								res.reply('');
 							}else{
-								res.reply('省钱助手欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一🍒使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rn1uw6o\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+								res.reply('省钱助手欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rn1uw6o\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
 							}
 						}else{
 							var book_id = book_wechat_conf.book_wechat_map[request.params.code];
