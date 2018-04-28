@@ -89,7 +89,7 @@ MessageServer.prototype.init_io = function(server,self) {
 			message.save(function(err,doc){
 				
 				client.sendNews(message.openid,[{
-				   "title":"返利:"+message.tkCommFee+"  优惠:"+message.couponAmount+"  原价:"+message.price,
+				   "title":"返利:"+message.tkCommFee+"  优惠券:"+message.couponAmount+"  原价:"+message.price,
 				   "url":"http://tiexie0.top/piclink/find?id="+doc._id,
 				   "picurl":'http:'+message.pictUrl
 				}],function(err,res){
