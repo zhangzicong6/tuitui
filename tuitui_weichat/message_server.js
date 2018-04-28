@@ -45,14 +45,25 @@ MessageServer.prototype.init_io = function(server,self) {
 		socket.on('disconnect', function(){
 		    console.log('user disconnected');
 		    delete self.sockets[socket.id];
-		    self.socket_ids.splice(self.socket_ids.contains('c'),1)
+		    if(self.socket_ids.indexOf(socket.id) != -1){
+			    self.socket_ids.splice(self.socket_ids.indexOf(socket.id),1)
+			}
 		});
 
 		socket.on('token',function(msg){
 			msg = msg.stripHTML();
 			msg = JSON.parse(msg);
-			
-			
+			if(msg.status){
+				var str = "主人！！这家店铺太抠门了！没有设置优惠券和补贴！！\r\n-----------------\r\n"
+						+ "主人不妨逛逛我的优惠券网站：http://t.cn/RuiCVc0"
+						+ "点击查看更多优惠！-----------------还可以输入：搜索+商品名（例如：搜索鞋子）即可查找优惠券";
+				client.sendNews(msg.openid,str,function(err,res){
+					if(err){
+						console.log(err)
+					}
+				});
+				return;
+			}
 			var message = new TokenMessageModel({
 				title : msg.data.title,
 				price : msg.data.price,
