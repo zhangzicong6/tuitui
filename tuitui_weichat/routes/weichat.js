@@ -315,7 +315,7 @@ function getCode(openid,text,res){
 	});
 }
 
-//待开发
+
 function cash(code,openid,res){
 	UserModel.findOne({openid:openid},function(error,user){
 		if(!user){
