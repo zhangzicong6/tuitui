@@ -3,27 +3,18 @@
     "button": [
       {
         "type": "view",
-        "name": "购物省钱教程",
-        "url": "http://t.cn/RETghsf"
+        "name": "超级搜索",
+        "url": "http://mingxinggouwubao.m.zhifujiekou.vip/supersearch/index.html"
       },
       {
-       "name":"优惠商城",
-       "sub_button":[
-         {
-           "type":"view",
-           "name":"优惠商城",
-           "url":"http://mingxinggouwubao.m.weixinbaimingdan.cn"
-         },
-         {
-           "type":"click",
-           "name":"自助查券",
-           "key":"KEY_MEITAO"
-         }]
-       },
-       {
+        "type": "view",
+        "name": "个人商城",
+        "url": "http://mingxinggouwubao.m.zhifujiekou.vip"
+      },
+      {
         "type":"click",
-        "name":"商务合作",
-        "key":"KEY_HEZUO"
+        "name":"个人中心",
+        "key":"KEY_GERENZHONGXIN"
        }
     ]
   },
