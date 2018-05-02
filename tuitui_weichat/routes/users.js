@@ -49,7 +49,19 @@ function createMenu(code) {
 	var config = weichat_conf[code];
 	var api = new WechatAPI(config.appid, config.appsecret);
 	var menu = menus[code];
-	//console.log(menu);
+	console.log(menu);
+	if(!menu){
+		return
+	}
+	if(menu.button.length==0){
+		api.removeMenu(function(err,res){
+			console.log(res);
+			api.getMenu(function(err,res_m){
+				console.log(JSON.stringify(res_m));
+			});
+		}
+		return
+	}
 	api.removeMenu(function(err,res){
 		api.createMenu(menu, function(err,res){
 			api.getMenu(function(err,res_m){
