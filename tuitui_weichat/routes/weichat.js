@@ -18,12 +18,15 @@ var AddFreeOrderModel = require('../model/AddFreeOrder.js');
 var BookModel = require('../model/Book.js');
 var UserBookAuthorityModel = require('../model/UserBookAuthority.js');
 var UserActionMiaoShaModel = require('../model/UserActionMiaoSha.js');
+var UserWaitMessageModel = require('../model/UserWaitMessage.js');
 
 var MessageServer = require('../message_server.js');
 var weichat_apis ={};
 
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
+
+var send_code = require('../conf/proj.json').send_wechat;
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
@@ -36,6 +39,9 @@ router.use('/:code', function(request, response, next_fun) {
 			var openid = message.FromUserName;
 			getUserInfo(openid,config,message,request,req,res,function(openid,config,message,request,req,res){
 				if (message.MsgType === 'text') {
+					if(request.params.code == send_code){
+						update_sendMessage(openid)
+					}
 				    var text = message.Content.trim();
 				 	if(text === '帮助'){
 				 		res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n'+
@@ -129,6 +135,16 @@ router.use('/:code', function(request, response, next_fun) {
 		})(request, response, next_fun);
 	}
 });
+
+function update_sendMessage(openid){
+	UserWaitMessageModel.findOne({openid:openid},function(err,msg){
+		if(err||!msg){
+			return
+		}
+		msg.user_status = msg.status;
+		msg.save();
+	});
+}
 
 function getSearch(config,openid,text,res){
 	var key = text.substr(2,text.length).trim();
