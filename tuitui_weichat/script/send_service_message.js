@@ -108,6 +108,7 @@ var rule1 = new schedule.RecurrenceRule();
 var times1 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 52, 55, 58];
 rule1.minute = times1;
 var k = schedule.scheduleJob(rule1, function () {
+    console.log("执行发送任务");
     if(new Date().getHours()>10 && new Date().getHours()<23) {
         console.log('发送消息');
         get_message();
