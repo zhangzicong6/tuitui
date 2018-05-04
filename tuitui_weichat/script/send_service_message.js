@@ -79,13 +79,13 @@ function send_message(_id, next) {
                 client.sendText(user.openid, str[user.status], function (err, result) {
                     console.log(err);
                 });
-                UserWaitMessageModel.update({oenid: user.openid}, {$inc: {status: 1}})
+                UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
             }
             if (user.status != user.user_status && str[user.status] && (new Date().getTime() - 8 * 3600 * 1000 - user.updateAt.getTime()) > 2 * 3600 * 1000) {
                 client.sendText(user.openid, str[user.status], function (err, result) {
                     console.log(err);
                 });
-                UserWaitMessageModel.update({oenid: user.openid}, {$inc: {status: 1}})
+                UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
             }
         });
         console.log('send_message next');
