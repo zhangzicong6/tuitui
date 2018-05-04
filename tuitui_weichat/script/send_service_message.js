@@ -75,6 +75,7 @@ function send_message(_id, next) {
         users.forEach(function (user) {
             var config = weichat_conf[user.code]
             var client = new WechatAPI(config.appid, config.appsecret);
+            console.log(user.status,user.user_status,strs[user.status],'---------------------status')
             if (user.status == user.user_status && strs[user.status]) {
                 client.sendText(user.openid, strs[user.status], function (err, result) {
                     console.log(err);
