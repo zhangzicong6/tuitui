@@ -75,14 +75,14 @@ function send_message(_id, next) {
         users.forEach(function (user) {
             var config = weichat_conf[user.code]
             var client = new WechatAPI(config.appid, config.appsecret);
-            if (user.status == user.user_status && str[user.status]) {
-                client.sendText(user.openid, str[user.status], function (err, result) {
+            if (user.status == user.user_status && strs[user.status]) {
+                client.sendText(user.openid, strs[user.status], function (err, result) {
                     console.log(err);
                 });
                 UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
             }
-            if (user.status != user.user_status && str[user.status] && (new Date().getTime() - 8 * 3600 * 1000 - user.updateAt.getTime()) > 2 * 3600 * 1000) {
-                client.sendText(user.openid, str[user.status], function (err, result) {
+            if (user.status != user.user_status && strs[user.status] && (new Date().getTime() - 8 * 3600 * 1000 - user.updateAt.getTime()) > 2 * 3600 * 1000) {
+                client.sendText(user.openid, strs[user.status], function (err, result) {
                     console.log(err);
                 });
                 UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
@@ -110,8 +110,8 @@ var times1 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 5
 rule1.minute = times1;
 var k = schedule.scheduleJob(rule1, function () {
     console.log("执行发送任务");
-    if(new Date().getHours()>10 && new Date().getHours()<23) {
+    // if(new Date().getHours()>10 && new Date().getHours()<23) {
         console.log('发送消息');
         get_message();
-    }
+    // }
 });
