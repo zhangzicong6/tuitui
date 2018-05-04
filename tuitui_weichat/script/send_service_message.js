@@ -1,6 +1,7 @@
 var WechatAPI = require('wechat-api');
 var weichat_conf = require('../conf/weichat.json');
 var schedule = require("node-schedule");
+var pro_conf = require('../conf/proj.json');
 var UserModel = require('../model/User.js');
 var UserWaitMessageModel = require('../model/UserWaitMessage.js');
 var async = require('async');
@@ -33,7 +34,7 @@ function get_message(){
 
 function copy_user(_id, next) {
     //从用户表拷贝到信息表
-    UserModel.fetch(_id, function (err, users) {
+    UserModel.fetch(_id,pro_conf.send_wechat, function (err, users) {
         console.log('users：'+users.length);
         users.forEach(function (user) {
             var openid = user.openid;
