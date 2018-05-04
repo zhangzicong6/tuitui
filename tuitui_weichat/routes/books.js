@@ -23,7 +23,11 @@ router.use('/create', function(req, res, next) {
 			BookModel.create({book_id:content.book_id,bookname:content.bookname});
 		}
 	});
-	BookContentModel.create(content);
+	BookContentModel.findOneAndUpdate({book_id:content.book_id,chapte_id:content.chapte_id},content,{upsert:true,rawResult:true},function(err){
+		if(err){
+			console.log(err);
+		}
+	});
 	res.send('success');
 });
 
@@ -77,7 +81,7 @@ router.use('/geturl',function(req,res,next){
 			if(!chapte){
 				res.send('未找到章节');
 			}else{
-				res.send('http://tiexie0.top/books/read/'+chapte.book_id+'?chapte_id='+chapte.chapte_id);
+				res.send('http://www.rrdtjj.top/books/read/'+chapte.book_id+'?chapte_id='+chapte.chapte_id);
 			}
 		});
 	}else{
