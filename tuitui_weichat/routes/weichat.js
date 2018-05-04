@@ -72,7 +72,7 @@ router.use('/:code', function(request, response, next_fun) {
 				    }else if(/^[\s\S]{10,30}$/.test(text)){
 				    	getTaobaoke_byCode(config,openid,text,res);
 				    }else if(text=='提现测试'){
-				    	res.reply('<a href="http://tiexie0.top/alipay/redirect/'+request.params.code+'">点击链接提现</a>')
+				    	res.reply('<a href="http://www.rrdtjj.top/alipay/redirect/'+request.params.code+'">点击链接提现</a>')
 				    }else if(text=='测试openid'){
 				    	res.reply(openid);
 				    }else{
@@ -142,6 +142,7 @@ function update_sendMessage(openid){
 			return
 		}
 		msg.user_status = msg.status;
+		msg.action_time = Date.now();
 		msg.save();
 	});
 }
@@ -184,19 +185,19 @@ function replay_book(book_id,message,res){
 	});
 	if(message.Ticket){
 		var str = '欢迎关注「'+conf.name+'」，为您推荐超赞的言情小说：\r\n\r\n';
-		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">《'+conf.bookname+'》</a>\r\n\r\n';
+		str +=  '<a href="http://www.rrdtjj.top/books/continue/'+conf.book_id+'">《'+conf.bookname+'》</a>\r\n\r\n';
 		for (var i =  0; i < conf.other_books.length; i++) {
 			var book = conf.other_books[i];
-			str += '<a href="http://tiexie0.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n\r\n'
+			str += '<a href="http://www.rrdtjj.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n\r\n'
 		}
 		res.reply(str);
 	}else{
 		var str = '欢迎关注「'+conf.name+'」，您正在阅读《'+conf.bookname+'》\r\n';
-		str +=  '<a href="http://tiexie0.top/books/continue/'+conf.book_id+'">点我继续阅读</a>\r\n\r\n\r\n';
+		str +=  '<a href="http://www.rrdtjj.top/books/continue/'+conf.book_id+'">点我继续阅读</a>\r\n\r\n\r\n';
 		str += '猜您喜欢：\r\n';
 		for (var i =  0; i < conf.other_books.length; i++) {
 			var book = conf.other_books[i];
-			str += '<a href="http://tiexie0.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n\r\n'
+			str += '<a href="http://www.rrdtjj.top/books/continue/'+book.book_id+'">《'+book.bookname+'》</a>\r\n\r\n'
 		}
 		res.reply(str);
 	}	
@@ -235,7 +236,7 @@ function sendBookMessage(auth,code){
 		str += '目前关注人数：'+auth.invitees.length+'\r\n还需关注人数：'+(5-auth.invitees.length);
 	}else{
 		str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成5/5\r\n';
-		str +=  '<a href="http://tiexie0.top/books/continue/'+auth.book_id+'">【点我继续阅读】</a>\r\n';	
+		str +=  '<a href="http://www.rrdtjj.top/books/continue/'+auth.book_id+'">【点我继续阅读】</a>\r\n';	
 	}
 	console.log('send book message to user');
 	client.sendText(auth.openid, str, function(err,result){
@@ -342,7 +343,7 @@ function cash(code,openid,res){
 			res.reply('您的余额为【'+current_balance.toFixed(2)+'】元，要达到【1.0】元才可以提现哦！');
 		}else{
 			var str = '余额超过1元，可以申请提现！\r\n━┉┉┉┉∞┉┉┉┉━┉━━\r\n'+
-						'<a href="http://tiexie0.top/alipay/redirect/'+code+'">点我提现</a>\r\n'+
+						'<a href="http://www.rrdtjj.top/alipay/redirect/'+code+'">点我提现</a>\r\n'+
 						'━┉┉┉┉∞┉┉┉┉━┉━━\r\n申请提现后，24小时内提现到账！'
 			res.reply(str);
 		}
@@ -556,6 +557,7 @@ function getUserInfo(openid,config,message,request,w_req,w_res,next){
 				user.openid = openid;
 				user.code = config.code;
 				user.current_balance = 0;
+				user.action_time = Date.now();
 				UserModel.create(user,function(error){if(error)console.log(error)});
 				//console.log(user);
 				callback(null,null);
