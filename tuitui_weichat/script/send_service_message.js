@@ -75,7 +75,6 @@ function send_message(_id, next) {
         users.forEach(function (user) {
             var config = weichat_conf[user.code]
             var client = new WechatAPI(config.appid, config.appsecret);
-            console.log(user.status,user.user_status,strs[user.status],'---------------------status')
             if (user.status == user.user_status && strs[user.status]) {
                 client.sendText(user.openid, strs[user.status], function (err, result) {
                     console.log(err);
@@ -111,8 +110,8 @@ var times1 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 5
 rule1.minute = times1;
 var k = schedule.scheduleJob(rule1, function () {
     console.log("执行发送任务");
-    // if(new Date().getHours()>10 && new Date().getHours()<23) {
+    if(new Date().getHours()>10 && new Date().getHours()<23) {
         console.log('发送消息');
         get_message();
-    // }
+    }
 });
