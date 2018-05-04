@@ -26,7 +26,7 @@ var weichat_apis ={};
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
 
-var send_code = require('../conf/proj.json').send_wechat;
+var send_codes = require('../conf/proj.json').send_wechat;
 
 router.use('/:code', function(request, response, next_fun) {
 	var config=weichat_conf[request.params.code];
@@ -39,7 +39,7 @@ router.use('/:code', function(request, response, next_fun) {
 			var openid = message.FromUserName;
 			getUserInfo(openid,config,message,request,req,res,function(openid,config,message,request,req,res){
 				if (message.MsgType === 'text') {
-					if(request.params.code == send_code){
+					if(send_codes.indexOf(''+request.params.code) != -1){
 						update_sendMessage(openid)
 					}
 				    var text = message.Content.trim();
