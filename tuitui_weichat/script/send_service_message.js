@@ -5,6 +5,15 @@ var pro_conf = require('../conf/proj.json');
 var UserModel = require('../model/User.js');
 var UserWaitMessageModel = require('../model/UserWaitMessage.js');
 var async = require('async');
+var send_codes = require('../conf/proj.json').send_wechat;
+var clients = {}
+
+send_codes.forEach(function (item) {
+    var config = weichat_conf[item]
+    var client = new WechatAPI(config.appid, config.appsecret);
+    clients[item] = client
+})
+
 
 function next_up(_id) {
     if (_id) {
@@ -73,16 +82,15 @@ function send_message(_id, next) {
     UserWaitMessageModel.fetch(_id,function (err, users) {
         console.log('--------扫描信息表-----'+users.length)
         users.forEach(function (user) {
-            var config = weichat_conf[user.code]
-            var client = new WechatAPI(config.appid, config.appsecret);
+
             if (user.status == user.user_status && strs[user.status]) {
-                client.sendText(user.openid, strs[user.status], function (err, result) {
+                clients[user.code].sendText(user.openid, strs[user.status], function (err, result) {
                     console.log(err);
                 });
                 UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
             }
             if (user.status != user.user_status && strs[user.status] && (new Date().getTime() - 8 * 3600 * 1000 - user.updateAt.getTime()) > 2 * 3600 * 1000) {
-                client.sendText(user.openid, strs[user.status], function (err, result) {
+                clients[user.code].sendText(user.openid, strs[user.status], function (err, result) {
                     console.log(err);
                 });
                 UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
