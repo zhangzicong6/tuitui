@@ -24,7 +24,7 @@ var UserWaitMessageSchema = new Schema({
 UserWaitMessageSchema.statics = {
     fetch(id, cb) {
         if (id) {
-            return this.find()
+            return this.find({_id:{$it:id}})
                 .limit(50)
                 .sort({'_id':-1})
                 .exec(cb);
