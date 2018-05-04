@@ -71,6 +71,7 @@ function send_message(_id, next) {
     }
 
     UserWaitMessageModel.fetch(_id,function (err, users) {
+        console.log('--------扫描信息表-----'+users.length)
         users.forEach(function (user) {
             var config = weichat_conf[user.code]
             var client = new WechatAPI(config.appid, config.appsecret);
@@ -86,7 +87,7 @@ function send_message(_id, next) {
                 });
                 UserWaitMessageModel.update({oenid: user.openid}, {$inc: {status: 1}})
             }
-        })
+        });
         console.log('send_message next');
         if (users.length == 50) {
             return next(users[49]._id);
