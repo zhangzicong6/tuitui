@@ -48,7 +48,7 @@
 					<i class="laiyuan1"></i>
 					<%= title %>
 				</p>
-				<p class="p2">
+				<p class="p2" style="position: relative;">
 					<span class="span3">原价</span>
 					<span class="span2">￥
 						<font>
@@ -56,7 +56,7 @@
 						</font>
 					</span>
 
-					<span style="color:rgb(242,83,137);font-size:20px;padding-left:50px;line-height: 30px;">优惠券：
+					<span style="color:rgb(242,83,137);font-size:20px;line-height: 30px;position: absolute;right: 10px;">优惠券：
 						<%= couponAmount %>元</span>
 				</p>
 				<ul class="ul_list_spf">
@@ -64,7 +64,7 @@
 						<span>
 							<%= shopTitle %>
 						</span></li>
-					<li class="fanli" style="left: 52%">返利
+					<li class="fanli" style="right: 10px;left: auto;width: auto;">返利
 						<font>
 							<%= tkCommFee %>
 						</font> 元</li>
