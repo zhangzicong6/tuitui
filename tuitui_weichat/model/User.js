@@ -33,7 +33,22 @@ var UserSchema = new Schema({
     timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' }
 });
 
+UserSchema.statics = {
+    fetch(id, cb) {
+        if (id) {
+            return this.find()
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+        }else {
+            return this.find()
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+        }
 
+    }
+}
 
 var UserModel = db.model('User', UserSchema);
 
