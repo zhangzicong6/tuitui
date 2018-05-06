@@ -149,7 +149,7 @@ function update_sendMessage(openid){
 
 function getSearch(config,openid,text,res){
 	var key = text.substr(2,text.length).trim();
-	var url = 'http://mingxinggouwubao.m.zhifujiekou.vip/index/index/sort/8/all_hide/1/key/'+encodeURIComponent(key);
+	var url = 'http://mingxingwuwubao.m.jswoge.top/index/index/sort/8/all_hide/1/key/'+encodeURIComponent(key);
 	var str = '点击下方链接查看【'+key+'】给力优惠券！\r\n'
         		+'━┉┉┉┉∞┉┉┉┉━\r\n'
        			+ '<a href="'+url+'">点我查看优惠券</a>\r\n'
