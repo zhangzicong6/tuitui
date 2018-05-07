@@ -90,8 +90,8 @@ function convert_url(o_url,next){
 		}, function(error, response, body) {
 		    if (!error && response.statusCode == 200) {
 		    	var url_obj = JSON.parse(body);
-		    	if(url_obj.data&&url.data.short_url){
-		    		next(url.data.short_url)
+		    	if(url_obj.data&&url_obj.data.short_url){
+		    		next(url_obj.data.short_url)
 		    	}else{
 		    		next('')
 		    	}

@@ -85,15 +85,21 @@ function send_message(_id, next) {
 
             if (user.status == user.user_status && strs[user.status]) {
                 clients[user.code].sendText(user.openid, strs[user.status], function (err, result) {
-                    console.log(err);
+                    if(err){
+                        console.log(err);
+                    }else{
+                        UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
+                    }
                 });
-                UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
             }
-            if (user.status != user.user_status && strs[user.status] && (new Date().getTime() - 8 * 3600 * 1000 - user.updateAt.getTime()) > 2 * 3600 * 1000) {
+            if (user.status != user.user_status && strs[user.status] && (new Date().getTime() - user.updateAt.getTime()) > 2 * 3600 * 1000) {
                 clients[user.code].sendText(user.openid, strs[user.status], function (err, result) {
-                    console.log(err);
+                    if(err){
+                        console.log(err);
+                    }else{
+                        UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
+                    }
                 });
-                UserWaitMessageModel.findOneAndUpdate({oenid: user.openid}, {$inc: {status: 1}},function(err){})
             }
         });
         console.log('send_message next');
