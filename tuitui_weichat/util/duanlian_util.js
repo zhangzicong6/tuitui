@@ -73,7 +73,7 @@ function get_access_token(next) {
 	});
 }
 
-function convert_url(next){
+function convert_url(o_url,next){
 	get_access_token(function(token){
 		if(!token){
 			return next('')
@@ -86,7 +86,7 @@ function convert_url(next){
 		        "Content-Type": "application/x-www-form-urlencoded",
 		        "Cache-Control":"no-cache"
 		    },
-		    form:{longurl:'http://mingxingwuwubao.m.jswoge.top/index'}
+		    form:{longurl:o_url}
 		}, function(error, response, body) {
 		    if (!error && response.statusCode == 200) {
 		    	var url_obj = JSON.parse(body);
