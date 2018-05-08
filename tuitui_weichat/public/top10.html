@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)http://flh6.top/topic/58495?pid=mm_123504561_40590008_279342686 -->
+<html style="font-size: 85.3333px;">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>今日热门优惠券排行榜</title>
+    <meta name="csrf-token" content="rzXwp8EprLqcN1911BKvwwCVW60zuVauV2IT2Kbz">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta name="format-detection" content="telephone=no">
+
+    <script src="/javascripts/top10/jquery.min.js"></script>
+    <script src="/javascripts/top10/jquery.lazyload.min.js"></script>
+
+    <script>
+        // 启用FastClick
+        // if ('addEventListener' in document) {
+        //     document.addEventListener('DOMContentLoaded', function() {
+        //         FastClick.attach(document.body);
+        //     }, false);
+        // };
+        window.GV = {
+            APP_ROOT: "http://cms.dge3.top",
+            TOKEN: 'rzXwp8EprLqcN1911BKvwwCVW60zuVauV2IT2Kbz', //token ajax全局
+            WHOLE_JS_URL: "https://static.byn2.top/js/",
+            TIME: "1525328402"
+        };
+        htmlResize();
+        window.onresize = htmlResize;
+
+        function htmlResize() {
+            var width = document.documentElement.clientWidth;
+            width > 640 ? width = 640 : width = width;
+            document.documentElement.style.fontSize = width / 7.5 + 'px';
+        };
+    </script>
+    <link href="/stylesheets/top10/weui.min.css" rel="stylesheet">
+    <!-- <link href="https://static.byn2.top/wap/css/iconfont.css" rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="/stylesheets/top10/font_493174_wer07lbzxsz6w29.css">
+    <!-- new -->
+    <link rel="stylesheet" href="/stylesheets/top10/common.css">
+
+    <style type="text/css">
+        .page-header-bar {
+            position: relative;
+            height: auto;
+            line-height: 1.4;
+            padding: 8px 15px;
+            box-sizing: border-box;
+        }
+
+        .d-img {
+            width: 4.5rem;
+            min-height: 4.5rem;
+            margin: 0 auto;
+            background: #f7f7f6 url('/images/lazyimg.jpg') center no-repeat;
+            background-size: 100%;
+        }
+
+        #pageWrap .weui-media-box__title {
+            white-space: normal;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .weui-media-box__desc {
+            -webkit-line-clamp: 5;
+            margin-top: 4px;
+        }
+
+        .line-qhj {
+            color: #666;
+            line-height: 28px;
+        }
+
+        .qhj,
+        .weui-panel__hd,
+        .weui-cell__bd {
+            color: #fc0022;
+        }
+
+        .qhj big {
+            font-size: 20px;
+        }
+
+        .weui-media-box {
+            box-shadow: 0 2px 5px #ccc;
+            -webkit-box-shadow: 0 2px 5px #ccc;
+            padding-top: 20px;
+        }
+
+        .tkl-box {
+            margin: 8px auto;
+            padding: 7px 30px;
+            color: rgb(254, 86, 10);
+            border: solid #ff9501;
+            border-width: 1px 0;
+            background: #fff8f8;
+        }
+
+        .copy-tkl {
+            width: 60%;
+            font-size: 13px;
+            background-image: linear-gradient(225deg, rgb(254, 86, 10) 3%, rgb(255, 153, 1) 100%);
+            border-radius: 20px;
+        }
+
+        .get-tkl,
+        .style-get-tkl {
+            width: 60%;
+            font-size: 13px;
+            margin: 15px auto;
+            border-radius: 20px;
+            background-color: #ff465f;
+        }
+
+        .g-loading {
+            padding-bottom: 0;
+        }
+
+        .the-tkl {
+            display: none;
+        }
+
+        .tkl-box:focus {
+            outline: none;
+        }
+
+        .btn-box {
+            min-height: 50px;
+        }
+
+        #biu-totop {
+            display: block;
+        }
+
+        .tag-coupon .icon {
+            width: 17px;
+            height: 1pc;
+            background-image: url(/images/small.png);
+            background-image: -webkit-image-set(url(/images/small.png) 1x, url(/images/large.png) 2x);
+            background-image: -moz-image-set(url(/images/small.png) 1x, url(/images/large.png) 2x);
+            background-image: -ms-image-set(url(/images/small.png) 1x, url(/images/large.png) 2x);
+            background-image: -o-image-set(url(/images/small.png) 1x, url(/images/large.png) 2x)
+        }
+
+        .tag-coupon .icon,
+        .tag-coupon .money {
+            display: inline-block;
+            vertical-align: top
+        }
+
+        .tag-coupon .money {
+            padding: 0 3px;
+            height: 14px;
+            border: 1px solid #f50;
+            border-left: none;
+            border-radius: 0 2px 2px 0;
+            background-color: #fff;
+            color: #e64d00;
+            font-size: 9pt;
+            line-height: 14px;
+            margin-left: -5px;
+        }
+
+        .tag-coupon {
+            display: inline-block;
+            margin-right: 6px;
+            width: auto;
+            height: 1pc;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 1pc
+        }
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!-- 百度统计-->
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?c3d60dabac3b3c3afe1ff11807e30bad";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+
+<body ontouchstart="">
+
+    <!-- Main Header -->
+
+
+
+    <div id="pageWrap">
+        <input type="hidden" id="albumId" value="58495">
+        <header class="page-header-bar">
+            <h1 class="text-center" style="word-break: break-all;">5.1热门优惠券排行榜TOP10</h1>
+        </header>
+        <div class="text-center g-loading" style="display: none;">
+            <span>努力加载中</span>
+            <i class="weui-loading"></i>
+        </div>
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">今日优惠券商品热销前10名，优惠券款款抢手，件件好商品！优惠力度超大，价格低到不可思议。月销量都是同类商品中数一数二的！一起跟上剁手吧！ </div>
+            <div class="weui-panel__bd"></div>
+            <div class="weui-panel__ft">
+                <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
+                    <div class="weui-cell__bd">领领领，优惠券傍身不用愁；买买买，优惠力度超级大。</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="biu-totop">
+        <span class="mui-icon iconfont icon-totop"></span>
+    </div>
+
+    <div id="toast" style="display:none;">
+        <!-- <div class="weui-mask_transparent"></div> -->
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content toast-text"></p>
+        </div>
+    </div>
+    <div class="js_dialog" id="jsDialog" style="display:none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd">
+                <strong class="weui-dialog__title dialog-title">温馨提示</strong>
+            </div>
+            <div class="weui-dialog__bd dialog-text"></div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">知道了</a>
+            </div>
+        </div>
+    </div>
+    <div class="js_dialog" id="jsConfirm" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd">
+                <strong class="weui-dialog__title dialog-title">温馨提示</strong>
+            </div>
+            <div class="weui-dialog__bd dialog-text"></div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确认</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () { // 听说可以防一波劫持
+            if (self !== top) {
+                window.top.location.href = window.location.href
+            };
+            var __createEle = Document.prototype.createElement;
+            Document.prototype.createElement = function () {
+                var element = __createEle.apply(this, arguments);
+                if (element.tagName.toLowerCase() == 'script') {
+                    element.__defineSetter__('src', function (val) {
+                        if (val.indexOf('taobao.com') > -1) element.setAttribute('src', val);
+                        else {
+                            if (window.sessionStorage && !window.sessionStorage.fightAd) {
+                                window.sessionStorage.fightAd = '1';
+                                window.top.location.reload();
+                            }
+                        }
+                    })
+                }
+                return element
+            };
+        })()
+    </script>
+    <script src="/javascripts/top10/utils.js"></script>
+    <script src="/javascripts/top10/clipboard.min.js"></script>
+    <!-- <script src="https://static.byn2.top/wap/js/clip-log.js"></script> -->
+    <script>
+        $(function(){
+            $.ajax({
+                url: "/top10/find?class=" + req.query.class,
+                datatype: "json",
+                type: "get",
+                success: function (res) {
+                    var data = res.data
+                    var html = '';
+                    $.each(data, function (i, el) {
+                        var shopTitle = el.shopTitle.substring(0,6)
+                        html += `
+                            <div class="weui-media-box weui-media-box_text">
+                                <div class="d-img">
+                                    <img class="lazy" data-original="${el.pictUrl}" alt="" style="opacity: 1; transition: opacity 100ms;">
+                                </div>
+                                <h4 class="weui-media-box__title">${el.title}</h4>
+                                <p class="line-qhj">
+                                    卖价
+                                    <span class="qhj"> ¥
+                                        <big>${el.price}</big>
+                                    </span> 元
+                                    <span class="pull-right line-through">原价¥${el.reservePrice}元</span>
+                                </p>
+                                <p>
+                                    <span class="tag-coupon">
+                                        <span class="icon"></span>
+                                        <span class="money">
+                                            <span>${el.couponAmount}</span>元
+                                        </span>
+                                    </span>
+                                    <span>
+                                        &nbsp; 返利：<span style="color: red;font-size:20px;">${el.tkCommFee}</span>元
+                                    </span>
+                                    <span class="pull-right weui-media-box__desc">店铺：${shopTitle}</span>
+                                </p>
+                                <div class="btn-box">
+                                    <a data-id="1234628" href="javascript:;" class="weui-btn weui-btn_warn get-tkl">获取淘口令</a>
+                                    <div class="the-tkl">
+                                        <div contenteditable="true" onkeydown="return false;" class="tkl-box">
+                                            复制这段信息，${el.token}，打开「手机淘宝」即可领券购买
+                                        </div>
+                                        <a href="javascript:;" class="weui-btn weui-btn_warn copy-tkl">复制淘口令</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        `
+                    });
+                    $('.weui-panel__bd').append(html)
+                }
+            }).done(function(){
+                $("img.lazy").lazyload();
+            })
+        })
+        $(document).on("click", ".get-tkl", function () {
+            $(this).hide().next().fadeIn()
+        });
+        var clipTkl = new Clipboard(".copy-tkl", {
+            text: function (trigger) {
+                return trigger.previousElementSibling.innerText
+            }
+        });
+        clipTkl.on("success", function () {
+            commonMethods.toast("复制成功！")
+        });
+        clipTkl.on("error", function () {
+            commonMethods.dialog("请手动长按复制")
+        });
+        if (commonMethods.os.ios) {
+            document.addEventListener("selectionchange", function (e) {
+                var t = window.getSelection().anchorNode;
+                var tParent = t.parentNode.className.indexOf("tkl-box") > -1;
+                if (t && tParent && t.parentNode.innerText != window.getSelection()) {
+                    window.getSelection().selectAllChildren(t.parentNode)
+                }
+            }, false)
+        };
+        document.getElementById('biu-totop').addEventListener('click', function () {
+            document.body.scrollTop = document.documentElement.scrollTop = 0
+        });
+    </script>
+    <script src="/javascripts/top10/jweixin-1.0.0.js">
+    </script>
+    <script type="text/javascript">
+        var url = window.location.href;
+        wx.config({
+            "debug": false,
+            "beta": false,
+            "appId": "wxaa1f342551a5902b",
+            "nonceStr": "AAexXr7Awa",
+            "timestamp": 1525328402,
+            "url": "http:\/\/flh6.top\/topic\/58495?pid=mm_123504561_40590008_279342686",
+            "signature": "92e9c60426f54dc8d18272bec18f4c22fe8c3800",
+            "jsApiList": ["onMenuShareAppMessage", "onMenuShareTimeline"]
+        });
+        wx.ready(function () {
+            wx.onMenuShareAppMessage({
+                title: "5.1热门优惠券排行榜TOP10",
+                desc: "今日优惠券商品热销前10名，优惠券款款抢手，件件好商品！优惠力度超大，价格低到不可思议。月销量都是同类商品中数一数二的！一起跟上剁手吧！  ", // 分享描述
+                link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: "/images/top10/1.jpg", // 分享图标 HTML --}}
+                type: '', // 分享类型,music、video或link，不填默认为link HTML
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空 HTML 
+            });
+            wx.onMenuShareTimeline({
+                title: "5.1热门优惠券排行榜TOP10",
+                link: url,
+                imgUrl: "https://img.alicdn.com/imgextra/i4/385522832/TB2yEPmXUgQMeJjy0FfXXbddXXa_!!385522832.jpg",
+            })
+        })
+    </script>
+    <script async="">
+        //分割愚蠢的广告劫持
+    </script>
+
+
+
+
+</body>
+
+</html>
