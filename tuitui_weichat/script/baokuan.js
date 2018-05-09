@@ -17,7 +17,13 @@ function getitem(keyword,time){
 }
 
 setTimeout(function(){
-	get_data();
+	//抓取
+	//get_data();
+	var keyword = {
+			"class":"8",
+			"key":"美妆个护"
+		};
+	MessageServer.getInstance().get_baokuan(keyword);
 },10000)
 
 
