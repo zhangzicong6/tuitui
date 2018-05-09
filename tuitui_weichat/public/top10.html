@@ -206,7 +206,7 @@
     <div id="pageWrap">
         <input type="hidden" id="albumId" value="58495">
         <header class="page-header-bar">
-            <h1 class="text-center" style="word-break: break-all;">5.1热门优惠券排行榜TOP10</h1>
+            <h1 class="text-center" style="word-break: break-all;">今日热门优惠券排行榜</h1>
         </header>
         <div class="text-center g-loading" style="display: none;">
             <span>努力加载中</span>
@@ -217,8 +217,11 @@
             <div class="weui-panel__bd"></div>
             <div class="weui-panel__ft">
                 <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
-                    <div class="weui-cell__bd">领领领，优惠券傍身不用愁；买买买，优惠力度超级大。</div>
+                    <div class="weui-cell__bd" style="text-align: center;">更多秒杀、0元领、抖音爆款商品，请加美淘买手微信号！</div>
                 </a>
+                <div style="margin: auto;width: 50%;">
+                    <img style="margin: auto;width: 50%;" src="/images/top10_qr/baokuan.jpg" alt="">
+                </div>                
             </div>
         </div>
     </div>
@@ -317,7 +320,7 @@
                                         </span>
                                     </span>
                                     <span>
-                                        &nbsp; 返利：<span style="color: red;font-size:20px;">${el.tkCommFee}</span>元
+                                        &nbsp; 返利：<span style="color: red;font-size:20px;">${(el.tkCommFee*0.2).toFixed(2)}</span>元
                                     </span>
                                     <span class="pull-right weui-media-box__desc">店铺：${shopTitle}</span>
                                 </p>
