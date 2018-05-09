@@ -3,6 +3,8 @@ var WechatAPI = require('wechat-api');
 var weichat_conf = require('./conf/weichat.json');
 var weichat_apis ={};
 var TokenMessageModel = require('./model/TokenMessage');
+var BaoKuanModel = require('./model/BaoKuan');
+
 
 String.prototype.stripHTML = function() {
 	var reTag = /<(?:.|\s)*?>/g;
@@ -100,6 +102,23 @@ MessageServer.prototype.init_io = function(server,self) {
 			});
 		});
 
+		socket.on('baokuan',function(msg){
+			msg = msg.stripHTML();
+			msg = JSON.parse(msg);
+			if(!msg.data||msg.data.length==0){
+				return
+			}
+
+			for (var index=0; index <msg.data.length; index++) {
+				msg.data[index].index = index;
+			}
+			BaoKuanModel.remove({class:msg.class},function(error,docs){
+				BaoKuanModel.insertMany(msg.data,function(err,res){
+					console.log('更新爆款'+msg.key+'成功');
+				});
+			});
+		});
+
 	});
 }
 
@@ -124,6 +143,16 @@ MessageServer.prototype.req_title_token = function(data){
 	this.sockets[key].emit('getTitleToken',JSON.stringify(data));
 }
 
+
+MessageServer.prototype.get_baokuan = function(data){
+	if(this.socket_ids.length == 0){
+		console.log('no socket connect ');
+		return;
+	}
+	var index = parseInt(Math.random()*this.socket_ids.length);
+	var key = this.socket_ids[index];
+	this.sockets[key].emit('getBaoKuan',JSON.stringify(data));
+}
 
 
 module.exports = MessageServer
