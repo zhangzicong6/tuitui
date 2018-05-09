@@ -285,11 +285,10 @@
     </script>
     <script src="/javascripts/top10/utils.js"></script>
     <script src="/javascripts/top10/clipboard.min.js"></script>
-    <!-- <script src="https://static.byn2.top/wap/js/clip-log.js"></script> -->
     <script>
         $(function(){
             $.ajax({
-                url: "/top10/find?class=" + req.query.class,
+                url: "/top10/find?class=" + location.search.split('class=')[1].split('&')[0],
                 datatype: "json",
                 type: "get",
                 success: function (res) {
