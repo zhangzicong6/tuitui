@@ -21,7 +21,7 @@ setTimeout(function(){
 	//get_data();
 	var keyword = {
 			"class":"8",
-			"key":"美妆个护"
+			"key":"美妆"
 		};
 	MessageServer.getInstance().get_baokuan(keyword);
 },10000)
