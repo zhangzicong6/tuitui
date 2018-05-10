@@ -18,12 +18,12 @@ function getitem(keyword,time){
 
 setTimeout(function(){
 	//抓取
-	//get_data();
-	var keyword = {
-			"class":"8",
-			"key":"美妆"
+	get_data();
+	/*var keyword = {
+			"class":"3",
+			"key":"儿童"
 		};
-	MessageServer.getInstance().get_baokuan(keyword);
+	MessageServer.getInstance().get_baokuan(keyword);*/
 },10000)
 
 
