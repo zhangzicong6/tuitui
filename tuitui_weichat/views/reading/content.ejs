@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html style="font-size: 50px;">
+  <head>
+    <title>免费看书</title>
+    <link rel='stylesheet' href='/stylesheets/youshu.css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="/javascripts/jiazai.min.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div data-v-c57c7ec2="" class="detail" style="padding-bottom: 0.6rem;"><div data-v-c57c7ec2="" class="Z_title H_title st-font3"><%= chapte.chapte_name%></div> 
+        <div data-v-c57c7ec2="" class="bd">
+          <!-- <ul data-v-c57c7ec2="" class="themebox">
+            <li data-v-c57c7ec2="" id="BG1"><a data-v-c57c7ec2="" href="javascript:void(0)" bg-color="f6f5fb" class="change-bgcolor st-bg1"></a></li> <li data-v-c57c7ec2="" id="BG2"><a data-v-c57c7ec2="" href="javascript:void(0)" bg-color="d6d6e3" class="change-bgcolor st-bg2"></a></li> <li data-v-c57c7ec2="" id="BG3"><a data-v-c57c7ec2="" href="javascript:void(0)" bg-color="d2c1a5" class="change-bgcolor st-bg3"></a></li> <li data-v-c57c7ec2="" id="BG4"><a data-v-c57c7ec2="" href="javascript:void(0)" bg-color="dde7c4" class="change-bgcolor st-bg4"></a></li> <li data-v-c57c7ec2="" id="BG6"><a data-v-c57c7ec2="" href="javascript:void(0)" bg-color="e0e1dc" class="change-bgcolor st-bg6"></a></li> <li data-v-c57c7ec2="" id="BG7"><a data-v-c57c7ec2="" href="javascript:void(0)" bg-color="000000" class="change-bgcolor st-bg7"></a></li> <li data-v-c57c7ec2=""><a data-v-c57c7ec2="" href="javascript:void(0)" id="FontB" class="font-size-big btn-prev"></a></li> <li data-v-c57c7ec2=""><a data-v-c57c7ec2="" href="javascript:void(0)" id="FontS" class="font-size-small btn-next"></a></li> <li data-v-c57c7ec2="" class="ffr"><a data-v-c57c7ec2="" href="/?channel_id=2724" class="home"></a></li>
+          </ul> -->
+        </div>
+      	<div data-v-c57c7ec2="" class="readP st-font3">
+          <%- chapte.content%>
+      	</div>
+        <div data-v-0b0dfca3="" class="hauto" style="height: 1.4rem; font-size: 16px;">
+        <%if(chapte.last_chapte){ %>
+        <a style="text-decoration: none;" href="/reading/read/<%= chapte.book_id%>?chapte_id=<%= chapte.last_chapte%>" data-v-0b0dfca3="" class="clickbutton border_fff U_menu setwidth" _vimium-has-onclick-listener=""><p data-v-0b0dfca3="" class="nlink" _vimium-has-onclick-listener="">&lt; 上一章</p></a> 
+        <%}%>
+        <a style="text-decoration: none;" href="/reading/chaptes/<%= chapte.book_id %>" data-v-0b0dfca3="" class="clickbutton C_menu setwidth2" _vimium-has-onclick-listener="" style="margin-top: 0.63rem;"></a>
+        <%if(chapte.next_chapte){ %>
+        <a style="text-decoration: none;" href="/reading/read/<%= chapte.book_id%>?chapte_id=<%= chapte.next_chapte%>" data-v-0b0dfca3="" class="clickbutton border_fff R_next setwidth"><p data-v-0b0dfca3="" class="nlink" >下一章 &gt;</p></a>
+        <%}%>
+      </div>
+    </div>
+
+    <script type="text/javascript">// 计算html的font-size
+      (function () {
+          function resizeBaseFontSize() {
+              var rootHtml = document.documentElement,
+                  deviceWidth = rootHtml.clientWidth;
+              if (deviceWidth >= 414) {
+                  deviceWidth = 414;
+              }
+              rootHtml.style.fontSize = deviceWidth / 7.5 + "px";
+          }
+
+          resizeBaseFontSize();
+          window.addEventListener("resize", resizeBaseFontSize, false);
+          window.addEventListener("orientationchange", resizeBaseFontSize, false);
+      })();
+      <%if(chapte.index>10){ %>
+        wx.miniProgram.navigateTo({url: '/pages/cantact/cantact'})
+      <%}%>
+      
+    </script>
+    <!-- <script type="text/javascript" src="/javascripts/taokouling.js"></script> -->
+  </body>
+</html>
