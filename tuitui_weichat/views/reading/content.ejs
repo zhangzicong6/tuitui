@@ -45,7 +45,9 @@
           window.addEventListener("orientationchange", resizeBaseFontSize, false);
       })();
       <%if(chapte.index>10){ %>
-        wx.miniProgram.navigateTo({url: '/pages/cantact/cantact'})
+        var box = document.getElementsByClassName('detail')[0];
+        box.style.display = "none"
+        wx.miniProgram.navigateTo({url: '/pages/contact/contact'})
       <%}%>
       
     </script>
