@@ -35,6 +35,29 @@ function getQr(code,openid,book_id,next){
 	});
 }
 
+function getuserQr(code,openid,next){
+    var content = JSON.stringify({openid:openid});
+    memcached.get(content,function(err,ticket){
+        if(err){
+            console.log(err);
+        }
+        if(ticket){
+            next(null,ticket);
+        }else{
+            var client = getClient(code);
+            client.createTmpQRCode(content,2592000,function(err,result){
+                if(err){
+                    console.log(err);
+                    return next(err);
+                }
+                memcached.set(content,'user_'+result.ticket,2592000,function(err){});
+                memcached.set('user_'+result.ticket,content,2592000,function(err){});
+                next(null,result.ticket);
+            });
+        }
+    });
+}
+
 function QRCode(){
 	var client = getClient(['1']);
 	client.createLimitQRCode('book_id:239',function(err,reslut){
@@ -51,3 +74,4 @@ function QRCode(){
 
 module.exports.getClient = getClient;
 module.exports.getQr = getQr;
+module.exports.getuserQr = getuserQr;
