@@ -759,7 +759,6 @@ function invite(config,code, openid, user, res) {
                         } else {
                             console.log(cerror,'-----------------cerror')
                         }
-                        return res.reply('')
                     })
                 })
             })
