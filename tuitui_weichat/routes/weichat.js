@@ -749,16 +749,17 @@ function invite(config,code, openid, user, res) {
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    client.uploadImage(qr_name, function (error, result) {
+                    client.uploadImage(qr_name, function (cerror, result) {
                         if (result) {
                             client.sendImage(openid, result.url, function (err, res) {
                                 if (err) {
-                                    console.log(err)
+                                    console.log(err,'----------------err')
                                 }
                             })
                         } else {
-                            console.log(error)
+                            console.log(cerror,'-----------------cerror')
                         }
+                        return res.reply('')
                     })
                 })
             })
