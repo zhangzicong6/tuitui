@@ -18,7 +18,7 @@ function getitem(keyword,time){
 
 setTimeout(function(){
 	//抓取
-	get_data();
+	//get_data();
 	/*var keyword = {
 			"class":"3",
 			"key":"儿童"
