@@ -29,6 +29,7 @@ function update_user(_id, code, next) {
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
+        console.log(user_arr,clients[code],'---------------user_arr')
         clients[code].batchGetUsers(user_arr, function (data) {
             console.log(data,'------------------user_info_list')
             data.user_info_list.forEach(function (info) {
