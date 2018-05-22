@@ -749,7 +749,8 @@ function invite(config,code, openid, user, res) {
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    client.uploadImage(qr_name, function (cerror, result) {
+                    console.log(qr_name,'---------------qr_name')
+                    client.uploadImage('http://tiexie0.top'+qr_name, function (cerror, result) {
                         if (result) {
                             console.log(result,'-----------------result')
                             client.sendImage(openid, result.url, function (err, res) {
@@ -760,7 +761,6 @@ function invite(config,code, openid, user, res) {
                         } else {
                             console.log(cerror,'-----------------cerror')
                         }
-                        return res.reply('')
                     })
                 })
             })
