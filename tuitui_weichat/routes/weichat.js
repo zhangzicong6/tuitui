@@ -52,11 +52,11 @@ router.use('/:code', function (request, response, next_fun) {
                     } else if (text === '订单') {
                         getOrders(openid, res);
                     } else if (text === '个人信息') {
-                        getUser(openid,res);
-                    } else if (text === '测试个人信息' && request.params.code==1) {
+                        getUser(openid, res);
+                    } else if (text === '测试个人信息' && request.params.code == 1) {
                         new_getUser(openid, res);
                     } else if (text === '邀请好友') {
-                        invite(config,request.params.code, openid, res);
+                        invite(config, request.params.code, openid, res);
                     } else if (text === '提现') {
                         cash(request.params.code, openid, res);
                     } else if (text === '0' || text === '1' || text === '2') {
@@ -85,7 +85,7 @@ router.use('/:code', function (request, response, next_fun) {
                         res.reply('')
                     }
                 } else if (message.MsgType === 'event') {
-                    console.log(message,'----------------message')
+                    console.log(message, '----------------message')
                     if (message.Event === 'subscribe') {
                         var code_list = book_wechat_conf.book_wechat_list;
                         if (code_list.indexOf(request.params.code) == -1) {
@@ -94,8 +94,8 @@ router.use('/:code', function (request, response, next_fun) {
                             } else {
                                 res.reply('省钱助手欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
                             }
-                        }else if(request.params.code == 1 && message.Ticket){
-                            bind_user(openid,request.params.code,message.Ticket,res)
+                        } else if (request.params.code == 1 && message.Ticket) {
+                            bind_user(openid, request.params.code, message.Ticket, res)
                         } else {
                             var book_id = book_wechat_conf.book_wechat_map[request.params.code];
                             replay_book(book_id, message, res);
@@ -356,28 +356,28 @@ async function bind_user(openid, code, ticket, res) {
     let api = WechatAPI(conf.appid, conf.appsecret);
 
     let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
-    console.log(type,'---------------type')
+    console.log(type, '---------------type')
     if (type) {
         return res.reply('您已绑定二维码,请不要重复绑定！');
     }
     // let content = await memcached.get(ticket)
     memcached.get(ticket, async function (err, content) {
-        console.log(content,'---------------content')
+        console.log(content, '---------------content')
         if (!content) {
             return res.replay('二维码错误')
         }
         let fatherid = JSON.parse(content).openid;
         let hostid = fatherid;
-        console.log(fatherid,'---------------fatherid')
+        console.log(fatherid, '---------------fatherid')
         let father = await UserModel.findOneAndUpdate({openid: fatherid}, {
             $inc: {current_balance: father_cash},
             $addToSet: {friend: openid}
         })
-        console.log(father,'---------------father')
+        console.log(father, '---------------father')
         if (!father) {
             return res.replay('二维码错误')
         }
-        if(father.hostid){
+        if (father.hostid) {
             hostid = father.hostid;
             await UserModel.findOneAndUpdate({openid: father.hostid}, {$addToSet: {friend: openid}})
         }
@@ -388,10 +388,10 @@ async function bind_user(openid, code, ticket, res) {
         if (!user) {
             return res.replay('用户错误')
         }
-        console.log(user,'---------------user')
+        console.log(user, '---------------user')
         AddFreeOrderModel.create({openid: openid, type: 2, cash: cash});
 
-        if(father.fatherid) {
+        if (father.fatherid) {
             await UserModel.findOneAndUpdate({openid: father.fatherid}, {$inc: {current_balance: 0.66}})
         }
         let str = '赠送您【' + cash + '】元\r\n账户余额：【' + cash + '】元\r\n' +
@@ -431,43 +431,45 @@ function cash(code, openid, res) {
     });
 }
 
-function getUser(openid,res){
-    UserModel.findOne({openid:openid},function(error,user){
-        if(!user.auction){
-            var query = UserModel.find({$or:[
-                {auction:{$ne:0}},
-                {auction:{$ne:null}},
-            ]}).sort({auction:-1}).limit(1);
-            query.exec(function(error,tmps){
-                if( tmps.length && tmps[0].auction>10000 ){
-                    user.auction = tmps[0].auction+1;
-                }else{
-                    user.auction = 10000+1;
+function getUser(openid, res) {
+    UserModel.findOne({openid: openid}, function (error, user) {
+        if (!user.auction) {
+            var query = UserModel.find({
+                $or: [
+                    {auction: {$ne: 0}},
+                    {auction: {$ne: null}},
+                ]
+            }).sort({auction: -1}).limit(1);
+            query.exec(function (error, tmps) {
+                if (tmps.length && tmps[0].auction > 10000) {
+                    user.auction = tmps[0].auction + 1;
+                } else {
+                    user.auction = 10000 + 1;
                 }
                 user.save();
             });
-            sendUserMessage(openid,user,res);
-        }else{
-            sendUserMessage(openid,user,res);
+            sendUserMessage(openid, user, res);
+        } else {
+            sendUserMessage(openid, user, res);
         }
     });
 }
 
-function sendUserMessage(openid,user,res){
+function sendUserMessage(openid, user, res) {
     async.parallel([
-        function(callback){
-            UserOrderModel.count({openid:openid,status:{$ne:0}},callback);
+        function (callback) {
+            UserOrderModel.count({openid: openid, status: {$ne: 0}}, callback);
         },
-        function(callback){
-            UserOrderModel.count({openid:openid,$or:[{status:-1},{status:3}]},callback);
+        function (callback) {
+            UserOrderModel.count({openid: openid, $or: [{status: -1}, {status: 3}]}, callback);
         },
-        function(callback){
-            UserOrderModel.count({openid:openid,$or:[{status:1},{status:2}]},callback);
+        function (callback) {
+            UserOrderModel.count({openid: openid, $or: [{status: 1}, {status: 2}]}, callback);
         },
-    ],function(err,counts){
-        var str = '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:'+counts[0]+'笔\r\n已完成数:'+counts[1]+'笔\r\n未完成数:'+counts[2]+'笔\r\n'+
-            '当前余额:'+user.current_balance.toFixed(2)+'元\r\n累计提现:'+user.addup_cash.toFixed(2)+'元\r\n━┉┉┉┉∞┉┉┉┉━\r\n'+
-            '个人邀请码：【'+user.auction+'】\r\n'+'◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现';
+    ], function (err, counts) {
+        var str = '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:' + counts[0] + '笔\r\n已完成数:' + counts[1] + '笔\r\n未完成数:' + counts[2] + '笔\r\n' +
+            '当前余额:' + user.current_balance.toFixed(2) + '元\r\n累计提现:' + user.addup_cash.toFixed(2) + '元\r\n━┉┉┉┉∞┉┉┉┉━\r\n' +
+            '个人邀请码：【' + user.auction + '】\r\n' + '◇ ◇ ◇ 温馨提醒◇ ◇ ◇ \r\n收货后，返会添加到个账户余额超过1元，输入 “提现”提现';
         //console.log(str);
         res.reply({
             content: str,
@@ -733,7 +735,7 @@ function getAccessToken(code, callback) {
     });
 }
 
-function invite(config,code, openid, user, res) {
+function invite(config, code, openid, user, res) {
     console.log('------------invite')
     var client = new WechatAPI(config.appid, config.appsecret);
     var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
@@ -749,17 +751,17 @@ function invite(config,code, openid, user, res) {
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    console.log(qr_name,'---------------qr_name')
-                    client.uploadImage('http://tiexie0.top'+qr_name, function (cerror, result) {
+                    console.log(qr_name, '---------------qr_name')
+                    client.uploadImage('http://tiexie0.top' + __dirname + qr_name, function (cerror, result) {
                         if (result) {
-                            console.log(result,'-----------------result')
+                            console.log(result, '-----------------result')
                             client.sendImage(openid, result.url, function (err, res) {
                                 if (err) {
-                                    console.log(err,'----------------err')
+                                    console.log(err, '----------------err')
                                 }
                             })
                         } else {
-                            console.log(cerror,'-----------------cerror')
+                            console.log(cerror, '-----------------cerror')
                         }
                     })
                 })
