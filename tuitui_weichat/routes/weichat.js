@@ -56,7 +56,7 @@ router.use('/:code', function (request, response, next_fun) {
                     } else if (text === '测试个人信息' && request.params.code==1) {
                         new_getUser(openid, res);
                     } else if (text === '邀请好友') {
-                        invite(config, openid, res);
+                        invite(config,request.params.code, openid, res);
                     } else if (text === '提现') {
                         cash(request.params.code, openid, res);
                     } else if (text === '0' || text === '1' || text === '2') {
@@ -733,7 +733,8 @@ function getAccessToken(code, callback) {
     });
 }
 
-function invite(config, openid, user, res) {
+function invite(config,code, openid, user, res) {
+    console.log('------------invite')
     var client = new WechatAPI(config.appid, config.appsecret);
     var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
         '\r\n您的专属⼆维码⽣成成功（有效期30天）。让您的好友扫码关注公号即可！您会直接收到红包奖励！' +
