@@ -751,6 +751,7 @@ function invite(config,code, openid, user, res) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
                     client.uploadImage(qr_name, function (cerror, result) {
                         if (result) {
+                            console.log(result,'-----------------result')
                             client.sendImage(openid, result.url, function (err, res) {
                                 if (err) {
                                     console.log(err,'----------------err')
@@ -759,6 +760,7 @@ function invite(config,code, openid, user, res) {
                         } else {
                             console.log(cerror,'-----------------cerror')
                         }
+                        return res.reply('')
                     })
                 })
             })
