@@ -747,12 +747,10 @@ function invite(config, code, openid, user, res) {
         }
     });
     WechatUtil.getuserQr(code, openid, function (err, ticket) {
-        console.log(ticket, '------------ticket')
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    console.log(qr_name, '---------------qr_name')
-                    client.uploadImage('http://tiexie0.top' + qr_name, function (cerror, result) {
+                    client.uploadImage('http://tiexie0.top/home/work/tuitui/tuitui_weichat/util/user_image/' + qr_name, function (cerror, result) {
                         if (result) {
                             console.log(result, '-----------------result')
                             client.sendImage(openid, result.url, function (err, res) {
