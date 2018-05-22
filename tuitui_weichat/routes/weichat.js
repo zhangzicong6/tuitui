@@ -752,7 +752,7 @@ function invite(config, code, openid, user, res) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
                     console.log(qr_name, '---------------qr_name')
-                    client.uploadImage('http://tiexie0.top' + __dirname + qr_name, function (cerror, result) {
+                    client.uploadImage('http://tiexie0.top' + qr_name, function (cerror, result) {
                         if (result) {
                             console.log(result, '-----------------result')
                             client.sendImage(openid, result.url, function (err, res) {

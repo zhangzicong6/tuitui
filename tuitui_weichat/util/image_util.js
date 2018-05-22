@@ -78,6 +78,7 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
             }
             memcached.set('qr_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
             });
+            console.log(__dirname + '/user_image/' + qr_name,'-----------------path')
             callback(__dirname + '/user_image/' + qr_name);
         });
     });
