@@ -91,7 +91,7 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
                 if (error) {
                     console.log(error);
                 }
-                memcached.set('user_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+                memcached.set('img_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
                 });
                 callback(qr_name);
             });
@@ -101,7 +101,7 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
 }
 
 function getUserImg(ticket, nickname, headimgurl, callback) {
-    memcached.get('user_' + ticket, function (err, qr) {
+    memcached.get('img_' + ticket, function (err, qr) {
         if (qr) {
             return callback(qr);
         }
