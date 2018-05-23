@@ -66,13 +66,14 @@ function getQRImg(ticket, callback) {
 }
 
 function user_img(ticket, qr_name, nickname, headimgurl, callback) {
-    var resize_cmd = 'gm "convert" "' + __dirname + '/user_image/' + qr_name + '" "-resize" "164x" "' + __dirname + '/user_image/small_' + qr_name + '"';
+    console.log(headimgurl,'--------------headimgurl')
+    var resize_cmd = 'gm "convert" "' + __dirname + '/user_image/' + qr_name + '" "-resize" "264x" "' + __dirname + '/user_image/small_' + qr_name + '"';
     exec(resize_cmd, function (error, stdout, stderr) {
         if (error) {
             console.log(error);
         }
         // var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+100+1000" "' + __dirname + '/user_image/small_' + qr_name + '" "-draw "text 0,0 ' + nickname + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
-        var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+294+1119" "' + __dirname + '/user_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
+        var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+894+1619" "' + __dirname + '/user_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
 
         exec(mosaic_cmd, function (error, stdout, stderr) {
             if (error) {
@@ -88,9 +89,9 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
 
 function getUserImg(ticket, nickname, headimgurl, callback) {
     memcached.get('qr_' + ticket, function (err, qr) {
-        // if (qr) {
-        //     return callback(qr);
-        // }
+        if (qr) {
+            return callback(qr);
+        }
         var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + ticket;
         console.log(qr_url,'-----------------qr_url');
         var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
