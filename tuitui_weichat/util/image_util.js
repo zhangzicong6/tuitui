@@ -73,21 +73,27 @@ function getQRImg(ticket, callback) {
 function user_img(ticket, qr_name, nickname, headimgurl, callback) {
     console.log(headimgurl, '--------------headimgurl')
     var resize_cmd = 'gm "convert" "' + __dirname + '/user_image/' + qr_name + '" "-resize" "360x" "' + __dirname + '/user_image/small_' + qr_name + '"';
+    var resize_head = 'gm "convert" "' + __dirname + '/user_image/head_' + qr_name + '" "-resize" "360x" "' + __dirname + '/user_image/smallhead_' + qr_name + '"';
 
     exec(resize_cmd, function (error, stdout, stderr) {
-        if (error) {
-            console.log(error);
-        }
-        // var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+100+1000" "' + __dirname + '/user_image/small_' + qr_name + '" "-draw "text 0,0 ' + nickname + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
-        var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+766+1501" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+466+1501" "' + __dirname + '/user_image/head_'+qr_name + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
-
-        exec(mosaic_cmd, function (error, stdout, stderr) {
+        exec(resize_head, function (errorhead, stdouthead, stderrhead) {
             if (error) {
                 console.log(error);
             }
-            memcached.set('qr_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+            if (errorhead) {
+                console.log(errorhead);
+            }
+            // var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+100+1000" "' + __dirname + '/user_image/small_' + qr_name + '" "-draw "text 0,0 ' + nickname + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
+            var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+766+1501" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+466+1501" "' + __dirname + '/user_image/smallhead_' + qr_name + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
+
+            exec(mosaic_cmd, function (error, stdout, stderr) {
+                if (error) {
+                    console.log(error);
+                }
+                memcached.set('qr_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+                });
+                callback(qr_name);
             });
-            callback(qr_name);
         });
     });
 

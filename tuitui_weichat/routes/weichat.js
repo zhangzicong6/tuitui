@@ -750,7 +750,9 @@ function invite(config, code, openid, user, res) {
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    client.uploadImage('http://tiexie0.top/home/work/tuitui/tuitui_weichat/util/user_image/' + qr_name, function (cerror, result) {
+                    var url = __dirname + '/../user_image/'+qr_name
+                    console.log(url,'-------------------url')
+                    client.uploadMedia(url, function (cerror, result) {
                         if (result) {
                             console.log(result, '-----------------result')
                             client.sendImage(openid, result.url, function (err, res) {
