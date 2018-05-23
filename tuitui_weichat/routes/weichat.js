@@ -752,7 +752,7 @@ function invite(config, code, openid, user, res) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
                     var url = __dirname + '/../util/user_image/'+qr_name
                     console.log(url,'-------------------url')
-                    client.uploadMedia(url, function (cerror, result) {
+                    client.uploadMedia(url,'image', function (cerror, result) {
                         if (result) {
                             console.log(result, '-----------------result')
                             client.sendImage(openid, result.url, function (err, res) {
