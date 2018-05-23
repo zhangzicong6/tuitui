@@ -18,8 +18,8 @@ function test() {
             }
         });
     });
-
 }
+test()
 
 module.exports.test = test
 
