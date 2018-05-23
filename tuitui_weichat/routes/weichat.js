@@ -755,7 +755,7 @@ function invite(config, code, openid, user, res) {
                     client.uploadMedia(url,'image', function (cerror, result) {
                         if (result) {
                             console.log(result, '-----------------result')
-                            client.sendImage(openid, result.url, function (err, res) {
+                            client.sendImage(openid, result.media_id, function (err, res) {
                                 if (err) {
                                     console.log(err, '----------------err')
                                 }
