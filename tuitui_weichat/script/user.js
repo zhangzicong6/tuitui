@@ -35,7 +35,9 @@ function update_user(_id, code, next) {
                     nickname: info.nickname,
                     headimgurl: info.headimgurl
                 }, function (err, result) {
-                    console.log(err)
+                    if(err){
+                        console.log(err)
+                    }
                 });
             })
             if (users.length == 50) {
