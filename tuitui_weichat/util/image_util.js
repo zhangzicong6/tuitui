@@ -85,7 +85,7 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
             }
             var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" ' +
                 '"-page" "+766+1501" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+336+1501" "' + __dirname + '/user_image/smallhead_'
-                + qr_name + '" "-font" "' + __dirname + '/china.TTF" "-fill" "white" "-pointsize" "50" "-draw" "text 346,1901 ' + nickname + '" ' +
+                + qr_name + '" "-font" "' + __dirname + '/china.TTF" "-fill" "white" "-pointsize" "60" "-draw" "text 356,1901 ' + nickname + '" ' +
                 ' "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
 
             exec(mosaic_cmd, function (error, stdout, stderr) {
