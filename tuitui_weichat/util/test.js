@@ -5,7 +5,7 @@ var exec = require('child_process').exec;
 process.env.PATH += ":/usr/local/GraphicsMagick-1.3.28/bin";
 
 function test() {
-    var resize_cmd = 'gm "convert" "' + __dirname +  '/user_image/15270471516785199.jpg " "-resize" "360x" "' + __dirname + '/user_image/small_15270471516785199.jpg"';
+    var resize_cmd = 'gm "convert" "' + __dirname +  '/user_image/15270471516785199.jpg" "-resize" "360x" "' + __dirname + '/user_image/small_15270471516785199.jpg"';
     exec(resize_cmd, function (error, stdout, stderr) {
         if (error) {
             console.log(error,'------------error1');
