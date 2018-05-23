@@ -30,16 +30,18 @@ function update_user(_id, code, next) {
             user_arr.push(user.openid)
         })
         clients[code].batchGetUsers(user_arr, function (err,data) {
-            data.user_info_list.forEach(function (info) {
-                UserModel.findOneAndUpdate({openid: info.openid}, {
-                    nickname: info.nickname,
-                    headimgurl: info.headimgurl
-                }, function (err, result) {
-                    if(err){
-                        console.log(err)
-                    }
-                });
-            })
+            if(data.user_info_list){
+                data.user_info_list.forEach(function (info) {
+                    UserModel.findOneAndUpdate({openid: info.openid}, {
+                        nickname: info.nickname,
+                        headimgurl: info.headimgurl
+                    }, function (err, result) {
+                        if(err){
+                            console.log(err)
+                        }
+                    });
+                })
+            }
             if (users.length == 50) {
                 return next(users[49]._id, code);
             } else {
