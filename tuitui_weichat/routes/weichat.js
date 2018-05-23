@@ -750,7 +750,7 @@ function invite(config, code, openid, user, res) {
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    var url = __dirname + '/../user_image/'+qr_name
+                    var url = __dirname + '/../util/user_image/'+qr_name
                     console.log(url,'-------------------url')
                     client.uploadMedia(url, function (cerror, result) {
                         if (result) {
