@@ -71,7 +71,7 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
         if (error) {
             console.log(error);
         }
-        var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+294+1119" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+294+900" "' + headimgurl + '"-draw "text 294,1200 ' + nickname + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
+        var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+0+0" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+0+0" "' + headimgurl + '"-draw "text 0,0 ' + nickname + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
         exec(mosaic_cmd, function (error, stdout, stderr) {
             if (error) {
                 console.log(error);
