@@ -92,10 +92,11 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
         //     return callback(qr);
         // }
         var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + ticket;
-        console.log(qr_url);
+        console.log(qr_url,'-----------------qr_url');
         var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
         var qr_path = __dirname + '/user_image/' + qr_name;
         downloadFile(qr_url, qr_path, function (err, res) {
+            console.log(res,'-------------res')
             user_img(ticket, qr_name, nickname, headimgurl, callback);
         });
     });
