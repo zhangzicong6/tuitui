@@ -83,8 +83,10 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
             if (errorhead) {
                 console.log(errorhead);
             }
-            // var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+100+1000" "' + __dirname + '/user_image/small_' + qr_name + '" "-draw "text 0,0 ' + nickname + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
-            var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" "-page" "+766+1501" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+336+1501" "' + __dirname + '/user_image/smallhead_' + qr_name + '" "-pointsize" "40" "-draw" "text,0,0,测试" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
+            var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.jpg" ' +
+                '"-page" "+766+1501" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+336+1501" "' + __dirname + '/user_image/smallhead_'
+                + qr_name + '" "-font"' + __dirname + '/china.TTF" "-fill" "white" "-pointsize" "40" "-draw" "text 336,2001 ' + nickname + '"' +
+                ' "-mosaic""' + __dirname + '/user_image/' + qr_name + '"'
 
             exec(mosaic_cmd, function (error, stdout, stderr) {
                 if (error) {
