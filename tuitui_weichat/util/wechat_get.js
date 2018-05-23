@@ -41,9 +41,9 @@ function getuserQr(code,openid,next){
         if(err){
             console.log(err);
         }
-        if(ticket){
-            next(null,ticket);
-        }else{
+        // if(ticket){
+        //     next(null,ticket);
+        else{
             var client = getClient(code);
             client.createTmpQRCode(content,2592000,function(err,result){
                 if(err){
