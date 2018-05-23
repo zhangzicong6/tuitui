@@ -751,10 +751,8 @@ function invite(config, code, openid, user, res) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
                     var url = __dirname + '/../util/user_image/'+qr_name
-                    console.log(url,'-------------------url')
                     client.uploadMedia(url,'image', function (cerror, result) {
                         if (result) {
-                            console.log(result, '-----------------result')
                             client.sendImage(openid, result.media_id, function (err, res) {
                                 if (err) {
                                     console.log(err, '----------------err')
@@ -763,6 +761,7 @@ function invite(config, code, openid, user, res) {
                         } else {
                             console.log(cerror, '-----------------cerror')
                         }
+                        return res.reply('');
                     })
                 })
             })
