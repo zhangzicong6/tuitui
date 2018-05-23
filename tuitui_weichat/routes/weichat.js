@@ -766,11 +766,11 @@ function invite(config, code, openid, res) {
                         } else {
                             console.log(cerror, '-----------------cerror')
                         }
-                        res.reply('');
                     })
                 })
             })
         }
+        res.reply('');
     })
 }
 
