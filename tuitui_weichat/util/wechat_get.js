@@ -42,7 +42,7 @@ function getuserQr(code,openid,next){
             console.log(err);
         }
         if(ticket){
-            next(null,ticket);
+            // next(null,ticket);
         }else{
             var client = getClient(code);
             client.createTmpQRCode(content,2592000,function(err,result){
