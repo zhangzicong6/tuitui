@@ -100,9 +100,8 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
         var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + ticket;
         console.log(qr_url,'-----------------qr_url');
         var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
-        var head_name = "head_"+Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
         var qr_path = __dirname + '/user_image/' + qr_name;
-        var head_path = __dirname + '/user_image/' + head_name;
+        var head_path = __dirname + '/user_image/head_' + qr_name;
         downloadHead(headimgurl, head_path, function (err, res) {
             downloadFile(qr_url, qr_path, function (err, res) {
                 user_img(ticket, qr_name, nickname, headimgurl, callback);
