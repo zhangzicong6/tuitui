@@ -735,7 +735,7 @@ function getAccessToken(code, callback) {
     });
 }
 
-function invite(config, code, openid, user, res) {
+function invite(config, code, openid, res) {
     console.log('------------invite')
     var client = new WechatAPI(config.appid, config.appsecret);
     var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
@@ -750,8 +750,8 @@ function invite(config, code, openid, user, res) {
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    var url = __dirname + '/../util/user_image/'+qr_name
-                    client.uploadMedia(url,'image', function (cerror, result) {
+                    var url = __dirname + '/../util/user_image/' + qr_name
+                    client.uploadMedia(url, 'image', function (cerror, result) {
                         if (result) {
                             client.sendImage(openid, result.media_id, function (err, res) {
                                 if (err) {
@@ -761,7 +761,7 @@ function invite(config, code, openid, user, res) {
                         } else {
                             console.log(cerror, '-----------------cerror')
                         }
-                        return res.reply('');
+                        res.reply('');
                     })
                 })
             })
