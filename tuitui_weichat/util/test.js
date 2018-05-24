@@ -24,7 +24,7 @@ function test() {
     // })
     memcached.delete('user_gQG_7zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZlhfZko3dXdkYWgxZXhVSmhyY0MAAgShawZbAwQAjScA', function (err, qr) {
     })
-    memcached.delete(JSON.stringify({openid:'o3qBK0QX8pKSVxlehps3GSL18NXo'}), function (err, qr) {
+    memcached.delete(JSON.stringify({openid:'o3qBK0ZM6UHi58UK_Yy3YymzdEcc'}), function (err, qr) {
     })
 }
 test()
