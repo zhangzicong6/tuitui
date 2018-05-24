@@ -353,6 +353,7 @@ function getCode(openid, text, res) {
 }
 
 async function bind_user(openid, code, ticket, res) {
+    res.reply('')
     let cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let father_cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let conf = weichat_conf[code];
@@ -360,19 +361,31 @@ async function bind_user(openid, code, ticket, res) {
 
     let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
     console.log(type, '---------------type')
-    res.reply('');
+
     if (type) {
-        res.reply('您已绑定二维码,请不要重复绑定！');
+        api.sendText(openid,'您已绑定二维码,请不要重复绑定！',function (err,res) {
+            if (err) {
+                console.log(err)
+            }
+        });
         return
     }
     let content = await mem.getContent(ticket)
     console.log(content, '---------------content')
     if (!content) {
-        res.reply('二维码错误')
+        api.sendText(openid,'二维码错误',function (err,res) {
+            if (err) {
+                console.log(err)
+            }
+        });
         return
     }
     if (openid == JSON.parse(content).openid) {
-        res.reply('二维码错误!')
+        api.sendText(openid,'二维码错误',function (err,res) {
+            if (err) {
+                console.log(err)
+            }
+        });
         return
     }
     let fatherid = JSON.parse(content).openid;
@@ -384,7 +397,11 @@ async function bind_user(openid, code, ticket, res) {
     })
     console.log(father, '---------------father')
     if (!father) {
-        res.reply('二维码错误')
+        api.sendText(openid,'二维码错误',function (err,res) {
+            if (err) {
+                console.log(err)
+            }
+        });
         return
     }
     if (father.hostid) {
@@ -396,7 +413,11 @@ async function bind_user(openid, code, ticket, res) {
         $set: {fatherid: fatherid, hostid: hostid}
     })
     if (!user) {
-        res.reply('用户错误')
+        api.sendText(openid,'用户错误',function (err,res) {
+            if (err) {
+                console.log(err)
+            }
+        });
         return
     }
     console.log(user, '---------------user')
