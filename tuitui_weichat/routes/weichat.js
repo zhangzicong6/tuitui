@@ -354,7 +354,7 @@ function getCode(openid, text, res) {
 async function bind_user(openid, code, ticket, res) {
     let cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let father_cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
-    let conf = weichat_conf[code];
+    let conf = JSON.parse(weichat_conf[code]);
     console.log(conf,'------------conf')
     let api = WechatAPI(conf.appid, conf.appsecret);
 
