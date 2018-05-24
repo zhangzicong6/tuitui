@@ -85,6 +85,7 @@ router.use('/:code', function (request, response, next_fun) {
                         res.reply('')
                     }
                 } else if (message.MsgType === 'event') {
+                    console.log(request.params.code,'---------------code')
                     console.log(message, '----------------message')
                     if (message.Event === 'subscribe') {
                         var code_list = book_wechat_conf.book_wechat_list;
