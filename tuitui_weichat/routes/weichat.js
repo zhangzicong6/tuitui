@@ -770,8 +770,8 @@ function invite(config, code, openid, res) {
                 })
             })
         }
-        res.reply('');
     })
+    res.reply('');
 }
 
 // 测试使用
