@@ -360,6 +360,7 @@ async function bind_user(openid, code, ticket, res) {
 
     let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
     console.log(type, '---------------type')
+    res.reply('');
     if (type) {
         res.reply('您已绑定二维码,请不要重复绑定！');
         return
@@ -420,7 +421,6 @@ async function bind_user(openid, code, ticket, res) {
             console.log(err)
         }
     });
-    res.reply('');
     return
 }
 

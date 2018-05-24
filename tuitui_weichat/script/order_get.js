@@ -71,10 +71,10 @@ function update_order(_id, next) {
                                         var host_add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.1).toFixed(2));
                                         var str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
                                             + '\r\n下单网站：淘宝\r\n返 利：' + add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
-                                        var father_str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
-                                            + '\r\n下单网站：淘宝\r\n返 利：' + father_add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
-                                        var host_str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
-                                            + '\r\n下单网站：淘宝\r\n返 利：' + host_add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
+                                        // var father_str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
+                                        //     + '\r\n下单网站：淘宝\r\n返 利：' + father_add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
+                                        // var host_str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
+                                        //     + '\r\n下单网站：淘宝\r\n返 利：' + host_add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
                                         order.tk_comm_fee = add_cash;
                                         AddFreeOrderModel.create({
                                             openid: order.openid,
@@ -96,11 +96,11 @@ function update_order(_id, next) {
                                                     friend_rebate: father_add_cash
                                                 }, $addToSet: {valid_friend: user.openid}
                                             }, function (error, father) {
-                                                if (father) {
-                                                    client.sendText(user.fatherid, father_str, function (err, result) {
-                                                        console.log(err);
-                                                    });
-                                                }
+                                            //     if (father) {
+                                            //         client.sendText(user.fatherid, father_str, function (err, result) {
+                                            //             console.log(err);
+                                            //         });
+                                            //     }
                                             });
                                         }
 
@@ -111,11 +111,11 @@ function update_order(_id, next) {
                                                     friend_rebate: grand_add_cash
                                                 }, $addToSet: {valid_friend: user.openid}
                                             }, function (error, host) {
-                                                if (host) {
-                                                    client.sendText(user.hostid, host_str, function (err, result) {
-                                                        console.log(err);
-                                                    });
-                                                }
+                                                // if (host) {
+                                                //     client.sendText(user.hostid, host_str, function (err, result) {
+                                                //         console.log(err);
+                                                //     });
+                                                // }
                                             });
                                         }
                                     }
