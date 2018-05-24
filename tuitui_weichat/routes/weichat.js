@@ -354,23 +354,25 @@ function getCode(openid, text, res) {
 async function bind_user(openid, code, ticket, res) {
     let cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let father_cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
-    let conf = JSON.parse(weichat_conf[code]);
-    console.log(conf,'------------conf')
+    let conf = weichat_conf[code];
     let api = WechatAPI(conf.appid, conf.appsecret);
 
     let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
     console.log(type, '---------------type')
     if (type) {
-        return res.reply('您已绑定二维码,请不要重复绑定！');
+        res.reply('您已绑定二维码,请不要重复绑定！');
+        return
     }
     // let content = await memcached.get(ticket)
     memcached.get(ticket, async function (err, content) {
         console.log(content, '---------------content')
         if (!content) {
-            return res.replay('二维码错误')
+            res.replay('二维码错误')
+            return
         }
         if(openid == JSON.parse(content).openid){
-            return res.replay('二维码错误')
+            res.replay('二维码错误')
+            return
         }
         let fatherid = JSON.parse(content).openid;
         let hostid = fatherid;
@@ -381,7 +383,8 @@ async function bind_user(openid, code, ticket, res) {
         })
         console.log(father, '---------------father')
         if (!father) {
-            return res.replay('二维码错误')
+            res.replay('二维码错误')
+            return
         }
         if (father.hostid) {
             hostid = father.hostid;
@@ -392,7 +395,8 @@ async function bind_user(openid, code, ticket, res) {
             $set: {fatherid: fatherid, hostid: hostid}
         })
         if (!user) {
-            return res.replay('用户错误')
+            res.replay('用户错误')
+            return
         }
         console.log(user, '---------------user')
         AddFreeOrderModel.create({openid: openid, type: 2, cash: cash});
@@ -416,7 +420,8 @@ async function bind_user(openid, code, ticket, res) {
                 console.log(err)
             }
         });
-        return;
+        res.reply('');
+        return
     })
 }
 
