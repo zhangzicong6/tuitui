@@ -768,6 +768,7 @@ function getAccessToken(code, callback) {
 
 function invite(config, code, openid, res) {
     console.log('------------invite')
+    res.reply('');
     var client = new WechatAPI(config.appid, config.appsecret);
     var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
         '\r\n您的专属⼆维码⽣成成功（有效期30天）。让您的好友扫码关注公号即可！您会直接收到红包奖励！' +
@@ -797,7 +798,6 @@ function invite(config, code, openid, res) {
             })
         }
     })
-    res.reply('');
 }
 
 // 测试使用
