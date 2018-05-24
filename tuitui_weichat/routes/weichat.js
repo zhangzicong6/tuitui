@@ -11,6 +11,7 @@ var TaobaoUtil = require('../util/taobaoke_util.js');
 var async = require('async');
 var WechatUtil = require('../util/wechat_get.js');
 var ImageUtil = require('../util/image_util.js');
+var mem = require('../util/mem.js');
 
 var TokenModel = require('../model/Token.js');
 var UserModel = require('../model/User.js');
@@ -363,66 +364,64 @@ async function bind_user(openid, code, ticket, res) {
         res.reply('您已绑定二维码,请不要重复绑定！');
         return
     }
-    // let content = await memcached.get(ticket)
-    memcached.get(ticket, async function (err, content) {
-        console.log(content, '---------------content')
-        if (!content) {
-            res.reply('二维码错误')
-            return
-        }
-        if(openid == JSON.parse(content).openid){
-            res.reply('二维码错误')
-            return
-        }
-        let fatherid = JSON.parse(content).openid;
-        let hostid = fatherid;
-        console.log(fatherid, '---------------fatherid')
-        let father = await UserModel.findOneAndUpdate({openid: fatherid}, {
-            $inc: {current_balance: father_cash},
-            $addToSet: {friend: openid}
-        })
-        console.log(father, '---------------father')
-        if (!father) {
-            res.reply('二维码错误')
-            return
-        }
-        if (father.hostid) {
-            hostid = father.hostid;
-            await UserModel.findOneAndUpdate({openid: father.hostid}, {$addToSet: {friend: openid}})
-        }
-        let user = await UserModel.findOneAndUpdate({openid: openid}, {
-            $inc: {current_balance: cash},
-            $set: {fatherid: fatherid, hostid: hostid}
-        })
-        if (!user) {
-            res.reply('用户错误')
-            return
-        }
-        console.log(user, '---------------user')
-        AddFreeOrderModel.create({openid: openid, type: 2, cash: cash});
-
-        if (father.fatherid) {
-            await UserModel.findOneAndUpdate({openid: father.fatherid}, {$inc: {current_balance: 0.66}})
-        }
-        let str = '赠送您【' + cash + '】元\r\n账户余额：【' + cash + '】元\r\n' +
-            'ヾ(≧▽≦*)o超过1元可提现\r\n\r\n⼀⼀⼀⼀�使⽤攻略⼀⼀⼀⼀\r\n' +
-            '<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n' +
-            '⽂字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb'
-        api.sendText(openid, str, function (err, res) {
-            if (err) {
-                console.log(err)
-            }
-        });
-        let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
-            '您的当前余额【' + father.current_balance + '】元。好友购物后，您也有返利，快去教教他吧！';
-        api.sendText(father.openid, father_str, function (err, res) {
-            if (err) {
-                console.log(err)
-            }
-        });
-        res.reply('');
+    let content = await mem.getContent(ticket)
+    console.log(err, content, '---------------content')
+    if (!content) {
+        res.reply('二维码错误')
         return
+    }
+    if (openid == JSON.parse(content).openid) {
+        res.reply('二维码错误')
+        return
+    }
+    let fatherid = JSON.parse(content).openid;
+    let hostid = fatherid;
+    console.log(fatherid, '---------------fatherid')
+    let father = await UserModel.findOneAndUpdate({openid: fatherid}, {
+        $inc: {current_balance: father_cash},
+        $addToSet: {friend: openid}
     })
+    console.log(father, '---------------father')
+    if (!father) {
+        res.reply('二维码错误')
+        return
+    }
+    if (father.hostid) {
+        hostid = father.hostid;
+        await UserModel.findOneAndUpdate({openid: father.hostid}, {$addToSet: {friend: openid}})
+    }
+    let user = await UserModel.findOneAndUpdate({openid: openid}, {
+        $inc: {current_balance: cash},
+        $set: {fatherid: fatherid, hostid: hostid}
+    })
+    if (!user) {
+        res.reply('用户错误')
+        return
+    }
+    console.log(user, '---------------user')
+    AddFreeOrderModel.create({openid: openid, type: 2, cash: cash});
+
+    if (father.fatherid) {
+        await UserModel.findOneAndUpdate({openid: father.fatherid}, {$inc: {current_balance: 0.66}})
+    }
+    let str = '赠送您【' + cash + '】元\r\n账户余额：【' + cash + '】元\r\n' +
+        'ヾ(≧▽≦*)o超过1元可提现\r\n\r\n⼀⼀⼀⼀�使⽤攻略⼀⼀⼀⼀\r\n' +
+        '<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n' +
+        '⽂字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb'
+    api.sendText(openid, str, function (err, res) {
+        if (err) {
+            console.log(err)
+        }
+    });
+    let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
+        '您的当前余额【' + father.current_balance + '】元。好友购物后，您也有返利，快去教教他吧！';
+    api.sendText(father.openid, father_str, function (err, res) {
+        if (err) {
+            console.log(err)
+        }
+    });
+    res.reply('');
+    return
 }
 
 function cash(code, openid, res) {
