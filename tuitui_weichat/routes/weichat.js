@@ -530,7 +530,7 @@ function new_sendUserMessage(openid, user, res) {
     ], function (err, counts) {
         var str = '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:' + counts[0] + '笔\r\n已完成数:' + counts[1] + '笔\r\n未完成数:' + counts[2] + '笔\r\n' +
             '购买返利：' + user.rebate.toFixed(2) + '元\r\n好友返利：' + user.friend_rebate.toFixed(2) + '元\r\n好友个数：' + user.friend.length + '个\r\n' +
-            '有效好友：' + user.valid_friend.length + '个s\r\n当前余额:' + user.current_balance.toFixed(2) + '元\r\n累计提现:' + user.addup_cash.toFixed(2) +
+            '有效好友：' + user.valid_friend.length + '个\r\n当前余额:' + user.current_balance.toFixed(2) + '元\r\n累计提现:' + user.addup_cash.toFixed(2) +
             '元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇�温馨提醒◇ ◇ ◇ \r\n收货后，返利会添加到个⼈账户余额超过1元，输⼊“提现”提现';
         //console.log(str);
         res.reply({

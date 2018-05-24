@@ -71,8 +71,8 @@ function getQRImg(ticket, callback) {
 }
 
 function user_img(ticket, qr_name, nickname, headimgurl, callback) {
-    var resize_cmd = 'gm "convert" "' + __dirname + '/user_image/' + qr_name + '" "-resize" "360x" "' + __dirname + '/user_image/small_' + qr_name + '"';
-    var resize_head = 'gm "convert" "' + __dirname + '/user_image/head_' + qr_name + '" "-resize" "340x" "' + __dirname + '/user_image/smallhead_' + qr_name + '"';
+    var resize_cmd = 'gm "convert" "' + __dirname + '/user_image/' + qr_name + '" "-resize" "200x" "' + __dirname + '/user_image/small_' + qr_name + '"';
+    var resize_head = 'gm "convert" "' + __dirname + '/user_image/head_' + qr_name + '" "-resize" "167x" "' + __dirname + '/user_image/smallhead_' + qr_name + '"';
 
     exec(resize_cmd, function (error, stdout, stderr) {
         exec(resize_head, function (errorhead, stdouthead, stderrhead) {
@@ -83,7 +83,7 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
                 console.log(errorhead);
             }
             var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.png" ' +
-                '"-page" "+766+1501" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+336+1501" "' + __dirname + '/user_image/smallhead_'
+                '"-page" "+366+1052" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+158+1042" "' + __dirname + '/user_image/smallhead_'
                 + qr_name + '" "-font" "' + __dirname + '/china.TTF" "-fill" "white" "-pointsize" "60" "-draw" "text 356,1901 ' + nickname + '" ' +
                 ' "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
 
