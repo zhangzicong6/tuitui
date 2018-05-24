@@ -436,7 +436,7 @@ async function bind_user(openid, code, ticket, res) {
         }
     });
     let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
-        '您的当前余额【' + father.current_balance + '】元。好友购物后，您也有返利，快去教教他吧！';
+        '您的当前余额【' + (father.current_balance+father_cash) + '】元。好友购物后，您也有返利，快去教教他吧！';
     api.sendText(father.openid, father_str, function (err, res) {
         if (err) {
             console.log(err)
