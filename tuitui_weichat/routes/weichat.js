@@ -371,7 +371,7 @@ async function bind_user(openid, code, ticket, res) {
         return
     }
     if (openid == JSON.parse(content).openid) {
-        res.reply('二维码错误')
+        res.reply('二维码错误!')
         return
     }
     let fatherid = JSON.parse(content).openid;
