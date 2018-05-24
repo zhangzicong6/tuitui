@@ -355,7 +355,7 @@ async function bind_user(openid, code, ticket, res) {
     let cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let father_cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let conf = weichat_conf[code];
-    let api = WechatAPI(conf.appid, conf.appsecret);
+    let api = new WechatAPI(conf.appid, conf.appsecret);
 
     let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
     console.log(type, '---------------type')
