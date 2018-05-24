@@ -365,7 +365,7 @@ async function bind_user(openid, code, ticket, res) {
         return
     }
     let content = await mem.getContent(ticket)
-    console.log(err, content, '---------------content')
+    console.log(content, '---------------content')
     if (!content) {
         res.reply('二维码错误')
         return
