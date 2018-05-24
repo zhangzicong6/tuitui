@@ -85,7 +85,6 @@ router.use('/:code', function (request, response, next_fun) {
                         res.reply('')
                     }
                 } else if (message.MsgType === 'event') {
-                    console.log(request.params.code,'---------------code')
                     console.log(message, '----------------message')
                     if (message.Event === 'subscribe') {
                         var code_list = book_wechat_conf.book_wechat_list;
@@ -356,6 +355,7 @@ async function bind_user(openid, code, ticket, res) {
     let cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let father_cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let conf = weichat_conf[code];
+    console.log(conf,'------------conf')
     let api = WechatAPI(conf.appid, conf.appsecret);
 
     let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
