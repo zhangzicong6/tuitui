@@ -35,7 +35,7 @@ server.on('listening', onListening);
 require('../script/order_get.js');
 require('../script/baokuan.js');
 require('../script/user.js');
-require('../util/test');
+// require('../util/test');
 // require('../script/send_service_message');
 /**
  * Normalize a port into a number, string, or false.
