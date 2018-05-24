@@ -27,13 +27,13 @@ function test() {
     // })
     // memcached.delete(JSON.stringify({openid:'o3qBK0ZM6UHi58UK_Yy3YymzdEcc'}), function (err, qr) {
     // })
-    UserModel.findOne({openid:'o3qBK0RXH4BlFLEIksKOJEzx08og'},function (err,data) {
+    UserModel.deleteOne({openid:'o3qBK0RXH4BlFLEIksKOJEzx08og'},function (err,data) {
         console.log(data,'-------------------host')
     })
-    UserModel.findOne({openid:'o3qBK0QX8pKSVxlehps3GSL18NXo'},function (err,data) {
+    UserModel.deleteOne({openid:'o3qBK0QX8pKSVxlehps3GSL18NXo'},function (err,data) {
         console.log(data,'-------------------father')
     })
-    UserModel.findOne({openid:'o3qBK0ZM6UHi58UK_Yy3YymzdEcc'},function (err,data) {
+    UserModel.deleteOne({openid:'o3qBK0ZM6UHi58UK_Yy3YymzdEcc'},function (err,data) {
         console.log(data,'-------------------user')
     })
 }
