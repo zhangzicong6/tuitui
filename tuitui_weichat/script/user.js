@@ -61,12 +61,21 @@ function update_user(_id, code, next) {
     })
 }
 
-function get_user1() {
-    update_user1(null, 1, next_up);
+function next_up_nickname(_id, code) {
+    if (code && code <= Object.keys(clients).length) {
+        return update_nickname(_id, code, next_up_nickname);
+    } else {
+        console.log('update_nickname end');
+        return;
+    }
 }
 
-function update_user1(_id, code, next) {
-    UserModel.fetch_openid1(_id, code, function (error, users) {
+function get_nickname() {
+    update_nickname(null, 1, next_up_nickname);
+}
+
+function update_nickname(_id, code, next) {
+    UserModel.fetch_nickname(_id, code, function (error, users) {
         console.log()
         var user_arr = [];
         users.forEach(function (user) {
@@ -78,6 +87,7 @@ function update_user1(_id, code, next) {
             }
             if (data && data.user_info_list) {
                 data.user_info_list.forEach(function (info) {
+                    console.log(info,'-------------info')
                     if (code == 1) {
                         console.log(info.nickname, info.headimgurl, '-----------------headimgurl')
                     }
@@ -101,17 +111,17 @@ function update_user1(_id, code, next) {
 }
 
 var rule = new schedule.RecurrenceRule();
-var times = [0, 1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
+var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
 rule.minute = times;
 var j = schedule.scheduleJob(rule, function () {
     console.log('更新用户信息');
     get_user();
 });
 
-var rule1 = new schedule.RecurrenceRule();
-var times1 = [23];
-rule1.hour = times1;
-var j = schedule.scheduleJob(rule1, function () {
-    console.log('更新用户信息');
-    get_user1();
+var rule_nickname = new schedule.RecurrenceRule();
+var times_nickname = [0,23];
+rule_nickname.hour = times_nickname;
+var j = schedule.scheduleJob(rule_nickname, function () {
+    console.log('更新用户昵称头像信息');
+    get_nickname();
 });

@@ -66,7 +66,7 @@ UserSchema.statics = {
                 .exec(cb);
         }
     },
-    fetch_openid1(id,code,cb){
+    fetch_nickname(id,code,cb){
         if (id) {
             return this.find({_id: {$lt: id},code:code,nickname:""||undefined}, ['openid'])
                 .limit(50)
