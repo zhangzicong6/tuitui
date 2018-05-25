@@ -21,3 +21,13 @@ module.exports.timeContent = function (openid) {
     })
 }
 
+module.exports.timeContent = function (openid) {
+    return new Promise((resolve, reject) => {
+        console.log(openid, '-----------bindtime')
+        memcached.get('bindtime_' + openid, function (err, content) {
+            console.log(content, '-----------------bindcontent')
+            resolve(content)
+        });
+    })
+}
+

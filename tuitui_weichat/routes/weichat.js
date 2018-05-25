@@ -355,7 +355,6 @@ function getCode(openid, text, res) {
 }
 
 async function bind_user(openid, code, ticket, res) {
-    res.reply('')
     let cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let father_cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let conf = weichat_conf[code];
@@ -365,30 +364,33 @@ async function bind_user(openid, code, ticket, res) {
     console.log(type, '---------------type')
 
     if (type) {
-        api.sendText(openid, '您已绑定二维码,请不要重复绑定！', function (err, res) {
-            if (err) {
-                console.log(err)
-            }
-        });
-        return
+        return res.reply('您已绑定二维码,请不要重复绑定！')
+        // api.sendText(openid, '您已绑定二维码,请不要重复绑定！', function (err, res) {
+        //     if (err) {
+        //         console.log(err)
+        //     }
+        // });
+        // return
     }
     let content = await mem.getContent(ticket)
     console.log(content, '---------------content')
     if (!content) {
-        api.sendText(openid, '二维码错误', function (err, res) {
-            if (err) {
-                console.log(err)
-            }
-        });
-        return
+        return res.reply('二维码错误')
+        // api.sendText(openid, '二维码错误', function (err, res) {
+        //     if (err) {
+        //         console.log(err)
+        //     }
+        // });
+        // return
     }
     if (openid == JSON.parse(content).openid) {
-        api.sendText(openid, '二维码错误', function (err, res) {
-            if (err) {
-                console.log(err)
-            }
-        });
-        return
+        return res.reply('二维码错误')
+        // api.sendText(openid, '二维码错误', function (err, res) {
+        //     if (err) {
+        //         console.log(err)
+        //     }
+        // });
+        // return
     }
     let fatherid = JSON.parse(content).openid;
     let hostid = fatherid;
@@ -399,12 +401,13 @@ async function bind_user(openid, code, ticket, res) {
     })
     console.log(father, '---------------father')
     if (!father) {
-        api.sendText(openid, '二维码错误', function (err, res) {
-            if (err) {
-                console.log(err)
-            }
-        });
-        return
+        return res.reply('二维码错误')
+        // api.sendText(openid, '二维码错误', function (err, res) {
+        //     if (err) {
+        //         console.log(err)
+        //     }
+        // });
+        // return
     }
     if (father.hostid) {
         hostid = father.hostid;
@@ -415,12 +418,13 @@ async function bind_user(openid, code, ticket, res) {
         $set: {fatherid: fatherid, hostid: hostid}
     })
     if (!user) {
-        api.sendText(openid, '用户错误', function (err, res) {
-            if (err) {
-                console.log(err)
-            }
-        });
-        return
+        return res.reply('用户错误')
+        // api.sendText(openid, '用户错误', function (err, res) {
+        //     if (err) {
+        //         console.log(err)
+        //     }
+        // });
+        // return
     }
     console.log(user, '---------------user')
     AddFreeOrderModel.create({openid: openid, type: 2, cash: cash});
@@ -428,23 +432,28 @@ async function bind_user(openid, code, ticket, res) {
     if (father.fatherid) {
         await UserModel.findOneAndUpdate({openid: father.fatherid}, {$inc: {current_balance: 0.66}})
     }
-    let str = '赠送您【' + cash + '】元\r\n账户余额：【' + cash + '】元\r\n' +
-        'ヾ(≧▽≦*)o超过1元可提现\r\n\r\n⼀⼀⼀⼀�使⽤攻略⼀⼀⼀⼀\r\n' +
-        '<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n' +
-        '⽂字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb'
-    api.sendText(openid, str, function (err, res) {
-        if (err) {
-            console.log(err)
-        }
+    var time = await mem.bindContent(openid)
+    if (!time || Date.now() - time > 5 * 1000) {
+        let str = '赠送您【' + cash + '】元\r\n账户余额：【' + cash + '】元\r\n' +
+            'ヾ(≧▽≦*)o超过1元可提现\r\n\r\n⼀⼀⼀⼀�使⽤攻略⼀⼀⼀⼀\r\n' +
+            '<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n' +
+            '⽂字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb'
+        api.sendText(openid, str, function (err, res) {
+            if (err) {
+                console.log(err)
+            }
+        });
+        let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
+            '您的当前余额【' + parseFloat(father.current_balance + father_cash).toFixed(2) + '】元。好友购物后，您也有返利，快去教教他吧！';
+        api.sendText(father.openid, father_str, function (err, res) {
+            if (err) {
+                console.log(err)
+            }
+        });
+    }
+    memcached.set('bindtime_' + openid, Date.now(), 1 * 60, function (err, time) {
+        console.log(time, '------------------set bind time');
     });
-    let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
-        '您的当前余额【' + parseFloat(father.current_balance + father_cash).toFixed(2) + '】元。好友购物后，您也有返利，快去教教他吧！';
-    api.sendText(father.openid, father_str, function (err, res) {
-        if (err) {
-            console.log(err)
-        }
-    });
-    return
 }
 
 function cash(code, openid, res) {
@@ -776,7 +785,7 @@ async function invite(config, code, openid, res) {
         '好友购物后，您会收到⼀定⽐例的返利（邀请好友多⾮常可观）！';
     res.reply(str);
     var time = await mem.timeContent(openid)
-    if (!time || Date.now() - time > 5 * 1000){
+    if (!time || Date.now() - time > 5 * 1000) {
         var client = new WechatAPI(config.appid, config.appsecret);
         WechatUtil.getuserQr(code, openid, function (err, ticket) {
             if (err) {
@@ -799,20 +808,16 @@ async function invite(config, code, openid, res) {
                                 } else {
                                     console.log(cerror, '-----------------cerror')
                                 }
-                                memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err,time) {
-                                    console.log(time,'------------------set time');
-                                });
                             })
                         }
                     })
                 })
             }
         })
-    }else{
-        memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err,time) {
-            console.log(time,'------------------set time');
-        });
     }
+    memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err, time) {
+        console.log(time, '------------------set time');
+    });
 }
 
 // 测试使用
