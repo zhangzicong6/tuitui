@@ -37,7 +37,6 @@ function update_user(_id, code, next) {
             if (err) {
                 console.log(err, '----------------err')
             }
-            console.log(data,'-------------------data')
             if (data && data.user_info_list) {
                 data.user_info_list.forEach(function (info) {
                     if (code == 1) {
@@ -87,6 +86,7 @@ function update_nickname(_id, code, next) {
             if (err) {
                 console.log(err, '----------------err')
             }
+            console.log(data,'-------------------data')
             if (data && data.user_info_list) {
                 data.user_info_list.forEach(function (info) {
                     console.log(info,'-------------info')
