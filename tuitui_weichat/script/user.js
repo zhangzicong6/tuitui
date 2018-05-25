@@ -30,6 +30,9 @@ function update_user(_id, code, next) {
             user_arr.push(user.openid)
         })
         clients[code].batchGetUsers(user_arr, function (err,data) {
+            if(err){
+                console.log(err,'----------------err')
+            }
             if(data && data.user_info_list){
                 data.user_info_list.forEach(function (info) {
                     if(code == 1){
