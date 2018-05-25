@@ -53,9 +53,11 @@ router.use('/:code', function (request, response, next_fun) {
                     } else if (text === '订单') {
                         getOrders(openid, res);
                     } else if (text === '个人信息') {
-                        getUser(openid, res);
-                    } else if (text === '测试个人信息' && request.params.code == 1) {
-                        new_getUser(openid, res);
+                        if(request.params.code == 1){
+                            new_getUser(openid, res);
+                        }else{
+                            getUser(openid, res);
+                        }
                     } else if (text === '邀请好友') {
                         invite(config, request.params.code, openid, res);
                     } else if (text === '提现') {
@@ -436,7 +438,7 @@ async function bind_user(openid, code, ticket, res) {
         }
     });
     let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
-        '您的当前余额【' + (father.current_balance+father_cash) + '】元。好友购物后，您也有返利，快去教教他吧！';
+        '您的当前余额【' + parseFloat(father.current_balance+father_cash).toFixed(2) + '】元。好友购物后，您也有返利，快去教教他吧！';
     api.sendText(father.openid, father_str, function (err, res) {
         if (err) {
             console.log(err)
@@ -767,7 +769,6 @@ function getAccessToken(code, callback) {
 }
 
 function invite(config, code, openid, res) {
-    console.log('------------invite')
     res.reply('');
     var client = new WechatAPI(config.appid, config.appsecret);
     var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
