@@ -10,3 +10,14 @@ module.exports.getContent = function (ticket) {
         });
     })
 }
+
+module.exports.timeContent = function (ticket) {
+    return new Promise((resolve, reject) => {
+        console.log(ticket, '-----------usertime')
+        memcached.get('usertime_' + ticket, function (err, content) {
+            console.log(content, '-----------------aaa')
+            resolve(content)
+        });
+    })
+}
+
