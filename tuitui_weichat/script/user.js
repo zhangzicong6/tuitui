@@ -4,11 +4,14 @@ var WechatAPI = require('wechat-api');
 var weichat_conf = require('../conf/weichat.json');
 var clients = {}
 
-for (var item in weichat_conf) {
-    var config = weichat_conf[item]
+// for (var item in weichat_conf) {
+//     var config = weichat_conf[item]
+//     var client = new WechatAPI(config.appid, config.appsecret);
+//     clients[item] = client
+// }
+    var config = weichat_conf['1']
     var client = new WechatAPI(config.appid, config.appsecret);
-    clients[item] = client
-}
+clients['1'] = client
 
 function next_up(_id, code) {
     if (code && code <= Object.keys(clients).length) {
@@ -58,7 +61,7 @@ function update_user(_id, code, next) {
 }
 
 var rule = new schedule.RecurrenceRule();
-var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
+var times = [0,1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
 rule.minute = times;
 var j = schedule.scheduleJob(rule, function () {
     console.log('更新用户信息');
