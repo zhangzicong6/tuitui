@@ -776,7 +776,7 @@ async function invite(config, code, openid, res) {
         '好友购物后，您会收到⼀定⽐例的返利（邀请好友多⾮常可观）！';
     res.reply(str);
     var time = await mem.timeContent(openid)
-    if (!time || Date.now() - time > 10 * 1000){
+    if (!time || Date.now() - time > 5 * 1000){
         var client = new WechatAPI(config.appid, config.appsecret);
         WechatUtil.getuserQr(code, openid, function (err, ticket) {
             if (err) {
@@ -799,6 +799,9 @@ async function invite(config, code, openid, res) {
                                 } else {
                                     console.log(cerror, '-----------------cerror')
                                 }
+                                memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err,time) {
+                                    console.log(time,'------------------set time');
+                                });
                             })
                         }
                     })
