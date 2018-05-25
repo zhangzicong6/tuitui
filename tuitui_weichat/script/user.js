@@ -73,7 +73,6 @@ function next_up_nickname(_id, code) {
 function get_nickname() {
     update_nickname(null, 1, next_up_nickname);
 }
-get_nickname()
 
 function update_nickname(_id, code, next) {
     UserModel.fetch_nickname(_id, code, function (error, users) {
@@ -117,7 +116,7 @@ var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
 rule.minute = times;
 var j = schedule.scheduleJob(rule, function () {
     console.log('更新用户信息');
-    get_user();
+    get_nickname();
 });
 
 var rule_nickname = new schedule.RecurrenceRule();
@@ -125,5 +124,5 @@ var times_nickname = [23];
 rule_nickname.hour = times_nickname;
 var j = schedule.scheduleJob(rule_nickname, function () {
     console.log('更新用户昵称头像信息');
-    get_nickname();
+    get_user();
 });
