@@ -28,6 +28,46 @@ function get_user() {
 
 function update_user(_id, code, next) {
     UserModel.fetch_openid(_id, code, function (error, users) {
+        console.log()
+        var user_arr = [];
+        users.forEach(function (user) {
+            user_arr.push(user.openid)
+        })
+        clients[code].batchGetUsers(user_arr, function (err, data) {
+            if (err) {
+                console.log(err, '----------------err')
+            }
+            if (data && data.user_info_list) {
+                data.user_info_list.forEach(function (info) {
+                    if (code == 1) {
+                        console.log(info.nickname, info.headimgurl, '-----------------headimgurl')
+                    }
+                    UserModel.findOneAndUpdate({openid: info.openid}, {
+                        nickname: info.nickname,
+                        headimgurl: info.headimgurl
+                    }, function (err, result) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    });
+                })
+            }
+            if (users.length == 50) {
+                return next(users[49]._id, code);
+            } else {
+                return next(null, code + 1)
+            }
+        })
+    })
+}
+
+function get_user1() {
+    update_user1(null, 1, next_up);
+}
+
+function update_user1(_id, code, next) {
+    UserModel.fetch_openid1(_id, code, function (error, users) {
+        console.log()
         var user_arr = [];
         users.forEach(function (user) {
             user_arr.push(user.openid)
@@ -68,10 +108,10 @@ var j = schedule.scheduleJob(rule, function () {
     get_user();
 });
 
-// var rule1 = new schedule.RecurrenceRule();
-// var times1 = [0,24];
-// rule1.hour = times1;
-// var j = schedule.scheduleJob(rule1, function () {
-//     console.log('更新用户信息');
-//     get_user();
-// });
+var rule1 = new schedule.RecurrenceRule();
+var times1 = [23];
+rule1.hour = times1;
+var j = schedule.scheduleJob(rule1, function () {
+    console.log('更新用户信息');
+    get_user1();
+});
