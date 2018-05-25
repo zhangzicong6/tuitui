@@ -53,9 +53,9 @@ router.use('/:code', function (request, response, next_fun) {
                     } else if (text === '订单') {
                         getOrders(openid, res);
                     } else if (text === '个人信息') {
-                        if(request.params.code == 1){
+                        if (request.params.code == 1) {
                             new_getUser(openid, res);
-                        }else{
+                        } else {
                             getUser(openid, res);
                         }
                     } else if (text === '邀请好友') {
@@ -365,7 +365,7 @@ async function bind_user(openid, code, ticket, res) {
     console.log(type, '---------------type')
 
     if (type) {
-        api.sendText(openid,'您已绑定二维码,请不要重复绑定！',function (err,res) {
+        api.sendText(openid, '您已绑定二维码,请不要重复绑定！', function (err, res) {
             if (err) {
                 console.log(err)
             }
@@ -375,7 +375,7 @@ async function bind_user(openid, code, ticket, res) {
     let content = await mem.getContent(ticket)
     console.log(content, '---------------content')
     if (!content) {
-        api.sendText(openid,'二维码错误',function (err,res) {
+        api.sendText(openid, '二维码错误', function (err, res) {
             if (err) {
                 console.log(err)
             }
@@ -383,7 +383,7 @@ async function bind_user(openid, code, ticket, res) {
         return
     }
     if (openid == JSON.parse(content).openid) {
-        api.sendText(openid,'二维码错误',function (err,res) {
+        api.sendText(openid, '二维码错误', function (err, res) {
             if (err) {
                 console.log(err)
             }
@@ -399,7 +399,7 @@ async function bind_user(openid, code, ticket, res) {
     })
     console.log(father, '---------------father')
     if (!father) {
-        api.sendText(openid,'二维码错误',function (err,res) {
+        api.sendText(openid, '二维码错误', function (err, res) {
             if (err) {
                 console.log(err)
             }
@@ -415,7 +415,7 @@ async function bind_user(openid, code, ticket, res) {
         $set: {fatherid: fatherid, hostid: hostid}
     })
     if (!user) {
-        api.sendText(openid,'用户错误',function (err,res) {
+        api.sendText(openid, '用户错误', function (err, res) {
             if (err) {
                 console.log(err)
             }
@@ -438,7 +438,7 @@ async function bind_user(openid, code, ticket, res) {
         }
     });
     let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
-        '您的当前余额【' + parseFloat(father.current_balance+father_cash).toFixed(2) + '】元。好友购物后，您也有返利，快去教教他吧！';
+        '您的当前余额【' + parseFloat(father.current_balance + father_cash).toFixed(2) + '】元。好友购物后，您也有返利，快去教教他吧！';
     api.sendText(father.openid, father_str, function (err, res) {
         if (err) {
             console.log(err)
@@ -768,43 +768,48 @@ function getAccessToken(code, callback) {
     });
 }
 
-function invite(config, code, openid, res) {
-    console.log('----邀请好友--------'+openid)
-    
-    
+async function invite(config, code, openid, res) {
+    console.log('----邀请好友--------' + openid)
+
     var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
         '\r\n您的专属⼆维码⽣成成功（有效期30天）。让您的好友扫码关注公号即可！您会直接收到红包奖励！' +
         '好友购物后，您会收到⼀定⽐例的返利（邀请好友多⾮常可观）！';
     res.reply(str);
-
-    var client = new WechatAPI(config.appid, config.appsecret);
-    WechatUtil.getuserQr(code, openid, function (err, ticket) {
-        if(err){
-            console.log('-------get ticket------')
-            console.log(err)
-        }
-        if (ticket) {
-            UserModel.findOne({openid: openid}, function (error, user) {
-                ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    if(qr_name){
-                        var url = __dirname + '/../util/user_image/' + qr_name
-                        client.uploadMedia(url, 'image', function (cerror, result) {
-                            if (result) {
-                                console.log('------发送图片-----')
-                                client.sendImage(openid, result.media_id, function (err, res) {
-                                    if (err) {
-                                        console.log(err, '----------------err')
-                                    }
-                                })
-                            } else {
-                                console.log(cerror, '-----------------cerror')
-                            }
-                        })
-                    }
+    var time = await mem.getContent('time_' + openid)
+    if (!time || Date.now() - time > 5 * 1000){
+        var client = new WechatAPI(config.appid, config.appsecret);
+        WechatUtil.getuserQr(code, openid, function (err, ticket) {
+            if (err) {
+                console.log('-------get ticket------')
+                console.log(err)
+            }
+            if (ticket) {
+                UserModel.findOne({openid: openid}, function (error, user) {
+                    ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
+                        if (qr_name) {
+                            var url = __dirname + '/../util/user_image/' + qr_name
+                            client.uploadMedia(url, 'image', function (cerror, result) {
+                                if (result) {
+                                    console.log('------发送图片-----')
+                                    client.sendImage(openid, result.media_id, function (err, res) {
+                                        if (err) {
+                                            console.log(err, '----------------err')
+                                        }
+                                    })
+                                } else {
+                                    console.log(cerror, '-----------------cerror')
+                                }
+                            })
+                        }
+                    })
                 })
-            })
-        }
-    })
+            }
+        })
+    }else{
+        memcached.set('time_' + openid, Date.now(), 5 * 60, function (err,time) {
+            console.log(time,'------------------set time');
+        });
+    }
 }
 
 // 测试使用
