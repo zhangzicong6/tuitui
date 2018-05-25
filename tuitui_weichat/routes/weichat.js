@@ -783,18 +783,20 @@ function invite(config, code, openid, res) {
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
-                    var url = __dirname + '/../util/user_image/' + qr_name
-                    client.uploadMedia(url, 'image', function (cerror, result) {
-                        if (result) {
-                            client.sendImage(openid, result.media_id, function (err, res) {
-                                if (err) {
-                                    console.log(err, '----------------err')
-                                }
-                            })
-                        } else {
-                            console.log(cerror, '-----------------cerror')
-                        }
-                    })
+                    if(qr_name){
+                        var url = __dirname + '/../util/user_image/' + qr_name
+                        client.uploadMedia(url, 'image', function (cerror, result) {
+                            if (result) {
+                                client.sendImage(openid, result.media_id, function (err, res) {
+                                    if (err) {
+                                        console.log(err, '----------------err')
+                                    }
+                                })
+                            } else {
+                                console.log(cerror, '-----------------cerror')
+                            }
+                        })
+                    }
                 })
             })
         }

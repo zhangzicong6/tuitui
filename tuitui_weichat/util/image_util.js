@@ -112,17 +112,23 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
         var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
         var qr_path = __dirname + '/user_image/' + qr_name;
         var head_path = __dirname + '/user_image/head_' + qr_name;
-        downloadHead(headimgurl, head_path, function (err1, res) {
-            if(err1){
-                console.log(err1,'------------------err1')
-            }
-            downloadFile(qr_url, qr_path, function (err2, res) {
-                if(err2){
-                    console.log(err2,'------------------err2')
+        if(headimgurl){
+            downloadHead(headimgurl, head_path, function (err1, res) {
+                if(err1){
+                    console.log(err1,'------------------err1')
                 }
-                user_img(ticket, qr_name, nickname, headimgurl, callback);
-            });
-        })
+                downloadFile(qr_url, qr_path, function (err2, res) {
+                    if(err2){
+                        console.log(err2,'------------------err2')
+                    }
+                    user_img(ticket, qr_name, nickname, headimgurl, callback);
+                });
+            })
+        }else{
+            console.log('no headimg')
+            callback(null)
+        }
+
     });
 }
 
