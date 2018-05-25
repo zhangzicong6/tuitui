@@ -780,6 +780,7 @@ async function invite(config, code, openid, res) {
         var client = new WechatAPI(config.appid, config.appsecret);
         WechatUtil.getuserQr(code, openid, function (err, ticket) {
             if (err) {
+                console.log('-------get ticket------')
                 console.log(err)
             }
             if (ticket) {
@@ -799,6 +800,7 @@ async function invite(config, code, openid, res) {
                                     console.log(cerror, '-----------------cerror')
                                 }
                                 memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err,time) {
+                                    console.log(time,'------------------set time');
                                 });
                             })
                         }
@@ -808,6 +810,7 @@ async function invite(config, code, openid, res) {
         })
     }else{
         memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err,time) {
+            console.log(time,'------------------set time');
         });
     }
 }
