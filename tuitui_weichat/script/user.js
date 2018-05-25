@@ -9,8 +9,8 @@ var clients = {}
 //     var client = new WechatAPI(config.appid, config.appsecret);
 //     clients[item] = client
 // }
-    var config = weichat_conf['1']
-    var client = new WechatAPI(config.appid, config.appsecret);
+var config = weichat_conf['1']
+var client = new WechatAPI(config.appid, config.appsecret);
 clients['1'] = client
 
 function next_up(_id, code) {
@@ -32,20 +32,20 @@ function update_user(_id, code, next) {
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
-        clients[code].batchGetUsers(user_arr, function (err,data) {
-            if(err){
-                console.log(err,'----------------err')
+        clients[code].batchGetUsers(user_arr, function (err, data) {
+            if (err) {
+                console.log(err, '----------------err')
             }
-            if(data && data.user_info_list){
+            if (data && data.user_info_list) {
                 data.user_info_list.forEach(function (info) {
-                    if(code == 1){
-                        console.log(info.nickname,info.headimgurl,'-----------------headimgurl')
+                    if (code == 1) {
+                        console.log(info.nickname, info.headimgurl, '-----------------headimgurl')
                     }
                     UserModel.findOneAndUpdate({openid: info.openid}, {
                         nickname: info.nickname,
                         headimgurl: info.headimgurl
                     }, function (err, result) {
-                        if(err){
+                        if (err) {
                             console.log(err)
                         }
                     });
@@ -61,9 +61,17 @@ function update_user(_id, code, next) {
 }
 
 var rule = new schedule.RecurrenceRule();
-var times = [0,1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
+var times = [0, 1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
 rule.minute = times;
 var j = schedule.scheduleJob(rule, function () {
     console.log('更新用户信息');
     get_user();
 });
+
+// var rule1 = new schedule.RecurrenceRule();
+// var times1 = [0,24];
+// rule1.hour = times1;
+// var j = schedule.scheduleJob(rule1, function () {
+//     console.log('更新用户信息');
+//     get_user();
+// });
