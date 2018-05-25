@@ -769,17 +769,20 @@ function getAccessToken(code, callback) {
 }
 
 function invite(config, code, openid, res) {
-    res.reply('');
-    var client = new WechatAPI(config.appid, config.appsecret);
+    console.log('----邀请好友--------'+openid)
+    
+    
     var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
         '\r\n您的专属⼆维码⽣成成功（有效期30天）。让您的好友扫码关注公号即可！您会直接收到红包奖励！' +
         '好友购物后，您会收到⼀定⽐例的返利（邀请好友多⾮常可观）！';
-    client.sendText(openid, str, function (err, res) {
-        if (err) {
+    res.reply(str);
+
+    var client = new WechatAPI(config.appid, config.appsecret);
+    WechatUtil.getuserQr(code, openid, function (err, ticket) {
+        if(err){
+            console.log('-------get ticket------')
             console.log(err)
         }
-    });
-    WechatUtil.getuserQr(code, openid, function (err, ticket) {
         if (ticket) {
             UserModel.findOne({openid: openid}, function (error, user) {
                 ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
@@ -787,6 +790,7 @@ function invite(config, code, openid, res) {
                         var url = __dirname + '/../util/user_image/' + qr_name
                         client.uploadMedia(url, 'image', function (cerror, result) {
                             if (result) {
+                                console.log('------发送图片-----')
                                 client.sendImage(openid, result.media_id, function (err, res) {
                                     if (err) {
                                         console.log(err, '----------------err')
