@@ -32,6 +32,7 @@ function update_user(_id, code, next) {
         clients[code].batchGetUsers(user_arr, function (err,data) {
             if(data && data.user_info_list){
                 data.user_info_list.forEach(function (info) {
+                    console.log(info.nickname,info.headimgurl,'-----------------headimgurl')
                     UserModel.findOneAndUpdate({openid: info.openid}, {
                         nickname: info.nickname,
                         headimgurl: info.headimgurl
