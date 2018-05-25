@@ -775,8 +775,8 @@ async function invite(config, code, openid, res) {
         '\r\n您的专属⼆维码⽣成成功（有效期30天）。让您的好友扫码关注公号即可！您会直接收到红包奖励！' +
         '好友购物后，您会收到⼀定⽐例的返利（邀请好友多⾮常可观）！';
     res.reply(str);
-    var time = await mem.timeContent('usertime_' + openid)
-    if (!time){
+    var time = await mem.timeContent(openid)
+    if (!time || Date.now() - time > 10 * 1000){
         var client = new WechatAPI(config.appid, config.appsecret);
         WechatUtil.getuserQr(code, openid, function (err, ticket) {
             if (err) {
@@ -806,7 +806,7 @@ async function invite(config, code, openid, res) {
             }
         })
     }else{
-        memcached.set('usertime_' + openid, 'aaa', 5, function (err,time) {
+        memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err,time) {
             console.log(time,'------------------set time');
         });
     }

@@ -11,11 +11,11 @@ module.exports.getContent = function (ticket) {
     })
 }
 
-module.exports.timeContent = function (ticket) {
+module.exports.timeContent = function (openid) {
     return new Promise((resolve, reject) => {
-        console.log(ticket, '-----------usertime')
-        memcached.get('usertime_' + ticket, function (err, content) {
-            console.log(content, '-----------------aaa')
+        console.log(openid, '-----------usertime')
+        memcached.get('usertime_' + openid, function (err, content) {
+            console.log(content, '-----------------timecontent')
             resolve(content)
         });
     })
