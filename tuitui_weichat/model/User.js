@@ -73,7 +73,7 @@ UserSchema.statics = {
                 .sort({'_id':-1})
                 .exec(cb);
         }else {
-            return this.find({code:code}, ['openid'])
+            return this.find({code:code,nickname:""||undefined}, ['openid'])
                 .limit(50)
                 .sort({'_id':-1})
                 .exec(cb);
