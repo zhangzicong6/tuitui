@@ -38,7 +38,6 @@ function getQr(code,openid,book_id,next){
 function getuserQr(code,openid,next){
     var content = JSON.stringify({openid:openid});
     memcached.get(content,function(err,ticket){
-    	console.log(ticket,'---------------ticket')
         if(err){
             console.log(err);
         }
