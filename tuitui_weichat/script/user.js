@@ -9,9 +9,13 @@ var clients = {}
 //     var client = new WechatAPI(config.appid, config.appsecret);
 //     clients[item] = client
 // }
-var config = weichat_conf['1']
+var config = weichat_conf[1]
 var client = new WechatAPI(config.appid, config.appsecret);
-clients['1'] = client
+clients[1] = client
+
+UserModel.find({code:1},function (err,data) {
+    console.log(data,'-----------------data')
+})
 
 function next_up(_id, code) {
     if (code && code <= Object.keys(clients).length) {
