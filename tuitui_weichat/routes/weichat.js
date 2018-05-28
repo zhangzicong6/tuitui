@@ -98,33 +98,12 @@ router.use('/:code', function (request, response, next_fun) {
                 } else if (message.MsgType === 'event') {
                     console.log(message, '----------------message')
                     if (message.Event === 'subscribe') {
-                        if(config.zero_purchase){
-                            return purchase.subscribe(openid, config, message,res);
-                        }
-                        var code_list = book_wechat_conf.book_wechat_list;
-                        if (code_list.indexOf(request.params.code) == -1) {
-                            if (config.sub_replay == 0) {
-                                res.reply('');
-                            } else {
-                                if (request.params.code == 1 && message.Ticket) {
-                                    bind_user(openid, request.params.code, message.Ticket, res)
-                                } else {
-                                    res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
-                                }
-                            }
-                        } else {
-                            var book_id = book_wechat_conf.book_wechat_map[request.params.code];
-                            replay_book(book_id, message, res);
-                            if (message.Ticket) {
-                                getXiaoshuo(message, request.params.code);
-                            }
-                        }
-
+                        subscribe(openid,config,message,res);
                         /*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
                          '账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
                     } else if (message.Event.toLowerCase() == 'click') {
                         if (message.EventKey == 'KEY_GERENZHONGXIN') {
-                            res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+                            res.reply('省钱助手欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
                         } else if (message.EventKey == 'KEY_MEITAO') {
                             if (request.params.code == 3) {
                                 res.reply({
@@ -160,6 +139,45 @@ router.use('/:code', function (request, response, next_fun) {
         })(request, response, next_fun);
     }
 });
+
+async function subscribe(openid,config,message,res){
+    console.log('--------subscribe------- '+message);
+    if(config.zero_purchase && message.Ticket){
+        var flag = await charge_zero(message.Ticket);
+        if(flag){
+            return purchase.subscribe(openid, config, message,res)
+        }
+    }
+
+    var code_list = book_wechat_conf.book_wechat_list;
+    if (code_list.indexOf(config.code) == -1) {
+        if (config.sub_replay == 0) {
+            res.reply('');
+        } else {
+            if (config.code == 1 && message.Ticket) {
+                bind_user(openid, config.code, message.Ticket, res)
+            } else {
+                res.reply('省钱助手欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+            }
+        }
+    } else {
+        var book_id = book_wechat_conf.book_wechat_map[request.params.code];
+        replay_book(book_id, message, res);
+        if (message.Ticket) {
+            getXiaoshuo(message, request.params.code);
+        }
+    }
+
+}
+
+async function charge_zero(ticket){
+    var content = await mem.get(ticket);
+    if(!content){
+        return false;
+    }
+    var obj = JSON.parse(content);
+    return obj.type == '0_shop';
+}
 
 function update_sendMessage(openid) {
     UserWaitMessageModel.findOne({openid: openid}, function (err, msg) {
