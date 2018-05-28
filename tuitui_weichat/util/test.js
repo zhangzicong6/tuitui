@@ -4,12 +4,12 @@ var UserModel = require('../model/User.js');
 var AddFreeOrderModel = require('../model/AddFreeOrder.js');
 
 function test() {
-    // memcached.delete('image_gQF87zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydHhDdklwdXdkYWgxZnAwSWhyY1kAAgTZMwVbAwQAjScA', function (err, qr) {
-    // })
-    // memcached.delete('user_gQF87zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydHhDdklwdXdkYWgxZnAwSWhyY1kAAgTZMwVbAwQAjScA', function (err, qr) {
-    // })
-    // memcached.delete(JSON.stringify({openid:'o3qBK0QX8pKSVxlehps3GSL18NXo'}), function (err, qr) {
-    // })
+    memcached.delete('image_gQHO8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycno3YnhCZjJlNGsxNnpDTGhyY0EAAgSj2QdbAwQAjScA', function (err, qr) {
+    })
+    memcached.delete('user_gQHO8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycno3YnhCZjJlNGsxNnpDTGhyY0EAAgSj2QdbAwQAjScA', function (err, qr) {
+    })
+    memcached.delete(JSON.stringify({openid:'o3qBK0QX8pKSVxlehps3GSL18NXo'}), function (err, qr) {
+    })
     // memcached.delete('image_gQF87zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydHhDdklwdXdkYWgxZnAwSWhyY1kAAgTZMwVbAwQAjScA', function (err, qr) {
     // })
     // memcached.delete('user_gQF87zwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAydHhDdklwdXdkYWgxZnAwSWhyY1kAAgTZMwVbAwQAjScA', function (err, qr) {
