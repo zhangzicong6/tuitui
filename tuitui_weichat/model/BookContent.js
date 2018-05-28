@@ -27,7 +27,6 @@ BookContentSchema.statics = {
                 .sort({'chapte_id':1})
                 .exec(cb);	
             }
-        
     }
 }
 

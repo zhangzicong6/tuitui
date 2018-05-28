@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html style="font-size: 50px;">
+  <head>
+    <title>免费看书</title>
+    <link rel='stylesheet' href='/stylesheets/youshu.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="/javascripts/jiazai.min.js"></script>
+  </head>
+  <body>
+	<div id="app">
+		<div  class="container b_f7">
+			<header class="header_top" style="text-align: center;">
+				目录
+			</header> 
+			<div class="content" style="">
+			<section class="p0">
+				<ul class="cataloglul scatlog" style="box-sizing: border-box;">
+				<% for(var i=0; i<chaptes.length; i++) {%>
+		    		<li class="catalog_item">
+						<a href="/reading/read/<%=book_id%>?chapte_id=<%=chaptes[i].chapte_id %>" class="lp_li_aa catalog_item_a" style="padding-left: 20px"><%=chaptes[i].chapte_name %>
+				            <div class="rt_box"></div>
+			            </a>
+		            </li>
+		        <% } %>
+		        </ul>
+	    	</section>
+	</div>
+	<script type="text/javascript">// 计算html的font-size
+	    (function () {
+	        function resizeBaseFontSize() {
+	            var rootHtml = document.documentElement,
+	                deviceWidth = rootHtml.clientWidth;
+	            if (deviceWidth >= 414) {
+	                deviceWidth = 414;
+	            }
+	            rootHtml.style.fontSize = deviceWidth / 7.5 + "px";
+	        }
+
+	        resizeBaseFontSize();
+	        window.addEventListener("resize", resizeBaseFontSize, false);
+	        window.addEventListener("orientationchange", resizeBaseFontSize, false);
+	    })();
+    </script>
+  </body>
+</html>
