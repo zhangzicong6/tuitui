@@ -43,9 +43,9 @@ function test() {
     UserModel.count({code:1},function (err,data) {
         console.log(data,'-------------------code')
     })
-    UserModel.deleteMany({code:1},function (err,data) {
-        console.log(data,'-------------------code')
-    })
+    // UserModel.deleteMany({code:1},function (err,data) {
+    //     console.log(data,'-------------------code')
+    // })
     UserModel.find({code:1},function (err,data) {
         console.log(data,'-------------------code')
     })
