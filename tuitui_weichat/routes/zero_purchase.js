@@ -18,18 +18,52 @@ function purchase(openid, config, message,res){
 }
 
 async function get_img(openid, config){
-			var client = new WechatAPI(config.appid, config.appsecret);
-        	var content = JSON.stringify({type:'0_shop',book:book_id});
-        	var ticket = await mem.get(content);
-        	if(ticket){
+	var client = new WechatAPI(config.appid, config.appsecret);
+	var content = JSON.stringify({type:'0_shop',book:book_id});
+	var ticket = await mem.get(content);
+	if(!ticket){
+		ticket = await get_qr(client,content);
+	}
+	var qr_name = await img_compose(ticket);
 
-        	}else{
-        		
-        	}
+}
+
+async function get_qr(client,content){
+	return await new Promise((resolve, reject)=>{
+		client.createTmpQRCode(content,2592000,function(err,reslut){
+			var ticket1=   mem.set(content,reslut.ticket,2592000)
+			var content1=  mem.set(reslut.ticket,content,2592000)
+			return resolve(reslut.ticket);
+		});
+	});
+}
+
+async function img_compose(ticket){
+	return await new Promise((resolve, reject)=>{
+		ImageUtil.getZeroImg(ticket,function(qr_name){
+			return resolve(qr_name);
+		});
+	});
+}
+
+async function send_img(client,qr_name){
+	var url = __dirname + '/../public/qr_image/' + qr_name
+    client.uploadMedia(url, 'image', function (cerror, result) {
+        if (result) {
+            console.log('------发送图片-----')
+            client.sendImage(openid, result.media_id, function (err, res) {
+                if (err) {
+                    console.log(err, '----------------err')
+                }
+            })
+        } else {
+            console.log(cerror, '-----------------cerror')
+        }
+    })
 }
 
 function subscribe(openid, config, message,res){
-	res.replay('欢迎关注💪\r\n完成如下任务可以免费领取的爆款商品！')
+	res.reply('欢迎关注💪\r\n完成如下任务可以免费领取的爆款商品！')
 }
 
 
