@@ -172,6 +172,9 @@ async function subscribe(openid,config,message,res){
 
 async function charge_zero(ticket){
     var content = await mem.get(ticket);
+    if(!content){
+        return false;
+    }
     var obj = JSON.parse(content);
     return obj.type == '0_shop';
 }
