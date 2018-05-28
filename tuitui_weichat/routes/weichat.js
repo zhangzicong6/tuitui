@@ -141,12 +141,14 @@ router.use('/:code', function (request, response, next_fun) {
 });
 
 async function subscribe(openid,config,message,res){
+    console.log('--------subscribe------- '+message);
     if(config.zero_purchase && message.Ticket){
         var flag = await charge_zero(message.Ticket);
         if(flag){
             return purchase.subscribe(openid, config, message,res)
         }
     }
+
     var code_list = book_wechat_conf.book_wechat_list;
     if (code_list.indexOf(config.code) == -1) {
         if (config.sub_replay == 0) {
@@ -165,12 +167,13 @@ async function subscribe(openid,config,message,res){
             getXiaoshuo(message, request.params.code);
         }
     }
+
 }
 
 async function charge_zero(ticket){
     var content = await mem.get(ticket);
-    var obj = message.Ticket;
-    return obj.type == '0_shop'
+    var obj = JSON.parse(content);
+    return obj.type == '0_shop';
 }
 
 function update_sendMessage(openid) {
