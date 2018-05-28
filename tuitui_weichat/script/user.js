@@ -93,33 +93,53 @@ function get_nickname() {
 
 function update_nickname(_id, code, next) {
     UserModel.fetch_nickname(_id, code, function (error, users) {
-        console.log()
+        console.log(users,'-------------------nicknames')
         var user_arr = [];
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
-        clients[code].batchGetUsers(user_arr, function (err, data) {
-            if (err) {
-                console.log(err, '----------------err')
-            }
-            if (data && data.user_info_list) {
-                data.user_info_list.forEach(function (info) {
-                    UserModel.findOneAndUpdate({openid: info.openid}, {
-                        nickname: info.nickname,
-                        headimgurl: info.headimgurl
-                    }, function (err, result) {
-                        if (err) {
-                            console.log(err)
-                        }
-                    });
-                })
-            }
-            if (users.length == 50) {
-                return next(users[49]._id, code);
-            } else {
-                return next(null, code + 1)
-            }
-        })
+        if(user_arr.length == 0){
+            console.log(user_arr,'-------------------nickname null')
+        }else if(user_arr.length ==1){
+            console.log(user_arr,'--------------user_arr')
+            clients[code].getUser(user_arr[0],function (err,data) {
+                if (err) {
+                    console.log(err, '----------------nickname err')
+                }
+                UserModel.findOneAndUpdate({openid: data.openid}, {
+                    nickname: data.nickname,
+                    headimgurl: data.headimgurl
+                }, function (err, result) {
+                    if (err) {
+                        console.log(err)
+                    }
+                });
+            })
+        }else {
+            console.log(user_arr, '--------------nickname_arr')
+            clients[code].batchGetUsers(user_arr, function (err, data) {
+                if (err) {
+                    console.log(err, '----------------nickname err')
+                }
+                if (data && data.user_info_list) {
+                    data.user_info_list.forEach(function (info) {
+                        UserModel.findOneAndUpdate({openid: info.openid}, {
+                            nickname: info.nickname,
+                            headimgurl: info.headimgurl
+                        }, function (err, result) {
+                            if (err) {
+                                console.log(err)
+                            }
+                        });
+                    })
+                }
+                if (users.length == 50) {
+                    return next(users[49]._id, code);
+                } else {
+                    return next(null, code + 1)
+                }
+            })
+        }
     })
 }
 
