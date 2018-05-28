@@ -41,13 +41,13 @@ function test() {
     //     console.log(data,'-------------------host')
     // })
     UserModel.count({code:1},function (err,data) {
-        console.log(data,'-------------------code')
+        console.log(data,'-------------------count')
     })
     // UserModel.deleteMany({code:1},function (err,data) {
-    //     console.log(data,'-------------------code')
+    //     console.log(data,'-------------------del')
     // })
     UserModel.find({code:1},function (err,data) {
-        console.log(data,'-------------------code')
+        console.log(data,'-------------------users')
     })
 }
 test()
