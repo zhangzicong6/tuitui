@@ -66,7 +66,15 @@ function update_order(_id, next) {
                             if (order.status == 3) {
                                 AddFreeOrderModel.findOne({order_number: order.order_number}, function (err, addOrder) {
                                     if (!addOrder) {
-                                        var add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.2).toFixed(2));
+                                        var add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.15).toFixed(2));
+                                        var father_add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.1).toFixed(2));
+                                        var host_add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.1).toFixed(2));
+                                        var str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
+                                            + '\r\n下单网站：淘宝\r\n返 利：' + add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
+                                        // var father_str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
+                                        //     + '\r\n下单网站：淘宝\r\n返 利：' + father_add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
+                                        // var host_str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
+                                        //     + '\r\n下单网站：淘宝\r\n返 利：' + host_add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
                                         order.tk_comm_fee = add_cash;
                                         AddFreeOrderModel.create({
                                             openid: order.openid,
@@ -74,15 +82,42 @@ function update_order(_id, next) {
                                             cash: add_cash,
                                             order_number: order.order_number
                                         });
-                                        UserModel.findOneAndUpdate({openid: order.openid}, {$inc: {current_balance: add_cash}}, function (error, u) {
-                                            console.log(error);
-                                        });
-
-                                        var str = '尊敬的用户：您的订单【' + taobao.goods_info + '】已结算\r\n订单编号：' + taobao.order_id
-                                            + '\r\n下单网站：淘宝\r\n返 利：' + add_cash + '\r\n跟单状态：已结算\r\n返利金已添加到您的帐户！回复【个人信息】可以查看帐户情况！'
+                                        user.current_balance += add_cash;
+                                        user.rebate += add_cash
+                                        user.save()
                                         client.sendText(user.openid, str, function (err, result) {
                                             console.log(err);
                                         });
+
+                                        if (user.fatherid) {
+                                            UserModel.findOneAndUpdate({openid: user.fatherid}, {
+                                                $inc: {
+                                                    current_balance: father_add_cash,
+                                                    friend_rebate: father_add_cash
+                                                }, $addToSet: {valid_friend: user.openid}
+                                            }, function (error, father) {
+                                            //     if (father) {
+                                            //         client.sendText(user.fatherid, father_str, function (err, result) {
+                                            //             console.log(err);
+                                            //         });
+                                            //     }
+                                            });
+                                        }
+
+                                        if (user.fatherid && user.hostid && user.fatherid != user.hostid) {
+                                            UserModel.findOneAndUpdate({openid: user.hostid}, {
+                                                $inc: {
+                                                    current_balance: grand_add_cash,
+                                                    friend_rebate: grand_add_cash
+                                                }, $addToSet: {valid_friend: user.openid}
+                                            }, function (error, host) {
+                                                // if (host) {
+                                                //     client.sendText(user.hostid, host_str, function (err, result) {
+                                                //         console.log(err);
+                                                //     });
+                                                // }
+                                            });
+                                        }
                                     }
                                 });
                             }
@@ -119,7 +154,6 @@ function getOrderStatus(status) {
         return 3;
     }
 }
-
 
 var rule = new schedule.RecurrenceRule();
 var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];

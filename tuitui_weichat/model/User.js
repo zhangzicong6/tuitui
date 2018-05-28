@@ -6,6 +6,12 @@ var db = mongoose.createConnection(connect_url);
 var UserSchema = new Schema({
   openid: String,
   code:String,
+  fatherid:String,                             //父id
+  hostid:String,                               //主id
+  rebate:{ type: Number, default:0},          //购买返利
+  friend_rebate:{ type: Number, default:0},  //好友返利
+  friend:Array,                                //所有好友
+  valid_friend:Array,                         //有效好友
   nickname: String,
   unionid:String,
   sex: String,
@@ -46,7 +52,32 @@ UserSchema.statics = {
                 .sort({'_id':-1})
                 .exec(cb);
         }
-
+    },
+    fetch_openid(id,code,cb){
+        if (id) {
+            return this.find({_id: {$lt: id},code:code}, ['openid'])
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+        }else {
+            return this.find({code:code}, ['openid'])
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+        }
+    },
+    fetch_nickname(id,code,cb){
+        if (id) {
+            return this.find({_id: {$lt: id},code:code,nickname:""}, ['openid'])
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+        }else {
+            return this.find({code:code,nickname:""}, ['openid'])
+                .limit(50)
+                .sort({'_id':-1})
+                .exec(cb);
+        }
     }
 }
 
