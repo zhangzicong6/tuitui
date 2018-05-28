@@ -4,14 +4,14 @@ var WechatAPI = require('wechat-api');
 var weichat_conf = require('../conf/weichat.json');
 var clients = {}
 
-for (var item in weichat_conf) {
-    var config = weichat_conf[item]
-    var client = new WechatAPI(config.appid, config.appsecret);
-    clients[item] = client
-}
-// var config = weichat_conf[1]
-// var client = new WechatAPI(config.appid, config.appsecret);
-// clients[1] = client
+// for (var item in weichat_conf) {
+//     var config = weichat_conf[item]
+//     var client = new WechatAPI(config.appid, config.appsecret);
+//     clients[item] = client
+// }
+var config = weichat_conf[1]
+var client = new WechatAPI(config.appid, config.appsecret);
+clients[1] = client
 
 function next_up(_id, code) {
     if (code && code <= Object.keys(clients).length) {
