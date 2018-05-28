@@ -101,7 +101,7 @@ function update_nickname(_id, code, next) {
         if(user_arr.length == 0){
             console.log(user_arr,'-------------------nickname null')
         }else if(user_arr.length ==1){
-            console.log(user_arr,'--------------user_arr')
+            console.log(user_arr,'--------------nickname_arr')
             clients[code].getUser(user_arr[0],function (err,data) {
                 if (err) {
                     console.log(err, '----------------nickname err')
