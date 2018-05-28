@@ -28,7 +28,6 @@ function get_user() {
 
 function update_user(_id, code, next) {
     UserModel.fetch_openid(_id, code, function (error, users) {
-        console.log()
         var user_arr = [];
         users.forEach(function (user) {
             user_arr.push(user.openid)
