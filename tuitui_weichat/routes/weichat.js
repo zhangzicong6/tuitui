@@ -23,6 +23,8 @@ var UserActionMiaoShaModel = require('../model/UserActionMiaoSha.js');
 var UserWaitMessageModel = require('../model/UserWaitMessage.js');
 
 var MessageServer = require('../message_server.js');
+
+var purchase = require('./zero_purchase');
 var weichat_apis = {};
 
 var Memcached = require('memcached');
@@ -42,54 +44,63 @@ router.use('/:code', function (request, response, next_fun) {
             var openid = message.FromUserName;
             getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
                 if (message.MsgType === 'text') {
-                    if (send_codes.indexOf('' + request.params.code) != -1) {
-                        update_sendMessage(openid)
-                    }
-                    var text = message.Content.trim();
-                    if (text === '帮助') {
-                        res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n' +
-                            '2.点击商品名右侧的“分享(有赏)”，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n' +
-                            '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
-                    } else if (text === '订单') {
-                        getOrders(openid, res);
-                    } else if (text === '个人信息') {
-                        if (request.params.code == 1) {
-                            new_getUser(openid, res);
-                        } else {
-                            getUser(openid, res);
+                    if(config.robot){
+                        if (send_codes.indexOf('' + request.params.code) != -1) {
+                            update_sendMessage(openid)
                         }
-                    } else if (text === '邀请好友') {
-                        invite(config, request.params.code, openid, res);
-                    } else if (text === '提现') {
-                        cash(request.params.code, openid, res);
-                    } else if (text === '0' || text === '1' || text === '2') {
-                        if (request.params.code == '8' || request.params.code == '1') {
-                            saveActionMiaoSha(openid, text, request.params.code, res);
-                        } else {
-                            res.reply('');
+                        var text = message.Content.trim();
+                        if (text === '帮助') {
+                            res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n' +
+                                '2.点击商品名右侧的“分享(有赏)”，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n' +
+                                '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
+                        } else if (text === '订单') {
+                            getOrders(openid, res);
+                        } else if (text === '个人信息') {
+                            if (request.params.code == 1) {
+                                new_getUser(openid, res);
+                            } else {
+                                getUser(openid, res);
+                            }
+                        } else if (text === '邀请好友') {
+                            invite(config, request.params.code, openid, res);
+                        } else if (text === '提现') {
+                            cash(request.params.code, openid, res);
+                        } else if (text === '0' || text === '1' || text === '2') {
+                            if (request.params.code == '8' || request.params.code == '1') {
+                                saveActionMiaoSha(openid, text, request.params.code, res);
+                            } else {
+                                res.reply('');
+                            }
+                        } else if (/^\d{5,8}$/.test(text)) {
+                            getCode(openid, text, res);
+                        } else if (/^\d{15,20}$/.test(text)) {
+                            setOrder(openid, text, res);
+                        } else if (/^\d{9,14}$/.test(text) || /^\d{21,}$/.test(text)) {
+                            res.reply('无效订单号，请您检查订单号!');
+                        } else if (text.search('搜索') == 0) {
+                            getSearch(config, openid, text, res);
+                        } else if (text.search('【') != -1) {
+                            getTaobaoke_byCode(config, openid, text, res);
+                        } else if (/^[\s\S]{10,30}$/.test(text)) {
+                            getTaobaoke_byCode(config, openid, text, res);
+                        } else if (text == '提现测试') {
+                            res.reply('<a href="http://www.rrdtjj.top/alipay/redirect/' + request.params.code + '">点击链接提现</a>')
+                        } else if (text == '测试openid') {
+                            res.reply(openid);
+                        }else {
+                            res.reply('')
                         }
-                    } else if (/^\d{5,8}$/.test(text)) {
-                        getCode(openid, text, res);
-                    } else if (/^\d{15,20}$/.test(text)) {
-                        setOrder(openid, text, res);
-                    } else if (/^\d{9,14}$/.test(text) || /^\d{21,}$/.test(text)) {
-                        res.reply('无效订单号，请您检查订单号!');
-                    } else if (text.search('搜索') == 0) {
-                        getSearch(config, openid, text, res);
-                    } else if (text.search('【') != -1) {
-                        getTaobaoke_byCode(config, openid, text, res);
-                    } else if (/^[\s\S]{10,30}$/.test(text)) {
-                        getTaobaoke_byCode(config, openid, text, res);
-                    } else if (text == '提现测试') {
-                        res.reply('<a href="http://www.rrdtjj.top/alipay/redirect/' + request.params.code + '">点击链接提现</a>')
-                    } else if (text == '测试openid') {
-                        res.reply(openid);
-                    } else {
+                    }else if(config.zero_purchase){
+                        purchase.purchase(openid, config, message,res);
+                    }else{
                         res.reply('')
                     }
                 } else if (message.MsgType === 'event') {
                     console.log(message, '----------------message')
                     if (message.Event === 'subscribe') {
+                        if(config.zero_purchase){
+                            return purchase.subscribe(openid, config, message,res);
+                        }
                         var code_list = book_wechat_conf.book_wechat_list;
                         if (code_list.indexOf(request.params.code) == -1) {
                             if (config.sub_replay == 0) {

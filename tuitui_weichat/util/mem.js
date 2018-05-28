@@ -21,7 +21,7 @@ module.exports.timeContent = function (openid) {
     })
 }
 
-module.exports.timeContent = function (openid) {
+module.exports.timeContent =  function (openid) {
     return new Promise((resolve, reject) => {
         console.log(openid, '-----------bindtime')
         memcached.get('bindtime_' + openid, function (err, content) {
@@ -31,3 +31,18 @@ module.exports.timeContent = function (openid) {
     })
 }
 
+module.exports.get = function(key){
+    return new Promise((resolve, reject)=>{
+        memcached.get(key,function(err,value){
+            resolve(value);
+        });
+    });
+}
+
+module.exports.set = function(key,value,time){
+    return new Promise((resolve, reject)=>{
+        memcached.set(key,value,time,function(err,value){
+            resolve(value);
+        });
+    });
+}
