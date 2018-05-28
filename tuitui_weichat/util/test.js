@@ -40,12 +40,12 @@ function test() {
     // AddFreeOrderModel.deleteOne({openid:'o3qBK0ZM6UHi58UK_Yy3YymzdEcc'},function (err,data) {
     //     console.log(data,'-------------------host')
     // })
-    // UserModel.count({code:1},function (err,data) {
-    //     console.log(data,'-------------------code')
-    // })
-    UserModel.deleteMany({code:1},function (err,data) {
+    UserModel.count({code:1},function (err,data) {
         console.log(data,'-------------------code')
     })
+    // UserModel.deleteMany({code:1},function (err,data) {
+    //     console.log(data,'-------------------code')
+    // })
 }
 test()
 
