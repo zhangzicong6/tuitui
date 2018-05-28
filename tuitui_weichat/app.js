@@ -15,6 +15,7 @@ var alipay = require('./routes/alipay');
 var piclink = require('./routes/piclink');
 var top10 = require('./routes/top10');
 var reading = require('./routes/reading');
+var youhuiquan = require('./routes/youhuiquan');
 
 
 var app = express();
@@ -46,7 +47,7 @@ app.use('/alipay',alipay);
 app.use('/piclink',piclink);
 app.use('/top10',top10);
 app.use('/reading',reading);
-
+app.use('/youhuiquan',youhuiquan);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
