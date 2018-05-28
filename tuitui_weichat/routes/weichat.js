@@ -52,7 +52,7 @@ router.use('/:code', function (request, response, next_fun) {
                         if (text === '帮助') {
                             res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n' +
                                 '2.点击商品名右侧的“分享(有赏)”，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n' +
-                                '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
+                                '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n邀请好友请回复:邀请好友\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
                         } else if (text === '订单') {
                             getOrders(openid, res);
                         } else if (text === '个人信息') {
@@ -551,8 +551,8 @@ function new_sendUserMessage(openid, user, res) {
         },
     ], function (err, counts) {
         var str = '━┉┉┉┉∞┉┉┉┉━\r\n订单总数:' + counts[0] + '笔\r\n已完成数:' + counts[1] + '笔\r\n未完成数:' + counts[2] + '笔\r\n' +
-            '购买返利：' + user.rebate.toFixed(2) + '元\r\n好友返利：' + user.friend_rebate.toFixed(2) + '元\r\n好友个数：' + user.friend.length + '个\r\n' +
-            '有效好友：' + user.valid_friend.length + '个\r\n当前余额:' + user.current_balance.toFixed(2) + '元\r\n累计提现:' + user.addup_cash.toFixed(2) +
+            '购买返利:' + user.rebate.toFixed(2) + '元\r\n好友返利:' + user.friend_rebate.toFixed(2) + '元\r\n好友个数:' + user.friend.length + '个\r\n' +
+            '有效好友:' + user.valid_friend.length + '个\r\n当前余额:' + user.current_balance.toFixed(2) + '元\r\n累计提现:' + user.addup_cash.toFixed(2) +
             '元\r\n━┉┉┉┉∞┉┉┉┉━\r\n◇ ◇ ◇�温馨提醒◇ ◇ ◇ \r\n收货后，返利会添加到个⼈账户余额超过1元，输⼊“提现”提现';
         //console.log(str);
         res.reply({
