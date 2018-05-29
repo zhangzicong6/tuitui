@@ -29,7 +29,9 @@ async function get_img(openid, config){
 	if(!ticket){
 		ticket = await get_qr(client,content);
 	}
+	console.log('---------====ticket=====-------'+ticket)
 	var qr_name = await img_compose(ticket);
+	console.log('---------====qr_name=====-------'+qr_name)
 	var res = await send_img(client,openid,qr_name);
 }
 
