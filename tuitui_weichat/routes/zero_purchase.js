@@ -58,6 +58,7 @@ async function img_compose(ticket){
 async function send_img(client,openid,qr_name){
 	return await new Promise((resolve, reject)=>{
 		var media_id = mem.get('media_zero_'+qr_name);
+		console.log('-------media_id-----'+media_id);
 		if(!media_id){
 			client.sendImage(openid, media_id, function (err, res) {
                 if (err) {
@@ -163,7 +164,7 @@ async function get_key(openid, config, message,res){
 	if(message.EventKey=='KEY_ZERO_GET'){
 		console.log('---------获取图片-----------')
 		if(res){
-			res.reply('')
+			res.reply('回复“0”参与活动')
 		}
 		await get_img(openid, config);
 	}else if(message.EventKey=='KEY_ZERO_PROC'){
