@@ -29,7 +29,7 @@ async function get_img(openid, config){
 		ticket = await get_qr(client,content);
 	}
 	var qr_name = await img_compose(ticket);
-	var res = send_img(client,openid,qr_name);
+	var res = await send_img(client,openid,qr_name);
 }
 
 async function get_qr(client,content){
@@ -158,7 +158,9 @@ function send_message(auth,config){
 
 async function get_key(openid, config, message,res){
 	if(message.EventKey=='KEY_ZERO_GET'){
-		res.reply('')
+		if(res){
+			res.reply('')
+		}
 		await get_img(openid, config);
 	}else if(message.EventKey=='KEY_ZERO_PROC'){
 		res.reply('')
@@ -170,6 +172,20 @@ async function get_key(openid, config, message,res){
 setTimeout(function(){
 	weichat_apis = {};
 },15*60*1000)
+
+
+get_key("o2psx1j0Dh6Qz5oKtzM4d33DLofE",{
+	"code":"24",
+	"name":"网购省钱VIP",
+	"appid":"wxfc15da67edc9f990",
+	"appsecret":"e8ca947a2536ad0bf01fe0fde492e5a5",
+	"token":"mingxingshuo",
+	"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
+	"url":"http://www.rrdtjj.top/weichat/24",
+	"sub_replay":0,
+	"robot":0,
+	"zero_purchase":1
+},{EventKey:"KEY_ZERO_GET"},null)
 
 
 module.exports.get_key = get_key;
