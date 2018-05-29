@@ -18,13 +18,14 @@ function purchase(openid, config, message,res){
 	
 }
 async function get_img(openid, config){
-	console.log('----- 生成图片 -----')
+	console.log('====----- 生成图片 -----======')
 	if (!weichat_apis[config.code]) {
         weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     }
     client = weichat_apis[config.code];
 	var content = JSON.stringify({type:'0_shop',openid:openid});
 	var ticket = await mem.get(content);
+	console.log('--- ticket ----'+ticket)
 	if(!ticket){
 		ticket = await get_qr(client,content);
 	}
@@ -158,6 +159,7 @@ function send_message(auth,config){
 
 async function get_key(openid, config, message,res){
 	if(message.EventKey=='KEY_ZERO_GET'){
+		console.log('---------获取图片-----------')
 		if(res){
 			res.reply('')
 		}
@@ -165,7 +167,9 @@ async function get_key(openid, config, message,res){
 	}else if(message.EventKey=='KEY_ZERO_PROC'){
 		res.reply('')
 		var auth = await ZeroAuthorityModel.findOne({openid:openid,action:zero_conf.index});
-	    send_message(auth,config);
+		if(auth){
+			send_message(auth,config);
+		}  
 	}
 }
 
@@ -174,7 +178,7 @@ setTimeout(function(){
 },15*60*1000)
 
 
-get_key("o2psx1j0Dh6Qz5oKtzM4d33DLofE",{
+/*get_key("o2psx1j0Dh6Qz5oKtzM4d33DLofE",{
 	"code":"24",
 	"name":"网购省钱VIP",
 	"appid":"wxfc15da67edc9f990",
@@ -185,7 +189,7 @@ get_key("o2psx1j0Dh6Qz5oKtzM4d33DLofE",{
 	"sub_replay":0,
 	"robot":0,
 	"zero_purchase":1
-},{EventKey:"KEY_ZERO_GET"},null)
+},{EventKey:"KEY_ZERO_GET"},null)*/
 
 
 module.exports.get_key = get_key;
