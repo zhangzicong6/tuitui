@@ -159,7 +159,7 @@ function send_message(auth,config){
 async function get_key(openid, config, message,res){
 	if(message.EventKey=='KEY_ZERO_GET'){
 		res.reply('')
-		get_img(openid, config);
+		await get_img(openid, config);
 	}else if(message.EventKey=='KEY_ZERO_PROC'){
 		res.reply('')
 		var auth = await ZeroAuthorityModel.findOne({openid:openid,action:zero_conf.index});
