@@ -177,7 +177,7 @@ async function get_key(openid, config, message,res){
 
 setTimeout(function(){
 	weichat_apis = {};
-},15*60*1000)
+},5*60*1000)
 
 
 /*get_key("o2psx1j0Dh6Qz5oKtzM4d33DLofE",{
