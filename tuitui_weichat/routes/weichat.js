@@ -44,6 +44,12 @@ router.use('/:code', function (request, response, next_fun) {
             var openid = message.FromUserName;
             getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
                 if (message.MsgType === 'text') {
+                    var text = message.Content.trim();
+                    if(config.new_add){
+                        if(text=='178'){
+                            return res.reply('☞ <a href="'+config.new_add+' ">点我打照片</a> ☜')
+                        }
+                    }
                     if(config.robot){
                         if (send_codes.indexOf('' + request.params.code) != -1) {
                             update_sendMessage(openid)
@@ -274,7 +280,6 @@ function getXiaoshuo(message, code) {
 
 function sendBookMessage(auth, code) {
     var config = weichat_conf[code];
-
     var client = new WechatAPI(config.appid, config.appsecret);
     var str = '';
     if (auth.invitees.length < 5) {
