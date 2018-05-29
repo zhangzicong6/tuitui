@@ -151,11 +151,12 @@ router.use('/:code', function (request, response, next_fun) {
 
 async function subscribe(openid,config,message,res){
     console.log('--------subscribe------- '+message);
-    if(config.zero_purchase && message.Ticket){
-        var flag = await charge_zero(message.Ticket);
-        if(flag){
-            return purchase.subscribe(openid, config, message,res)
-        }
+    if(config.zero_purchase){
+        if(message.Ticket && charge_zero(message.Ticket)){
+            return purchase.subscribe(openid, config, message,res);
+        }else if(!message.Ticket){
+            return purchase.subscribe(openid, config, message,res);
+        } 
     }
 
     var code_list = book_wechat_conf.book_wechat_list;

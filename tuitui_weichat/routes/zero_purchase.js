@@ -90,6 +90,10 @@ function subscribe(openid, config, message,res){
 
 async function luoji(openid,config,ticket){
 	var content = await mem.get(ticket);
+	get_img(openid, config);
+    if(!content){
+        return;
+    }
 	var obj = JSON.parse(content);
 	var auth = await ZeroAuthorityModel.findOne({openid: obj.openid,action:zero_conf.index});
 	if(!auth){
