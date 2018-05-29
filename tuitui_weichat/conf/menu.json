@@ -19,7 +19,7 @@
   		{
   			"type":"click",
   			"name":"查进度",
-  			"url":"KEY_ZERO_PROC"
+  			"key":"KEY_ZERO_PROC"
   		}
   	]
   }
