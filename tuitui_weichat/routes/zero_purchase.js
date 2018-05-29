@@ -163,10 +163,9 @@ function send_message(auth,config){
 async function get_key(openid, config, message,res){
 	if(message.EventKey=='KEY_ZERO_LING'){
 		console.log('---------获取图片-----------')
-		if(res){
-			res.reply('回复“0”参与活动')
-		}
-		//await get_img(openid, config);
+		res.reply('')
+		//res.reply('回复“0”参与活动')
+		await get_img(openid, config);
 	}else if(message.EventKey=='KEY_ZERO_PROC'){
 		res.reply('')
 		var auth = await ZeroAuthorityModel.findOne({openid:openid,action:zero_conf.index});
