@@ -52,7 +52,6 @@ function share_img(ticket, qr_name, callback) {
             callback(qr_name);
         });
     });
-
 }
 
 function getQRImg(ticket, callback) {
@@ -98,7 +97,6 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
             });
         });
     });
-
 }
 
 function getUserImg(ticket, nickname, headimgurl, callback) {
@@ -130,8 +128,42 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
     });
 }
 
+function zero_img(ticket, qr_name, callback){
+    var resize_cmd = 'gm "convert" "' + __dirname + '/qr_image/' + qr_name + '" "-resize" "179x" "' + __dirname + '/qr_image/small_' + qr_name + '"';
+    exec(resize_cmd, function (error, stdout, stderr) {
+        if (error) {
+            console.log(error);
+        }
+        var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+509+1206" "' + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
+        exec(mosaic_cmd, function (error, stdout, stderr) {
+            if (error) {
+                console.log(error);
+            }
+            memcached.set('zero_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+            });
+            callback(qr_name);
+        });
+    });
+}
+
+function getZeroImg(ticket,callback){
+    memcached.get('zero_' + ticket, function (err, qr) {
+        if (qr) {
+            return callback(qr);
+        }
+        var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + ticket;
+        console.log(qr_url);
+        var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
+        var qr_path = __dirname + '/qr_image/' + qr_name;
+        downloadFile(qr_url, qr_path, function (err, res) {
+            zero_img(ticket, qr_name, callback);
+        });
+    });
+}
+
 module.exports.getQRImg = getQRImg
 module.exports.getUserImg = getUserImg
+module.exports.getZeroImg = getZeroImg
 
 /*
  getQRImg('https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQEX8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyRDBfa0p3dXdkYWgxMDAwMGcwN0QAAgSHZ69aAwQAAAAA',function(qr_name){
