@@ -81,7 +81,7 @@ router.use('/:code', function (request, response, next_fun) {
                             getSearch(config, openid, text, res);
                         } else if (text.search('【') != -1) {
                             getTaobaoke_byCode(config, openid, text, res);
-                        } else if (/^[\s\S]{10,30}$/.test(text)) {
+                        } else if (/^[\s\S]{10,60}$/.test(text)) {
                             getTaobaoke_byCode(config, openid, text, res);
                         } else if (text == '提现测试') {
                             res.reply('<a href="http://www.rrdtjj.top/alipay/redirect/' + request.params.code + '">点击链接提现</a>')
