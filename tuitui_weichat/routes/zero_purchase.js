@@ -156,7 +156,7 @@ function send_message(auth,config){
 }
 
 
-function get_key(openid, config, message,res){
+async function get_key(openid, config, message,res){
 	if(message.EventKey=='KEY_ZERO_GET'){
 		get_img(openid, config);
 	}else if(message.EventKey=='KEY_ZERO_PROC'){
