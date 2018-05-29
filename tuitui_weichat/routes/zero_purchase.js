@@ -94,12 +94,12 @@ async function luoji(openid,config,ticket){
 	if (!weichat_apis[config.code]) {
         weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     }
+    var api = weichat_apis[config.code];
     api.sendText(openid,str,function(err,result){
     	if (err) {
 	            console.log(err, '----------------err')
 	        }
     })
-	var api = weichat_apis[config.code];
 	get_img(openid, config);
     if(!content){
         return;
