@@ -50,6 +50,11 @@ router.use('/:code', function (request, response, next_fun) {
                             return res.reply('☞ <a href="'+config.new_add+' ">点我打照片</a> ☜')
                         }
                     }
+                    if(config.zero_purchase){
+                        if(text == '0'){
+                            return purchase.purchase(openid, config, message,res);
+                        } 
+                    }
                     if(config.robot){
                         if (send_codes.indexOf('' + request.params.code) != -1) {
                             update_sendMessage(openid)
@@ -96,8 +101,6 @@ router.use('/:code', function (request, response, next_fun) {
                         }else {
                             res.reply('')
                         }
-                    }else if(config.zero_purchase){
-                        purchase.purchase(openid, config, message,res);
                     }else{
                         res.reply('')
                     }

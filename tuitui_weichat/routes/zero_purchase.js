@@ -10,18 +10,12 @@ var moment = require('moment');
 
 
 function purchase(openid, config, message,res){
-	var text = message.Content.trim();
-	if(text == '0'){
-		var str = zero_conf.text;
-		if(res){
-			res.reply(str);
-		}
-		get_img(openid, config);
-	}else{
-		if(res){
-			res.reply('')
-		}
+	var str = zero_conf.text;
+	if(res){
+		res.reply(str);
 	}
+	get_img(openid, config);
+	
 }
 async function get_img(openid, config){
 	if (!weichat_apis[config.code]) {
