@@ -18,6 +18,7 @@ function purchase(openid, config, message,res){
 	
 }
 async function get_img(openid, config){
+	console.log('----- 生成图片 -----')
 	if (!weichat_apis[config.code]) {
         weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     }
@@ -59,24 +60,28 @@ async function send_img(client,openid,qr_name){
                 if (err) {
                     console.log(err, '----------------err')
                 }
+                console.log('-------发送图片----')
                 resolve(1)
             })
 		}else{
 			var url = __dirname + '/../public/qr_image/' + qr_name;
 			client.uploadMedia(url, 'image', function (cerror, result) {
 		        if (result) {
-		            console.log('------发送图片-----') 
+		            console.log('------上传图片-----') 
+		            var value = mem.set('media_zero_'+qr_name,result.media_id,7*24*60*60);
+		        	console.log('-------mem-----set----'+value);
+		            client.sendImage(openid, result.media_id, function (err, res1) {
+		                if (err) {
+		                    console.log(err, '----------------err')
+		                }
+		                console.log('-------发送图片----')
+		                resolve(1)
+		            })
 		        } else {
 		            console.log(cerror, '-----------------cerror')
 		        }
-		        var value = mem.set('media_zero_'+qr_name,result.media_id,7*24*60*60);
-		        console.log('-------mem-----set----'+value);
-		        client.sendImage(openid, result.media_id, function (err, res) {
-                if (err) {
-                    console.log(err, '----------------err')
-                }
-                resolve(1)
-            })
+		        
+		        
 		    });
 		}
     });
@@ -99,6 +104,7 @@ async function luoji(openid,config,ticket){
     	if (err) {
 	            console.log(err, '----------------err')
 	        }
+	    console.log('----- 发送文字 -----')
     })
 	get_img(openid, config);
     if(!content){
