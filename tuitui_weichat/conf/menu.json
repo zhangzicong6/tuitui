@@ -12,9 +12,14 @@
   "24":{
   	"button":[
   		{
-  			"type":"view",
-  			"name":"领取红包",
-  			"url":"http://tiexie0.wang/others/others_0517.html?from=singlemessage&isappinstalled=0"
+  			"type":"click",
+  			"name":"0元领",
+  			"key":"KEY_ZERO_GET"
+  		},
+  		{
+  			"type":"click",
+  			"name":"查进度",
+  			"url":"KEY_ZERO_PROC"
   		}
   	]
   }

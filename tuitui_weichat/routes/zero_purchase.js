@@ -155,9 +155,24 @@ function send_message(auth,config){
 	}
 }
 
+
+function get_key(openid, config, message,res){
+	if(message.EventKey=='KEY_ZERO_GET'){
+		get_img(openid, config);
+	}else if(message.EventKey=='KEY_ZERO_PROC'){
+		var auth = await ZeroAuthorityModel.findOne({
+			openid: openid,
+	        action:zero_conf.index
+	    });
+	    send_message(auth,config);
+	}
+}
+
 setTimeout(function(){
 	weichat_apis = {};
 },15*60*1000)
 
+
+module.exports.get_key = get_key;
 module.exports.purchase = purchase;
 module.exports.subscribe = subscribe;
