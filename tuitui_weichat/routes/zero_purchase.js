@@ -29,6 +29,9 @@ async function get_img(openid, config){
 	if(!ticket){
 		ticket = await get_qr(client,content);
 	}
+	if(!ticket){
+		return;
+	}
 	console.log('---------====ticket=====-------'+ticket)
 	var qr_name = await img_compose(ticket);
 	console.log('---------====qr_name=====-------'+qr_name)
@@ -38,11 +41,16 @@ async function get_img(openid, config){
 async function get_qr(client,content){
 	return await new Promise((resolve, reject)=>{
 		client.createTmpQRCode(content,2592000,function(err,reslut){
-			var ticket1=   mem.set(content,reslut.ticket,2592000)
-			console.log(ticket1);
-			var content1=  mem.set(reslut.ticket,content,2592000)
-			console.log(ticket1);
-			return resolve(reslut.ticket);
+			if(result && reslut.ticket){
+				var ticket1=   mem.set(content,reslut.ticket,2592000)
+				console.log(ticket1);
+				var content1=  mem.set(reslut.ticket,content,2592000)
+				console.log(ticket1);
+				return resolve(reslut.ticket);
+			}else{
+				return resolve('');
+			}
+			
 		});
 	});
 }
