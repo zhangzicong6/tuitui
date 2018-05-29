@@ -8,5 +8,14 @@
     "button": [
       
     ]
+  },
+  "24":{
+  	"button":[
+  		{
+  			"type":"view",
+  			"name":"领取红包",
+  			"url":"http://tiexie0.wang/others/others_0517.html?from=singlemessage&isappinstalled=0"
+  		}
+  	]
   }
 }

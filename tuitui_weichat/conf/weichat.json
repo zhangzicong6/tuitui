@@ -281,6 +281,18 @@
 		"robot":0,
 		"new_add":"https://mp.weixin.qq.com/s/nffWprJFOmN--o46N5tW0Q",
 		"zero_purchase":0
+	},
+	"24":{
+		"code":"24",
+		"name":"网购省钱VIP",
+		"appid":"wxfc15da67edc9f990",
+		"appsecret":"e8ca947a2536ad0bf01fe0fde492e5a5",
+		"token":"mingxingshuo",
+		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
+		"url":"http://www.rrdtjj.top/weichat/24",
+		"sub_replay":0,
+		"robot":0,
+		"zero_purchase":1
 	}
 
 }
