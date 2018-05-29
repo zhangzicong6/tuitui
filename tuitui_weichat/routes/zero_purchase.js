@@ -90,6 +90,16 @@ function subscribe(openid, config, message,res){
 
 async function luoji(openid,config,ticket){
 	var content = await mem.get(ticket);
+	var str = zero_conf.text;
+	if (!weichat_apis[config.code]) {
+        weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+    }
+    api.sendText(openid,str,function(err,result){
+    	if (err) {
+	            console.log(err, '----------------err')
+	        }
+    })
+	var api = weichat_apis[config.code];
 	get_img(openid, config);
     if(!content){
         return;
