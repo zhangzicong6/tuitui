@@ -131,13 +131,13 @@ function send_message(auth,config){
 	        if(err){
 	       		console.log(err)
 	        }
-	    })
+	    });
 	}else if(proc == zero_conf.total){
 		api.sendImage(auth.openid, zero_conf.complete_media, function (err, res) {
 	        if (err) {
 	            console.log(err, '----------------err')
 	        }
-	    }
+	    });
 	}
 }
 
