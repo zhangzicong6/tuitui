@@ -146,7 +146,7 @@ function send_message(auth,config){
 	       		console.log(err)
 	        }
 	    });
-	}else if(proc == zero_conf.total){
+	}else if(proc >= zero_conf.total){
 		api.sendImage(auth.openid, zero_conf.complete_media, function (err, res) {
 	        if (err) {
 	            console.log(err, '----------------err')
@@ -162,10 +162,7 @@ async function get_key(openid, config, message,res){
 		get_img(openid, config);
 	}else if(message.EventKey=='KEY_ZERO_PROC'){
 		res.reply('')
-		var auth = await ZeroAuthorityModel.findOne({
-			openid: openid,
-	        action:zero_conf.index
-	    });
+		var auth = await ZeroAuthorityModel.findOne({openid:openid,action:zero_conf.index});
 	    send_message(auth,config);
 	}
 }
