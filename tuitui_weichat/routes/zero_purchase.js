@@ -157,7 +157,7 @@ function send_message(auth,config){
 
 setTimeout(function(){
 	weichat_apis = {};
-},3600*1000)
+},15*60*1000)
 
 module.exports.purchase = purchase;
 module.exports.subscribe = subscribe;
