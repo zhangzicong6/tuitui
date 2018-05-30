@@ -45,17 +45,17 @@ router.use('/:code', function (request, response, next_fun) {
             getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
                 if (message.MsgType === 'text') {
                     var text = message.Content.trim();
-                    if(config.new_add){
-                        if(text=='178'){
-                            return res.reply('☞ <a href="'+config.new_add+' ">点我打照片</a> ☜')
+                    if (config.new_add) {
+                        if (text == '178') {
+                            return res.reply('☞ <a href="' + config.new_add + ' ">点我打照片</a> ☜')
                         }
                     }
-                    if(config.zero_purchase){
-                        if(text == '0'){
-                            return purchase.purchase(openid, config, message,res);
-                        } 
+                    if (config.zero_purchase) {
+                        if (text == '0') {
+                            return purchase.purchase(openid, config, message, res);
+                        }
                     }
-                    if(config.robot){
+                    if (config.robot) {
                         if (send_codes.indexOf('' + request.params.code) != -1) {
                             update_sendMessage(openid)
                         }
@@ -98,21 +98,21 @@ router.use('/:code', function (request, response, next_fun) {
                             res.reply('<a href="http://www.rrdtjj.top/alipay/redirect/' + request.params.code + '">点击链接提现</a>')
                         } else if (text == '测试openid') {
                             res.reply(openid);
-                        }else {
+                        } else {
                             res.reply('')
                         }
-                    }else{
+                    } else {
                         res.reply('')
                     }
                 } else if (message.MsgType === 'event') {
                     console.log(message, '----------------message')
                     if (message.Event === 'subscribe') {
-                        subscribe(openid,config,message,res);
+                        subscribe(openid, config, message, res);
                         /*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
                          '账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
                     } else if (message.Event.toLowerCase() == 'click') {
-                        if(message.EventKey=='KEY_ZERO_LING' || message.EventKey=='KEY_ZERO_PROC'){
-                            return purchase.get_key(openid,config,message,res)
+                        if (message.EventKey == 'KEY_ZERO_LING' || message.EventKey == 'KEY_ZERO_PROC') {
+                            return purchase.get_key(openid, config, message, res)
                         }
                         if (message.EventKey == 'KEY_GERENZHONGXIN') {
                             res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
@@ -152,14 +152,14 @@ router.use('/:code', function (request, response, next_fun) {
     }
 });
 
-async function subscribe(openid,config,message,res){
-    console.log('--------subscribe------- '+message);
-    if(config.zero_purchase){
-        if(message.Ticket && charge_zero(message.Ticket)){
-            return purchase.subscribe(openid, config, message,res);
-        }else if(!message.Ticket){
-            return purchase.subscribe(openid, config, message,res);
-        } 
+async function subscribe(openid, config, message, res) {
+    console.log('--------subscribe------- ' + message);
+    if (config.zero_purchase) {
+        if (message.Ticket && charge_zero(message.Ticket)) {
+            return purchase.subscribe(openid, config, message, res);
+        } else if (!message.Ticket) {
+            return purchase.subscribe(openid, config, message, res);
+        }
     }
 
     var code_list = book_wechat_conf.book_wechat_list;
@@ -183,9 +183,9 @@ async function subscribe(openid,config,message,res){
 
 }
 
-async function charge_zero(ticket){
+async function charge_zero(ticket) {
     var content = await mem.get(ticket);
-    if(!content){
+    if (!content) {
         return false;
     }
     var obj = JSON.parse(content);
@@ -678,13 +678,13 @@ function getTaobaoke_byCode(config, openid, text, res) {
 
     var code = '';
     /*if (text.search(/￥[0-9a-zA-Z]{11}￥/) != -1) {
-        code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/), 13);
-    }*/
+     code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/), 13);
+     }*/
 
     var str_url = '';
     /*if (text.search('【') != -1 && text.search('http') != -1) {
-        str_url = text.split('】')[1].split(' ')[0];
-    }*/
+     str_url = text.split('】')[1].split(' ')[0];
+     }*/
 
     if (str_url) {
         console.log('url---------------' + str_url);
@@ -835,21 +835,33 @@ async function invite(config, code, openid, res) {
             }
             if (ticket) {
                 UserModel.findOne({openid: openid}, function (error, user) {
-                    ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, function (qr_name) {
+                    ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, async function (qr_name) {
                         if (qr_name) {
                             var url = __dirname + '/../util/user_image/' + qr_name
-                            client.uploadMedia(url, 'image', function (cerror, result) {
-                                if (result) {
-                                    console.log('------发送图片-----')
-                                    client.sendImage(openid, result.media_id, function (err, res) {
-                                        if (err) {
-                                            console.log(err, '----------------err')
-                                        }
-                                    })
-                                } else {
-                                    console.log(cerror, '-----------------cerror')
-                                }
-                            })
+                            var media_id = await mem.get('media_' + openid)
+                            if (media_id) {
+                                client.sendImage(openid, media_id, function (err, res) {
+                                    if (err) {
+                                        console.log(err, '----------------err')
+                                    }
+                                })
+                            } else {
+                                client.uploadMedia(url, 'image', function (cerror, result) {
+                                    if (result) {
+                                        console.log('------发送图片-----')
+                                        client.sendImage(openid, result.media_id, function (err, res) {
+                                            if (err) {
+                                                console.log(err, '----------------err')
+                                            }
+                                        })
+                                        memcached.set('media_' + openid, result.media_id, function (err, media) {
+                                            console.log(media, '------------------set media');
+                                        });
+                                    } else {
+                                        console.log(cerror, '-----------------cerror')
+                                    }
+                                })
+                            }
                         }
                     })
                 })
