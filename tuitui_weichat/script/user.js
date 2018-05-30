@@ -143,6 +143,9 @@ function update_nickname(_id, code, next) {
     })
 }
 
+
+get_nickname();
+
 var rule = new schedule.RecurrenceRule();
 var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
 rule.minute = times;
