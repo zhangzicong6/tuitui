@@ -72,7 +72,7 @@ router.use('/:code', function (request, response, next_fun) {
                             } else {
                                 getUser(openid, res);
                             }
-                        } else if (text === '邀请好友') {
+                        } else if (text === '邀请好友' && request.params.code == '1') {
                             invite(config, request.params.code, openid, res);
                         } else if (text === '提现') {
                             cash(request.params.code, openid, res);
