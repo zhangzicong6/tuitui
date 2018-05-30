@@ -6,6 +6,7 @@ var ImageUtil = require('../util/image_util.js');
 var weichat_apis = {};
 var mem = require('../util/mem.js');
 var ZeroAuthorityModel = require('../model/ZeroAuthority.js');
+var UserModel = require('../model/User.js');
 var moment = require('moment');
 
 
@@ -150,15 +151,19 @@ function send_message(auth,config){
     }
 	var api = weichat_apis[config.code];
 	var proc = auth.invitees.length;
-	if(proc< zero_conf.total){
-		var str = zero_conf.message.replace(/proc/g,''+proc).replace('date',moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
-					.replace('total',''+zero_conf.total).replace('need',''+parseInt(zero_conf.total-proc))
-		api.sendText(auth.openid,str,function (err, result) {
-	        if(err){
-	       		console.log(err)
-	        }
-	    });
-	}else if(proc >= zero_conf.total){
+	UserModel.findOne({openid:auth.openid},{nickname:1},function(err,user){
+		if(user){
+			var str = zero_conf.message.replace(/proc/g,''+proc).replace('date',moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
+				.replace('nickname',user.nickname).replace('openid',auth.openid.substr(0,8))
+				replace('total',''+zero_conf.total).replace('need',''+parseInt(zero_conf.total-proc))
+			api.sendText(auth.openid,str,function (err, result) {
+		        if(err){
+		       		console.log(err)
+		        }
+		    });
+		}
+	})
+	if(proc >= zero_conf.total){
 		api.sendImage(auth.openid, zero_conf.complete_media, function (err, res) {
 	        if (err) {
 	            console.log(err, '----------------err')
