@@ -154,7 +154,16 @@ function send_message(auth,config){
 	UserModel.findOne({openid:auth.openid},{nickname:1},function(err,user){
 		if(user){
 			var str = zero_conf.message.replace(/proc/g,''+proc).replace('date',moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
-				.replace('nickname',user.nickname).replace('openid',auth.openid.substr(0,8))
+				.replace('nickname',user.nickname).replace('openid',auth.openid.substr(0,8)).
+				replace('total',''+zero_conf.total).replace('need',''+parseInt(zero_conf.total-proc))
+			api.sendText(auth.openid,str,function (err, result) {
+		        if(err){
+		       		console.log(err)
+		        }
+		    });
+		}else{
+			var str = zero_conf.message.replace(/proc/g,''+proc).replace('date',moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
+				.replace('nickname','').replace('openid',auth.openid.substr(0,8)).
 				replace('total',''+zero_conf.total).replace('need',''+parseInt(zero_conf.total-proc))
 			api.sendText(auth.openid,str,function (err, result) {
 		        if(err){
