@@ -151,7 +151,7 @@ function send_message(auth,config){
     }
 	var api = weichat_apis[config.code];
 	var proc = auth.invitees.length;
-	UserModel.findOne({openid:auth.openid},{nickname:1，openid:1},function(err,user){
+	UserModel.findOne({openid:auth.openid},{nickname:1,openid:1},function(err,user){
 		console.log('-----------=======0元购======-----获取用户--------')
 		console.log(user)
 		if(user){
