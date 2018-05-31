@@ -105,7 +105,6 @@ router.use('/:code', function (request, response, next_fun) {
                         res.reply('')
                     }
                 } else if (message.MsgType === 'event') {
-                    console.log(message, '----------------message')
                     if (message.Event === 'subscribe') {
                         subscribe(openid, config, message, res);
                         /*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
