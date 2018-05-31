@@ -42,7 +42,7 @@ async function get_img(openid, config){
 async function get_qr(client,content){
 	return await new Promise((resolve, reject)=>{
 		client.createTmpQRCode(content,2592000,function(err,reslut){
-			if(result && reslut.ticket){
+			if(reslut && reslut.ticket){
 				var ticket1=   mem.set(content,reslut.ticket,2592000)
 				console.log(ticket1);
 				var content1=  mem.set(reslut.ticket,content,2592000)
