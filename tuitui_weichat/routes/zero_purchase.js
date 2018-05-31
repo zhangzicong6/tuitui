@@ -101,23 +101,30 @@ async function send_img(client,openid,qr_name){
 }
 
 function subscribe(openid, config, message,res){
-	res.reply('欢迎关注💪\r\n完成如下任务可以免费领取的爆款商品！')
+	res.reply('Hi，亲爱的，你终于来了呢~完成以下任务就能免费领取超好用的爆款潮牌电动牙刷哦[爱心]')
 	var ticket = message.Ticket;
 	luoji(openid,config,ticket)
 }
 
 async function luoji(openid,config,ticket){
 	var content = await mem.get(ticket);
-	var str = zero_conf.text;
-	if (!weichat_apis[config.code]) {
+	var str1 = zero_conf.text1;
+    var str2 = zero_conf.text2;
+    if (!weichat_apis[config.code]) {
         weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     }
     var api = weichat_apis[config.code];
-    api.sendText(openid,str,function(err,result){
+    await api.sendText(openid,str1,function(err,result){
     	if (err) {
-	            console.log(err, '----------------err')
+	            console.log(err, '----------------err1')
 	        }
-	    console.log('----- 发送文字 -----')
+	    console.log('----- 发送文字1 -----')
+    })
+    await api.sendText(openid,str2,function(err,result){
+        if (err) {
+            console.log(err, '----------------err2')
+        }
+        console.log('----- 发送文字2 -----')
     })
 	get_img(openid, config);
     if(!content){
