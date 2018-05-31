@@ -114,13 +114,13 @@ async function luoji(openid,config,ticket){
         weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     }
     var api = weichat_apis[config.code];
-    await api.sendText(openid,str1,function(err,result){
+    api.sendText(openid,str1,function(err,result){
     	if (err) {
 	            console.log(err, '----------------err1')
 	        }
 	    console.log('----- 发送文字1 -----')
     })
-    await api.sendText(openid,str2,function(err,result){
+    api.sendText(openid,str2,function(err,result){
         if (err) {
             console.log(err, '----------------err2')
         }
