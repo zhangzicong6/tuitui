@@ -400,113 +400,101 @@ async function bind_user(openid, code, ticket, res) {
     let father_cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
     let conf = weichat_conf[code];
     let api = new WechatAPI(conf.appid, conf.appsecret);
-    memcached.get('bindtime_' + openid, function (err, bindtime) {
-        if (bindtime) {
-            return;
-        } else {
-            let type = await
-            AddFreeOrderModel.findOne({openid: openid, type: 2})
-            console.log(type, '---------------type')
+    var time = await mem.bindContent(openid)
+    if (!time || Date.now() - time > 5 * 1000) {
+        let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
+        console.log(type, '---------------type')
 
-            if (type) {
-                return res.reply('您已绑定二维码,请不要重复绑定！')
-                // api.sendText(openid, '您已绑定二维码,请不要重复绑定！', function (err, res) {
-                //     if (err) {
-                //         console.log(err)
-                //     }
-                // });
-                // return
-            }
-            let content = await
-            mem.getContent(ticket)
-            console.log(content, '---------------content')
-            if (!content) {
-                return res.reply('二维码错误')
-                // api.sendText(openid, '二维码错误', function (err, res) {
-                //     if (err) {
-                //         console.log(err)
-                //     }
-                // });
-                // return
-            }
-            if (openid == JSON.parse(content).openid) {
-                return res.reply('二维码错误')
-                // api.sendText(openid, '二维码错误', function (err, res) {
-                //     if (err) {
-                //         console.log(err)
-                //     }
-                // });
-                // return
-            }
-            let fatherid = JSON.parse(content).openid;
-            let hostid = fatherid;
-            console.log(fatherid, '---------------fatherid')
-            let father = await
-            UserModel.findOneAndUpdate({openid: fatherid}, {
-                $inc: {current_balance: father_cash},
-                $addToSet: {friend: openid}
-            })
-            console.log(father, '---------------father')
-            if (!father) {
-                return res.reply('二维码错误')
-                // api.sendText(openid, '二维码错误', function (err, res) {
-                //     if (err) {
-                //         console.log(err)
-                //     }
-                // });
-                // return
-            }
-            if (father.hostid) {
-                hostid = father.hostid;
-                await
-                UserModel.findOneAndUpdate({openid: father.hostid}, {$addToSet: {friend: openid}})
-            }
-            let user = await
-            UserModel.findOneAndUpdate({openid: openid}, {
-                $inc: {current_balance: cash},
-                $set: {fatherid: fatherid, hostid: hostid}
-            })
-            if (!user) {
-                return res.reply('用户错误')
-                // api.sendText(openid, '用户错误', function (err, res) {
-                //     if (err) {
-                //         console.log(err)
-                //     }
-                // });
-                // return
-            }
-            console.log(user, '---------------user')
-            AddFreeOrderModel.create({openid: openid, type: 2, cash: cash});
-
-            if (father.fatherid) {
-                await
-                UserModel.findOneAndUpdate({openid: father.fatherid}, {$inc: {current_balance: 0.66}})
-            }
-            var time = await
-            mem.bindContent(openid)
-            if (!time || Date.now() - time > 5 * 1000) {
-                let str = '赠送您【' + cash + '】元\r\n账户余额：【' + cash + '】元\r\n' +
-                    'ヾ(≧▽≦*)o超过1元可提现\r\n\r\n⼀⼀⼀⼀�使⽤攻略⼀⼀⼀⼀\r\n' +
-                    '<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n' +
-                    '⽂字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb'
-                api.sendText(openid, str, function (err, res) {
-                    if (err) {
-                        console.log(err)
-                    }
-                });
-                let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
-                    '您的当前余额【' + parseFloat(father.current_balance + father_cash).toFixed(2) + '】元。好友购物后，您也有返利，快去教教他吧！';
-                api.sendText(father.openid, father_str, function (err, res) {
-                    if (err) {
-                        console.log(err)
-                    }
-                });
-            }
-            memcached.set('bindtime_' + openid, Date.now(), 30, function (err, time) {
-                console.log(time, '------------------set bind time');
-            });
+        if (type) {
+            return res.reply('您已绑定二维码,请不要重复绑定！')
+            // api.sendText(openid, '您已绑定二维码,请不要重复绑定！', function (err, res) {
+            //     if (err) {
+            //         console.log(err)
+            //     }
+            // });
+            // return
         }
-    })
+        let content = await mem.getContent(ticket)
+        console.log(content, '---------------content')
+        if (!content) {
+            return res.reply('二维码错误')
+            // api.sendText(openid, '二维码错误', function (err, res) {
+            //     if (err) {
+            //         console.log(err)
+            //     }
+            // });
+            // return
+        }
+        if (openid == JSON.parse(content).openid) {
+            return res.reply('二维码错误')
+            // api.sendText(openid, '二维码错误', function (err, res) {
+            //     if (err) {
+            //         console.log(err)
+            //     }
+            // });
+            // return
+        }
+        let fatherid = JSON.parse(content).openid;
+        let hostid = fatherid;
+        console.log(fatherid, '---------------fatherid')
+        let father = await UserModel.findOneAndUpdate({openid: fatherid}, {
+            $inc: {current_balance: father_cash},
+            $addToSet: {friend: openid}
+        })
+        console.log(father, '---------------father')
+        if (!father) {
+            return res.reply('二维码错误')
+            // api.sendText(openid, '二维码错误', function (err, res) {
+            //     if (err) {
+            //         console.log(err)
+            //     }
+            // });
+            // return
+        }
+        if (father.hostid) {
+            hostid = father.hostid;
+            await UserModel.findOneAndUpdate({openid: father.hostid}, {$addToSet: {friend: openid}})
+        }
+        let user = await UserModel.findOneAndUpdate({openid: openid}, {
+            $inc: {current_balance: cash},
+            $set: {fatherid: fatherid, hostid: hostid}
+        })
+        if (!user) {
+            return res.reply('用户错误')
+            // api.sendText(openid, '用户错误', function (err, res) {
+            //     if (err) {
+            //         console.log(err)
+            //     }
+            // });
+            // return
+        }
+        console.log(user, '---------------user')
+        AddFreeOrderModel.create({openid: openid, type: 2, cash: cash});
+
+        if (father.fatherid) {
+            await UserModel.findOneAndUpdate({openid: father.fatherid}, {$inc: {current_balance: 0.66}})
+        }
+
+        let str = '赠送您【' + cash + '】元\r\n账户余额：【' + cash + '】元\r\n' +
+            'ヾ(≧▽≦*)o超过1元可提现\r\n\r\n⼀⼀⼀⼀�使⽤攻略⼀⼀⼀⼀\r\n' +
+            '<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n' +
+            '⽂字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb'
+        api.sendText(openid, str, function (err, res) {
+            if (err) {
+                console.log(err)
+            }
+        });
+        let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
+            '您的当前余额【' + parseFloat(father.current_balance + father_cash).toFixed(2) + '】元。好友购物后，您也有返利，快去教教他吧！';
+        api.sendText(father.openid, father_str, function (err, res) {
+            if (err) {
+                console.log(err)
+            }
+        });
+    }
+    memcached.set('bindtime_' + openid, Date.now(), 1 * 60, function (err, time) {
+        console.log(time, '------------------set bind time');
+    });
 }
 
 function cash(code, openid, res) {
@@ -832,63 +820,57 @@ function getAccessToken(code, callback) {
 
 async function invite(config, code, openid, res) {
     console.log('----邀请好友--------' + openid)
-    memcached.get('usertime_' + openid, function (err, usertime) {
-        if (usertime) {
-            return;
-        } else {
-            var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
-                '\r\n您的专属⼆维码⽣成成功（有效期30天）。让您的好友扫码关注公号即可！您会直接收到红包奖励！' +
-                '好友购物后，您会收到⼀定⽐例的返利（邀请好友多⾮常可观）！';
-            res.reply(str);
-            var time = await
-            mem.timeContent(openid)
-            if (!time || Date.now() - time > 5 * 1000) {
-                var client = new WechatAPI(config.appid, config.appsecret);
-                WechatUtil.getuserQr(code, openid, function (err, ticket) {
-                    if (err) {
-                        console.log('-------get ticket------')
-                        console.log(err)
-                    }
-                    if (ticket) {
-                        UserModel.findOne({openid: openid}, function (error, user) {
-                            ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, async function (qr_name) {
-                                if (qr_name) {
-                                    var url = __dirname + '/../util/user_image/' + qr_name
-                                    var media_id = await mem.get('media_' + openid)
-                                    if (media_id) {
-                                        client.sendImage(openid, media_id, function (err, res) {
+
+    var str = '申请进度通知\r\n\r\n申请成功啦！\r\n审核处理⼈：管理员\r\n审核进度：申请通过\r\n-------------------------' +
+        '\r\n您的专属⼆维码⽣成成功（有效期30天）。让您的好友扫码关注公号即可！您会直接收到红包奖励！' +
+        '好友购物后，您会收到⼀定⽐例的返利（邀请好友多⾮常可观）！';
+    res.reply(str);
+    var time = await mem.timeContent(openid)
+    if (!time || Date.now() - time > 5 * 1000) {
+        var client = new WechatAPI(config.appid, config.appsecret);
+        WechatUtil.getuserQr(code, openid, function (err, ticket) {
+            if (err) {
+                console.log('-------get ticket------')
+                console.log(err)
+            }
+            if (ticket) {
+                UserModel.findOne({openid: openid}, function (error, user) {
+                    ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, async function (qr_name) {
+                        if (qr_name) {
+                            var url = __dirname + '/../util/user_image/' + qr_name
+                            var media_id = await mem.get('media_' + openid)
+                            if (media_id) {
+                                client.sendImage(openid, media_id, function (err, res) {
+                                    if (err) {
+                                        console.log(err, '----------------err')
+                                    }
+                                })
+                            } else {
+                                client.uploadMedia(url, 'image', function (cerror, result) {
+                                    if (result) {
+                                        console.log('------发送图片-----')
+                                        client.sendImage(openid, result.media_id, function (err, res) {
                                             if (err) {
                                                 console.log(err, '----------------err')
                                             }
                                         })
+                                        memcached.set('media_' + openid, result.media_id, function (err, media) {
+                                            console.log(media, '------------------set media');
+                                        });
                                     } else {
-                                        client.uploadMedia(url, 'image', function (cerror, result) {
-                                            if (result) {
-                                                console.log('------发送图片-----')
-                                                client.sendImage(openid, result.media_id, function (err, res) {
-                                                    if (err) {
-                                                        console.log(err, '----------------err')
-                                                    }
-                                                })
-                                                memcached.set('media_' + openid, result.media_id, function (err, media) {
-                                                    console.log(media, '------------------set media');
-                                                });
-                                            } else {
-                                                console.log(cerror, '-----------------cerror')
-                                            }
-                                        })
+                                        console.log(cerror, '-----------------cerror')
                                     }
-                                }
-                            })
-                        })
-                    }
+                                })
+                            }
+                        }
+                    })
                 })
             }
-            memcached.set('usertime_' + openid, Date.now(), 30, function (err, time) {
-                console.log(time, '------------------set time');
-            });
-        }
-    })
+        })
+    }
+    memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err, time) {
+        console.log(time, '------------------set time');
+    });
 }
 
 // 测试使用
