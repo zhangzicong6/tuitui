@@ -30,7 +30,7 @@ router.post('/get_one',function(req,res,next){
     var obj = {
         key : req.body.key,
         class : req.body.class,
-        url : req.body.class
+        url : req.body.url
     }
     TaobaoUtil.get_baokuang(obj);
     res.send({code:1,message:"success"});
