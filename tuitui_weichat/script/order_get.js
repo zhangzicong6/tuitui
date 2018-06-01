@@ -64,7 +64,7 @@ function update_order(_id, next) {
                         },
                         function (user, client, callback) {
                             order.status = getOrderStatus(taobao.order_status);
-                            console.log(order.status,'----------------------status')
+                            console.log(order.order_number,order.status,'----------------------status')
                             if (order.status == 3) {
                                 AddFreeOrderModel.findOne({order_number: order.order_number}, function (err, addOrder) {
                                     if (!addOrder) {
