@@ -91,8 +91,8 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
                 if (error) {
                     console.log(error);
                 }
-                memcached.set('img_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err,qr) {
-                    console.log(qr,'------------------set qr');
+                memcached.set('img_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err, qr) {
+                    console.log(qr, '------------------set qr');
                 });
                 callback(qr_name);
             });
@@ -109,27 +109,30 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
         var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
         var qr_path = __dirname + '/user_image/' + qr_name;
         var head_path = __dirname + '/user_image/head_' + qr_name;
-        if(headimgurl){
+        if (headimgurl) {
             downloadHead(headimgurl, head_path, function (err1, res) {
-                if(err1){
-                    console.log(err1,'------------------err1')
+                if (err1) {
+                    console.log(err1, '------------------err1')
                 }
                 downloadFile(qr_url, qr_path, function (err2, res) {
-                    if(err2){
-                        console.log(err2,'------------------err2')
+                    if (err2) {
+                        console.log(err2, '------------------err2')
                     }
                     user_img(ticket, qr_name, nickname, headimgurl, callback);
                 });
             })
-        }else{
-            console.log('no headimg')
-            callback(null)
+        } else {
+            downloadFile(qr_url, qr_path, function (err2, res) {
+                if (err2) {
+                    console.log(err2, '------------------err2')
+                }
+                user_img(ticket, qr_name, nickname, headimgurl, callback);
+            });
         }
-
     });
 }
 
-function zero_img(ticket, qr_name, callback){
+function zero_img(ticket, qr_name, callback) {
     var resize_cmd = 'gm "convert" "' + __dirname + '/qr_image/' + qr_name + '" "-resize" "179x" "' + __dirname + '/qr_image/small_' + qr_name + '"';
     exec(resize_cmd, function (error, stdout, stderr) {
         if (error) {
@@ -140,15 +143,15 @@ function zero_img(ticket, qr_name, callback){
             if (error) {
                 console.log(error);
             }
-            memcached.set('zero_'+zero_conf.version+ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+            memcached.set('zero_' + zero_conf.version + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
             });
             callback(qr_name);
         });
     });
 }
 
-function getZeroImg(ticket,callback){
-    memcached.get('zero_'+zero_conf.version + ticket, function (err, qr) {
+function getZeroImg(ticket, callback) {
+    memcached.get('zero_' + zero_conf.version + ticket, function (err, qr) {
         if (qr) {
             return callback(qr);
         }
@@ -162,7 +165,7 @@ function getZeroImg(ticket,callback){
     });
 }
 
-zero_img('ticket-------test','15275821543044430.jpg',function(name){
+zero_img('ticket-------test', '15275821543044430.jpg', function (name) {
     console.log(name)
 })
 

@@ -9,9 +9,9 @@ var clients = {}
 //     var client = new WechatAPI(config.appid, config.appsecret);
 //     clients[item] = client
 // }
-var config = weichat_conf['24']
+var config = weichat_conf['1']
 var client = new WechatAPI(config.appid, config.appsecret);
-clients['24'] = client
+clients['1'] = client
 
 function next_up(_id, code) {
     if (code && code <= Object.keys(clients).length) {
@@ -23,7 +23,7 @@ function next_up(_id, code) {
 }
 
 function get_user() {
-    update_user(null, '24', next_up);
+    update_user(null, '1', next_up);
 }
 
 function update_user(_id, code, next) {
@@ -88,7 +88,7 @@ function next_up_nickname(_id, code) {
 }
 
 function get_nickname() {
-    update_nickname(null, '24', next_up_nickname);
+    update_nickname(null, '1', next_up_nickname);
 }
 
 function update_nickname(_id, code, next) {
