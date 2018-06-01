@@ -70,15 +70,16 @@ function update_order(_id, next) {
                         },
                         function (user, client, callback) {
                             order.status = getOrderStatus(taobao.order_status);
+                            console.log(order.order_number,'-------------order_number')
                             if(order.order_number == "170083471119047417"){
                                 console.log(order.order_number,order.status,'----------------------status')
                             }
-                            UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 3 }}, function (err, order) {
+                            UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 1 }}, function (err, order) {
                                 console.log(order,'-------------------order')
                             })
                             if (order.status == 3) {
-                                console.log('----------------')
                                 AddFreeOrderModel.findOne({order_number: order.order_number}, function (err, addOrder) {
+                                    console.log(addOrder,'------------------addOrder')
                                     if (!addOrder) {
                                         var add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.15).toFixed(2));
                                         var father_add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.1).toFixed(2));
