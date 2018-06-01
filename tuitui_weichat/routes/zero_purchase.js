@@ -11,10 +11,8 @@ var moment = require('moment');
 
 
 function purchase(openid, config, message,res){
-	var str = zero_conf.text;
-	if(res){
-		res.reply(str);
-	}
+	//var str = zero_conf.text;
+	res.reply('');
 	get_img(openid, config);
 	
 }
@@ -114,19 +112,19 @@ async function luoji(openid,config,ticket){
         weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     }
     var api = weichat_apis[config.code];
-    api.sendText(openid,str1,function(err,result){
+    await api.sendText(openid,str1,function(err,result){
     	if (err) {
 	            console.log(err, '----------------err1')
 	        }
 	    console.log('----- 发送文字1 -----')
     })
-    api.sendText(openid,str2,function(err,result){
+    await api.sendText(openid,str2,function(err,result){
         if (err) {
             console.log(err, '----------------err2')
         }
         console.log('----- 发送文字2 -----')
     })
-	get_img(openid, config);
+	await get_img(openid, config);
     if(!content){
         return;
     }
@@ -141,13 +139,13 @@ async function luoji(openid,config,ticket){
 		});
 		auth.save(function(err){
 		})
-		send_message(auth,config);
+		await send_message(auth,config);
 	}else{
 		ZeroAuthorityModel.findOneAndUpdate({
 	        openid: obj.openid,
 	        action:zero_conf.index
 	    }, {$addToSet: {invitees: openid}}, {upsert: true, new: true}, function (err, auth) {
-	        send_message(auth,config);
+	        await send_message(auth,config);
 	    });
 	}	
 }
@@ -200,9 +198,17 @@ async function get_key(openid, config, message,res){
 	}else if(message.EventKey=='KEY_ZERO_PROC'){
 		res.reply('')
 		var auth = await ZeroAuthorityModel.findOne({openid:openid,action:zero_conf.index});
-		if(auth){
-			send_message(auth,config);
+		if(!auth){
+			auth = new ZeroAuthorityModel({
+				openid:openid,
+				code:config.code,
+				action:zero_conf.index,
+				invitees:[]
+			});
+			auth.save(function(err){
+			})
 		}  
+		await send_message(auth,config);
 	}
 }
 

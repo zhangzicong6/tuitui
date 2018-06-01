@@ -52,6 +52,7 @@ router.use('/:code', function (request, response, next_fun) {
                     }
                     if (config.zero_purchase) {
                         if (text == '0') {
+                            console.log('--------0元领 0')
                             return purchase.purchase(openid, config, message, res);
                         }
                     }
