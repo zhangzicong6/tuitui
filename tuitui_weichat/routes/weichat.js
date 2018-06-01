@@ -765,7 +765,7 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
         }
     ], function (err, res) {
         if (err) {
-            console.log(err);
+            //console.log(err);
         }
         next(openid, config, message, request, w_req, w_res);
     });
