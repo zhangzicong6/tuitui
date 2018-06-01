@@ -28,7 +28,6 @@ function get_user() {
 
 function update_user(_id, code, next) {
     UserModel.fetch_openid(_id, code, function (error, users) {
-        console.log(users,'-------------------users')
         var user_arr = [];
         users.forEach(function (user) {
             user_arr.push(user.openid)
@@ -36,7 +35,6 @@ function update_user(_id, code, next) {
         if(user_arr.length == 0){
             console.log(user_arr,'-------------------user null')
         }else if(user_arr.length ==1){
-            console.log(user_arr,'--------------user_arr')
             clients[code].getUser(user_arr[0],function (err,data) {
                 if (err) {
                     console.log(err, '----------------err')
@@ -51,7 +49,6 @@ function update_user(_id, code, next) {
                 });
             })
         }else{
-            console.log(user_arr,'--------------user_arr')
             clients[code].batchGetUsers(user_arr, function (err, data) {
                 if (err) {
                     console.log(err, '----------------err')
@@ -101,7 +98,6 @@ function update_nickname(_id, code, next) {
         if(user_arr.length == 0){
             console.log(user_arr,'-------------------nickname null')
         }else if(user_arr.length ==1){
-            console.log(user_arr,'--------------nickname_arr')
             clients[code].getUser(user_arr[0],function (err,data) {
                 if (err) {
                     console.log(err, '----------------nickname err')
@@ -116,7 +112,6 @@ function update_nickname(_id, code, next) {
                 });
             })
         }else {
-            console.log(user_arr, '--------------nickname_arr')
             clients[code].batchGetUsers(user_arr, function (err, data) {
                 if (err) {
                     console.log(err, '----------------nickname err')
