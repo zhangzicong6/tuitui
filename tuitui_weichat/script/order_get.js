@@ -9,6 +9,16 @@ var weichat_conf = require('../conf/weichat.json');
 var weichat_apis = {};
 var async = require('async');
 
+UserModel.findOne({'openid':"oD4KE1G7wwq8LSU1TZ5gRD3IPfxQ"},function (err,data) {
+    console.log(data,'---------------data1')
+})
+UserModel.findOne({'openid':"oD4KE1NQKvYHSrTraGiBet3SzpuM"},function (err,data) {
+    console.log(data,'---------------data2')
+})
+UserModel.findOne({'openid':"oD4KE1MZaV-YEQ_LQQFGw367X9Bk"},function (err,data) {
+    console.log(data,'---------------data3')
+})
+
 UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 3 }}, function (err, order) {
     console.log(order,'-------------------order')
 })
@@ -33,7 +43,6 @@ function update_order(_id, next) {
         async.each(user_orders,
             function (order, cb) {
                 TaobaoOrderModel.findOne({order_id: order.order_number}, function (error, taobao) {
-                    console.log(taobao,'----------------------taobao')
                     if (!taobao) {
                         return cb(null, null);
                     }
@@ -68,11 +77,12 @@ function update_order(_id, next) {
                         },
                         function (user, client, callback) {
                             order.status = getOrderStatus(taobao.order_status);
-                            console.log(order.order_number,order.status,'----------------------status')
+                            if(order.order_number == "170083471119047417"){
+                                console.log(order.order_number,order.status,'----------------------status')
+                            }
                             if (order.status == 3) {
                                 AddFreeOrderModel.findOne({order_number: order.order_number}, function (err, addOrder) {
                                     if (!addOrder) {
-                                        console.log('----------------------order')
                                         var add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.15).toFixed(2));
                                         var father_add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.1).toFixed(2));
                                         var host_add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.1).toFixed(2));
@@ -163,7 +173,7 @@ function getOrderStatus(status) {
 }
 
 var rule = new schedule.RecurrenceRule();
-var times = [1, 6, 11, 16, 21, 26, 31, 36, 41,43, 46, 51, 56];
+var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
 rule.minute = times;
 var j = schedule.scheduleJob(rule, function () {
     console.log('匹配订单');
