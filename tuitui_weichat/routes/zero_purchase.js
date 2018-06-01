@@ -139,13 +139,13 @@ async function luoji(openid,config,ticket){
 		});
 		auth.save(function(err){
 		})
-		await send_message(auth,config);
+		send_message(auth,config);
 	}else{
 		ZeroAuthorityModel.findOneAndUpdate({
 	        openid: obj.openid,
 	        action:zero_conf.index
 	    }, {$addToSet: {invitees: openid}}, {upsert: true, new: true}, function (err, auth) {
-	        await send_message(auth,config);
+	        send_message(auth,config);
 	    });
 	}	
 }
