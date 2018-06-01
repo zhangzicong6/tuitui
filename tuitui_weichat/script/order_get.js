@@ -32,6 +32,9 @@ function update_order(_id, next) {
         console.log('user_orders：' + user_orders.length);
         async.each(user_orders,
             function (order, cb) {
+                if(order.order_number == "170083471119047417"){
+                    console.log(order.order_number,order.status,'----------------------status')
+                }
                 TaobaoOrderModel.findOne({order_id: order.order_number}, function (error, taobao) {
                     if (!taobao) {
                         return cb(null, null);
