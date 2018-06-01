@@ -68,12 +68,12 @@ UserSchema.statics = {
     },
     fetch_nickname(id,code,cb){
         if (id) {
-            return this.find({_id: {$lt: id},code:code,nickname:""}, ['openid'])
+            return this.find({_id: {$lt: id},code:code,nickname:""||null}, ['openid'])
                 .limit(50)
                 .sort({'_id':-1})
                 .exec(cb);
         }else {
-            return this.find({code:code,nickname:""}, ['openid'])
+            return this.find({code:code,nickname:""||null}, ['openid'])
                 .limit(50)
                 .sort({'_id':-1})
                 .exec(cb);
