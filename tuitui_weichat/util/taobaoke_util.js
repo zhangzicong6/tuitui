@@ -2,6 +2,8 @@ require('events').EventEmitter.prototype._maxListeners = 1000;
 
 var request = require('request');
 var async = require('async');
+var MessageServer = require('../message_server.js');
+
 ApiClient = require('./taobaoke/index.js').ApiClient;
 TopClient = require('./taobaoke/lib/api/topClient.js').TopClient;
 
@@ -148,6 +150,30 @@ function taokouling(obj,next){
 	);
 }
 
+
+function get_baokuang(obj){
+	var split_str = '?id=';
+	var tmp_arr = obj.url.split(split_str);
+	if(tmp_arr.length == 1){
+		split_str = '&id=';
+		tmp_arr = obj.url.split(split_str);
+	}
+	var itemid = tmp_arr[1].split('&')[0];
+	obj.url = obj.url.split('?')[0]+'?id='+itemid;
+	console.log(obj)
+	MessageServer.getInstance(null).get_one_baokuan(obj)
+}
+
+
+/*setTimeout(function(){
+	get_baokuang({
+		key:'测试',
+		class:'0',
+		url:'https://item.taobao.com/item.htm?id=543490544168&ali_trackid=2:mm_26632614_0_0:1527839904_367_1386912899'
+	})
+},2000)*/
+
+
 /*function search_title(title){
 	var client = new TopClient({
 	   'appkey': '24808252',
@@ -178,7 +204,7 @@ function taokouling(obj,next){
 	console.log(response);
 });
 */
-
+module.exports.get_baokuang = get_baokuang;
 module.exports.request_taobao_url = request_taobao_url;
 module.exports.request_taobao_token = request_taobao_token;
 

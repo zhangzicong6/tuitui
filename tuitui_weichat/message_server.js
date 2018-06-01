@@ -102,20 +102,28 @@ MessageServer.prototype.init_io = function(server,self) {
 			});
 		});
 
-		socket.on('baokuan',function(msg){
+		socket.on('one_baokuan',function(msg){
 			msg = msg.stripHTML();
 			msg = JSON.parse(msg);
-			if(!msg.data||msg.data.length==0){
+			if(!msg.data){
 				return
 			}
-
-			for (var index=0; index <msg.data.length; index++) {
-				msg.data[index].index = index;
-			}
-			BaoKuanModel.remove({class:msg.class},function(error,docs){
-				BaoKuanModel.insertMany(msg.data,function(err,res){
-					console.log('更新爆款'+msg.key+'成功');
-				});
+			var baokuan = new BaoKuanModel({
+				title : msg.data.title,
+				price : msg.data.price,
+				reservePrice : msg.data.reservePrice,
+				tkCommFee : (0.2*msg.data.tkCommFee).toFixed(2),
+				token : msg.token,
+				link_url : msg.link_url,
+				couponAmount : msg.data.couponAmount,
+				shopTitle : msg.data.shopTitle,
+				pictUrl : msg.data.pictUrl,
+				url : msg.url,
+				bizMonth :msg.data.bizMonth,
+				key:msg.key,
+				class:msg.class
+			});
+			baokuan.save(function(err,doc){	
 			});
 		});
 
@@ -143,8 +151,17 @@ MessageServer.prototype.req_title_token = function(data){
 	this.sockets[key].emit('getTitleToken',JSON.stringify(data));
 }
 
+MessageServer.prototype.get_one_baokuan = function(data){
+	if(this.socket_ids.length == 0){
+		console.log('no socket connect ');
+		return;
+	}
+	var index = parseInt(Math.random()*this.socket_ids.length);
+	var key = this.socket_ids[index];
+	this.sockets[key].emit('getOneBaoKuan',JSON.stringify(data));
+}
 
-MessageServer.prototype.get_baokuan = function(data){
+/*MessageServer.prototype.get_baokuan = function(data){
 	if(this.socket_ids.length == 0){
 		console.log('no socket connect ');
 		return;
@@ -152,7 +169,7 @@ MessageServer.prototype.get_baokuan = function(data){
 	var index = parseInt(Math.random()*this.socket_ids.length);
 	var key = this.socket_ids[index];
 	this.sockets[key].emit('getBaoKuan',JSON.stringify(data));
-}
+}*/
 
 
 module.exports = MessageServer
