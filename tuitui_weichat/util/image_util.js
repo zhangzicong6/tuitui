@@ -4,6 +4,7 @@ var request = require('request');
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
 var exec = require('child_process').exec;
+var zero_conf = require('../conf/zero.json');
 process.env.PATH += ":/usr/local/GraphicsMagick-1.3.28/bin";
 
 function downloadFile(uri, filename, callback) {
@@ -139,7 +140,7 @@ function zero_img(ticket, qr_name, callback){
             if (error) {
                 console.log(error);
             }
-            memcached.set('zero_' + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+            memcached.set('zero_'+zero_conf.version+ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
             });
             callback(qr_name);
         });
@@ -147,7 +148,7 @@ function zero_img(ticket, qr_name, callback){
 }
 
 function getZeroImg(ticket,callback){
-    memcached.get('zero_' + ticket, function (err, qr) {
+    memcached.get('zero_'+zero_conf.version + ticket, function (err, qr) {
         if (qr) {
             return callback(qr);
         }

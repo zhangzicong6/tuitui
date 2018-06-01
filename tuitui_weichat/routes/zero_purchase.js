@@ -66,7 +66,7 @@ async function img_compose(ticket){
 
 async function send_img(client,openid,qr_name){
 	return await new Promise((resolve, reject)=>{
-		var media_id = mem.get('media_zero_'+qr_name);
+		var media_id = mem.get('media_zero_'+zero_conf.version+qr_name);
 		console.log('-------media_id-----'+media_id);
 		if(!media_id){
 			client.sendImage(openid, media_id, function (err, res) {
@@ -81,7 +81,7 @@ async function send_img(client,openid,qr_name){
 			client.uploadMedia(url, 'image', function (cerror, result) {
 		        if (result) {
 		            console.log('------上传图片-----') 
-		            var value = mem.set('media_zero_'+qr_name,result.media_id,7*24*60*60);
+		            var value = mem.set('media_zero_'+zero_conf.version+qr_name,result.media_id,7*24*60*60);
 		        	console.log('-------mem-----set----'+value);
 		            client.sendImage(openid, result.media_id, function (err, res1) {
 		                if (err) {
