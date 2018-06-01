@@ -9,12 +9,12 @@ var weichat_conf = require('../conf/weichat.json');
 var weichat_apis = {};
 var async = require('async');
 
-UserOrderModel.findOne({'order_number':'170083471119047417'}, function (err, order) {
-    console.log(order,'-------------------order')
-})
-// UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 3 }}, function (err, order) {
+// UserOrderModel.findOne({'order_number':'170083471119047417'}, function (err, order) {
 //     console.log(order,'-------------------order')
 // })
+UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 1 }}, function (err, order) {
+    console.log(order,'-------------------order')
+})
 
 function next_up(_id) {
     if (_id) {
@@ -35,9 +35,6 @@ function update_order(_id, next) {
         console.log('user_orders：' + user_orders.length);
         async.each(user_orders,
             function (order, cb) {
-                if(order.order_number == "170083471119047417"){
-                    console.log(order.order_number,order.status,'----------------------status')
-                }
                 TaobaoOrderModel.findOne({order_id: order.order_number}, function (error, taobao) {
                     if (!taobao) {
                         return cb(null, null);
