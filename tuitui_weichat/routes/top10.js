@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../model/BaoKuan.js')
+var User = require('../model/BaoKuan.js');
+var TaobaoUtil = require('../util/taobaoke_util.js');
 
 var getByConditions = function(wherestr,callback){
     User.find(wherestr, function(err, res){
@@ -23,6 +24,17 @@ router.get('/find', function(req, res, next) {
         }
 	})
 });
+
+
+router.post('/get_one',function(req,res,next){
+    var obj = {
+        key : req.body.key,
+        class : req.body.class,
+        url : req.body.class
+    }
+    TaobaoUtil.get_baokuang(obj);
+    res.send({code:1,message:"success"});
+})
 
 
 module.exports = router;

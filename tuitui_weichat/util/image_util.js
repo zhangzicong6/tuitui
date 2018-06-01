@@ -135,7 +135,7 @@ function zero_img(ticket, qr_name, callback){
         if (error) {
             console.log(error);
         }
-        var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+509+1206" "' + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
+        var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.jpeg" "-page" "+509+1206" "' + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
         exec(mosaic_cmd, function (error, stdout, stderr) {
             if (error) {
                 console.log(error);
@@ -161,6 +161,10 @@ function getZeroImg(ticket,callback){
         });
     });
 }
+
+zero_img('ticket-------test','15275821543044430.jpg',function(name){
+    console.log(name)
+})
 
 module.exports.getQRImg = getQRImg
 module.exports.getUserImg = getUserImg
