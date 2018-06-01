@@ -77,6 +77,7 @@ function update_order(_id, next) {
                                 console.log(order,'-------------------order')
                             })
                             if (order.status == 3) {
+                                console.log('----------------')
                                 AddFreeOrderModel.findOne({order_number: order.order_number}, function (err, addOrder) {
                                     if (!addOrder) {
                                         var add_cash = parseFloat((parseFloat(taobao.order_tkCommFee) * 0.15).toFixed(2));
