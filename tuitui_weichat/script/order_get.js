@@ -9,16 +9,6 @@ var weichat_conf = require('../conf/weichat.json');
 var weichat_apis = {};
 var async = require('async');
 
-UserModel.findOne({'openid':"oD4KE1G7wwq8LSU1TZ5gRD3IPfxQ"},function (err,data) {
-    console.log(data,'---------------data1')
-})
-UserModel.findOne({'openid':"oD4KE1NQKvYHSrTraGiBet3SzpuM"},function (err,data) {
-    console.log(data,'---------------data2')
-})
-UserModel.findOne({'openid':"oD4KE1MZaV-YEQ_LQQFGw367X9Bk"},function (err,data) {
-    console.log(data,'---------------data3')
-})
-
 UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 3 }}, function (err, order) {
     console.log(order,'-------------------order')
 })
