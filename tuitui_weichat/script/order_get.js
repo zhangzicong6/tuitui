@@ -12,9 +12,9 @@ var async = require('async');
 // UserOrderModel.findOne({'order_number':'170083471119047417'}, function (err, order) {
 //     console.log(order,'-------------------order')
 // })
-UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 1 }}, function (err, order) {
-    console.log(order,'-------------------order')
-})
+// UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 1 }}, function (err, order) {
+//     console.log(order,'-------------------order')
+// })
 
 function next_up(_id) {
     if (_id) {
@@ -73,6 +73,9 @@ function update_order(_id, next) {
                             if(order.order_number == "170083471119047417"){
                                 console.log(order.order_number,order.status,'----------------------status')
                             }
+                            UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 3 }}, function (err, order) {
+                                console.log(order,'-------------------order')
+                            })
                             if (order.status == 3) {
                                 AddFreeOrderModel.findOne({order_number: order.order_number}, function (err, addOrder) {
                                     if (!addOrder) {
