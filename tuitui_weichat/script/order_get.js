@@ -29,7 +29,7 @@ function update_order(_id, next) {
         async.each(user_orders,
             function (order, cb) {
                 TaobaoOrderModel.findOne({order_id: order.order_number}, function (error, taobao) {
-                    console.log('----------------------taobao')
+                    console.log(taobao,'----------------------taobao')
                     if (!taobao) {
                         return cb(null, null);
                     }
