@@ -9,6 +9,10 @@ var weichat_conf = require('../conf/weichat.json');
 var weichat_apis = {};
 var async = require('async');
 
+UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 3 }}, function (err, order) {
+    console.log(order,'-------------------order')
+})
+
 function next_up(_id) {
     if (_id) {
         return update_order(_id, next_up);
@@ -159,12 +163,9 @@ function getOrderStatus(status) {
 }
 
 var rule = new schedule.RecurrenceRule();
-var times = [1, 6, 11, 16, 21, 26,28, 31, 36, 41, 46, 51, 56];
+var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
 rule.minute = times;
 var j = schedule.scheduleJob(rule, function () {
     console.log('匹配订单');
-    UserOrderModel.findOneAndUpdate({'order_number':'170083471119047417'},{$set: { status: 3 }}, function (err, order) {
-        console.log(order,'-------------------order')
-    })
     get_order();
 });
