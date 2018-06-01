@@ -108,6 +108,7 @@ MessageServer.prototype.init_io = function(server,self) {
 			if(!msg.data){
 				return
 			}
+			console.log('-------爆款商品获取--------')
 			var baokuan = new BaoKuanModel({
 				title : msg.data.title,
 				price : msg.data.price,
