@@ -113,6 +113,7 @@ function update_nickname(_id, code, next) {
             })
         }else {
             clients[code].batchGetUsers(user_arr, function (err, data) {
+                console.log(data,'-----------------data')
                 if (err) {
                     console.log(err, '----------------nickname err')
                 }
