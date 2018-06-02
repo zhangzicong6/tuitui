@@ -118,6 +118,7 @@ function update_nickname(_id, code, next) {
                 }
                 if (data && data.user_info_list) {
                     data.user_info_list.forEach(function (info) {
+                        console.log(info,'----------------info')
                         UserModel.findOneAndUpdate({openid: info.openid}, {
                             nickname: info.nickname,
                             headimgurl: info.headimgurl
