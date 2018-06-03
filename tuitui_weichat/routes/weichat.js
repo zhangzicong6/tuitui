@@ -49,6 +49,8 @@ router.use('/:code', function (request, response, next_fun) {
                         if (text == '178') {
                             return res.reply('☞ <a href="' + config.new_add + ' ">点我打照片</a> ☜')
                         }
+                    }else{
+                        res.reply('')
                     }
                     // if (config.zero_purchase) {
                     //     if (text == '0') {
