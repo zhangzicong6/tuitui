@@ -50,100 +50,100 @@ router.use('/:code', function (request, response, next_fun) {
                             return res.reply('☞ <a href="' + config.new_add + ' ">点我打照片</a> ☜')
                         }
                     }
-                    if (config.zero_purchase) {
-                        if (text == '0') {
-                            console.log('--------0元领 0')
-                            return purchase.purchase(openid, config, message, res);
-                        }
-                    }
-                    if (config.robot) {
-                        if (send_codes.indexOf('' + request.params.code) != -1) {
-                            update_sendMessage(openid)
-                        }
-                        var text = message.Content.trim();
-                        if (text === '帮助') {
-                            res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n' +
-                                '2.长按复制商品标题，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n' +
-                                '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n邀请好友请回复:邀请好友\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
-                        } else if (text === '订单') {
-                            getOrders(openid, res);
-                        } else if (text === '个人信息') {
-                            if (request.params.code == 1) {
-                                new_getUser(openid, res);
-                            } else {
-                                getUser(openid, res);
-                            }
-                        } else if (text === '邀请好友' && request.params.code == '1') {
-                            invite(config, request.params.code, openid, res);
-                        } else if (text === '提现') {
-                            cash(request.params.code, openid, res);
-                        } else if (text === '0' || text === '1' || text === '2') {
-                            if (request.params.code == '8' || request.params.code == '1') {
-                                saveActionMiaoSha(openid, text, request.params.code, res);
-                            } else {
-                                res.reply('');
-                            }
-                        } else if (/^\d{5,8}$/.test(text)) {
-                            getCode(openid, text, res);
-                        } else if (/^\d{15,20}$/.test(text)) {
-                            setOrder(openid, text, res);
-                        } else if (/^\d{9,14}$/.test(text) || /^\d{21,}$/.test(text)) {
-                            res.reply('无效订单号，请您检查订单号!');
-                        } else if (text.search('搜索') == 0) {
-                            getSearch(config, openid, text, res);
-                        } else if (text.search('【') != -1) {
-                            getTaobaoke_byCode(config, openid, text, res);
-                        } else if (/^[\s\S]{10,60}$/.test(text)) {
-                            getTaobaoke_byCode(config, openid, text, res);
-                        } else if (text == '提现测试') {
-                            res.reply('<a href="http://www.rrdtjj.top/alipay/redirect/' + request.params.code + '">点击链接提现</a>')
-                        } else if (text == '测试openid') {
-                            res.reply(openid);
-                        } else {
-                            res.reply('')
-                        }
-                    } else {
-                        res.reply('')
-                    }
-                } else if (message.MsgType === 'event') {
-                    if (message.Event === 'subscribe') {
-                        subscribe(openid, config, message, res);
-                        /*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
-                         '账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
-                    } else if (message.Event.toLowerCase() == 'click') {
-                        if (message.EventKey == 'KEY_ZERO_LING' || message.EventKey == 'KEY_ZERO_PROC') {
-                            return purchase.get_key(openid, config, message, res)
-                        }
-                        if (message.EventKey == 'KEY_GERENZHONGXIN') {
-                            res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
-                        } else if (message.EventKey == 'KEY_MEITAO') {
-                            if (request.params.code == 3) {
-                                res.reply({
-                                    type: "image",
-                                    content: {
-                                        mediaId: 'Za0yRodBTW-tqxBDZL73BHzOCht6lW7M__gbthmFqSo'
-                                    }
-                                });
-                            } else {
-                                res.reply('');
-                            }
-                        } else if (message.EventKey == 'KEY_HEZUO') {
-                            if (request.params.code == 3) {
-                                res.reply({
-                                    type: "image",
-                                    content: {
-                                        mediaId: 'Za0yRodBTW-tqxBDZL73BAOXP3XOsqh2tcFKwc3kkyc'
-                                    }
-                                });
-                            } else {
-                                res.reply('');
-                            }
-                        } else {
-                            res.reply('');
-                        }
-                    } else {
-                        res.reply('');
-                    }
+                    // if (config.zero_purchase) {
+                    //     if (text == '0') {
+                    //         console.log('--------0元领 0')
+                    //         return purchase.purchase(openid, config, message, res);
+                    //     }
+                    // }
+                    // if (config.robot) {
+                    //     if (send_codes.indexOf('' + request.params.code) != -1) {
+                    //         update_sendMessage(openid)
+                    //     }
+                    //     var text = message.Content.trim();
+                    //     if (text === '帮助') {
+                    //         res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n' +
+                    //             '2.长按复制商品标题，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n' +
+                    //             '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n邀请好友请回复:邀请好友\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
+                    //     } else if (text === '订单') {
+                    //         getOrders(openid, res);
+                    //     } else if (text === '个人信息') {
+                    //         if (request.params.code == 1) {
+                    //             new_getUser(openid, res);
+                    //         } else {
+                    //             getUser(openid, res);
+                    //         }
+                    //     } else if (text === '邀请好友' && request.params.code == '1') {
+                    //         invite(config, request.params.code, openid, res);
+                    //     } else if (text === '提现') {
+                    //         cash(request.params.code, openid, res);
+                    //     } else if (text === '0' || text === '1' || text === '2') {
+                    //         if (request.params.code == '8' || request.params.code == '1') {
+                    //             saveActionMiaoSha(openid, text, request.params.code, res);
+                    //         } else {
+                    //             res.reply('');
+                    //         }
+                    //     } else if (/^\d{5,8}$/.test(text)) {
+                    //         getCode(openid, text, res);
+                    //     } else if (/^\d{15,20}$/.test(text)) {
+                    //         setOrder(openid, text, res);
+                    //     } else if (/^\d{9,14}$/.test(text) || /^\d{21,}$/.test(text)) {
+                    //         res.reply('无效订单号，请您检查订单号!');
+                    //     } else if (text.search('搜索') == 0) {
+                    //         getSearch(config, openid, text, res);
+                    //     } else if (text.search('【') != -1) {
+                    //         getTaobaoke_byCode(config, openid, text, res);
+                    //     } else if (/^[\s\S]{10,60}$/.test(text)) {
+                    //         getTaobaoke_byCode(config, openid, text, res);
+                    //     } else if (text == '提现测试') {
+                    //         res.reply('<a href="http://www.rrdtjj.top/alipay/redirect/' + request.params.code + '">点击链接提现</a>')
+                    //     } else if (text == '测试openid') {
+                    //         res.reply(openid);
+                    //     } else {
+                    //         res.reply('')
+                    //     }
+                    // } else {
+                    //     res.reply('')
+                    // }
+                // } else if (message.MsgType === 'event') {
+                //     if (message.Event === 'subscribe') {
+                //         subscribe(openid, config, message, res);
+                //         /*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
+                //          '账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
+                //     } else if (message.Event.toLowerCase() == 'click') {
+                //         if (message.EventKey == 'KEY_ZERO_LING' || message.EventKey == 'KEY_ZERO_PROC') {
+                //             return purchase.get_key(openid, config, message, res)
+                //         }
+                //         if (message.EventKey == 'KEY_GERENZHONGXIN') {
+                //             res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+                //         } else if (message.EventKey == 'KEY_MEITAO') {
+                //             if (request.params.code == 3) {
+                //                 res.reply({
+                //                     type: "image",
+                //                     content: {
+                //                         mediaId: 'Za0yRodBTW-tqxBDZL73BHzOCht6lW7M__gbthmFqSo'
+                //                     }
+                //                 });
+                //             } else {
+                //                 res.reply('');
+                //             }
+                //         } else if (message.EventKey == 'KEY_HEZUO') {
+                //             if (request.params.code == 3) {
+                //                 res.reply({
+                //                     type: "image",
+                //                     content: {
+                //                         mediaId: 'Za0yRodBTW-tqxBDZL73BAOXP3XOsqh2tcFKwc3kkyc'
+                //                     }
+                //                 });
+                //             } else {
+                //                 res.reply('');
+                //             }
+                //         } else {
+                //             res.reply('');
+                //         }
+                //     } else {
+                //         res.reply('');
+                //     }
                 } else {
                     res.reply('');
                 }
