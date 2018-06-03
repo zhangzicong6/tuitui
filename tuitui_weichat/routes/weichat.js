@@ -48,6 +48,8 @@ router.use('/:code', function (request, response, next_fun) {
                     if (config.new_add) {
                         if (text == '178') {
                             return res.reply('☞ <a href="' + config.new_add + ' ">点我打照片</a> ☜')
+                        }else{
+                            res.reply('')
                         }
                     }else{
                         res.reply('')
