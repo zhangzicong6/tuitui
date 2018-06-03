@@ -42,7 +42,7 @@ router.use('/:code', function (request, response, next_fun) {
         wechat(config, function (req, res, next) {
             var message = req.weixin;
             var openid = message.FromUserName;
-            getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
+            // getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
                 if (message.MsgType === 'text') {
                     var text = message.Content.trim();
                     if (config.new_add) {
@@ -147,7 +147,7 @@ router.use('/:code', function (request, response, next_fun) {
                 } else {
                     res.reply('');
                 }
-            });
+            // });
         })(request, response, next_fun);
     }
 });
