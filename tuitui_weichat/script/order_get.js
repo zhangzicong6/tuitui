@@ -107,8 +107,8 @@ function update_order(_id, next) {
                                         if (user.fatherid && user.hostid && user.fatherid != user.hostid) {
                                             UserModel.findOneAndUpdate({openid: user.hostid}, {
                                                 $inc: {
-                                                    current_balance: grand_add_cash,
-                                                    friend_rebate: grand_add_cash
+                                                    current_balance: host_add_cash,
+                                                    friend_rebate: host_add_cash
                                                 }, $addToSet: {valid_friend: user.openid}
                                             }, function (error, host) {
                                                 // if (host) {
