@@ -33,5 +33,8 @@
     "wechat-api": "~1.35.1",
     "wechat-jssdk": "^3.0.12",
     "ws": "^0.4.32"
+  },
+  "devDependencies": {
+    "multer": "^1.3.0"
   }
 }

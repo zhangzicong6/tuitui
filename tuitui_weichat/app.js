@@ -16,9 +16,23 @@ var piclink = require('./routes/piclink');
 var top10 = require('./routes/top10');
 var reading = require('./routes/reading');
 var youhuiquan = require('./routes/youhuiquan');
-
+var fetchLink = require('./routes/fetchLink');
+var goodsInfo = require('./routes/goodsInfo');
 
 var app = express();
+
+app.all('*', function(req, res, next) {
+	var oriRefer;
+	if(req.headers.referer){
+		oriRefer = req.headers.referer.substring(0,req.headers.referer.indexOf("/",10));
+	}
+	res.header("Access-Control-Allow-Origin", oriRefer?oriRefer:"*");
+	res.header('Access-Control-Allow-Credentials', true);
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+	res.header("X-Powered-By", ' 3.2.1')
+	next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -48,6 +62,8 @@ app.use('/piclink',piclink);
 app.use('/top10',top10);
 app.use('/reading',reading);
 app.use('/youhuiquan',youhuiquan);
+app.use('/fetchlink', fetchLink);
+app.use('/goodsinfo', goodsInfo);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
