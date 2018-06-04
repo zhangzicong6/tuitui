@@ -82,7 +82,8 @@
                 <label for="">提现金额：</label>
                 <input id="price" type="text" placeholder="请填写提现金额" disabled="" value="<%= user.current_balance.toFixed(2)%>" />
             </li>
-            <input type="hidden" id="wechat" value="<%=wechat%>">
+            <input type="hidden" id="wechat" name="wechat" value="<%=wechat%>">
+            <input type="hidden" id="openid" name="openid"> value="<%=user.openid%>">
         </ul>
         <!-- 提现账户信息 -->
         <!-- 提示 -->
@@ -163,6 +164,7 @@
                 price : Number(amount),
                 payee_account : $('#payee_account').val().trim(),
                 wechat : $('#wechat').val().trim(),
+                openid : $('#openid').val().trim(),
                 payee_real_name : $('#payee_real_name').val().trim(),
                 wechat_number : $('#wechat_number').val().trim(),
             };
