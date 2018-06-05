@@ -16,7 +16,7 @@ router.post('/upload', upload.single('imageFile'), function(req, res, next) {
         }
         console.log('上传成功!');
     })
-    res.send({filename: req.file.filename});
+    res.send({filename: req.file.filename + '.jpg'});
 })
 
 router.get('/', function(req, res, next) {
