@@ -16,10 +16,7 @@ router.post('/upload', upload.single('imageFile'), function(req, res, next) {
         }
         console.log('上传成功!');
     })
-    res.writeHead(200, {
-        "Access-Control-Allow-Origin": "*"
-    });
-    res.end(JSON.stringify(req.file)+JSON.stringify(req.body));
+    res.send({filename: req.file.filename});
 })
 
 router.get('/', function(req, res, next) {
