@@ -41,7 +41,7 @@ router.get('/', function(req, res, next) {
 						class: req.query.class,
 						_id: req.query.id
 					}, {
-						// pictUrl: req.query.pictUrl,
+						pictUrl: req.query.pictUrl,
 						title: req.query.title,
 						token: req.query.token,
 					}]
