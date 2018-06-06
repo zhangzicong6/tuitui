@@ -68,7 +68,10 @@ router.use('/:code', function (request, response, next_fun) {
                             if (text === '帮助') {
                                 res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n' +
                                     '2.长按复制商品标题，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n' +
-                                    '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n邀请好友请回复:邀请好友\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
+                                    '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
+                                // res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n' +
+                                //     '2.长按复制商品标题，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n' +
+                                //     '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n邀请好友请回复:邀请好友\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
                             } else if (text === '订单') {
                                 getOrders(openid, res);
                             } else if (text === '个人信息') {
@@ -119,7 +122,8 @@ router.use('/:code', function (request, response, next_fun) {
                                 return purchase.get_key(openid, config, message, res)
                             }
                             if (message.EventKey == 'KEY_GERENZHONGXIN') {
-                                res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+                                res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+                                // res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
                             } else if (message.EventKey == 'KEY_MEITAO') {
                                 if (request.params.code == 3) {
                                     res.reply({
@@ -176,7 +180,8 @@ async function subscribe(openid, config, message, res) {
             if (config.code == 1 && message.Ticket) {
                 bind_user(openid, config.code, message.Ticket, res)
             } else {
-                res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+                res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+                // res.reply('省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
             }
         }
     } else {
