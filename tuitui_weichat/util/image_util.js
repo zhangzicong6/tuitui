@@ -100,6 +100,7 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
             });
         });
     } else {
+        console.log('-------------------')
         exec(resize_cmd, function (error, stdout, stderr) {
             if (error) {
                 console.log(error);
