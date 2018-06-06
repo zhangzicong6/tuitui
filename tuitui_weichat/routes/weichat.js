@@ -22,15 +22,17 @@ var UserBookAuthorityModel = require('../model/UserBookAuthority.js');
 var UserActionMiaoShaModel = require('../model/UserActionMiaoSha.js');
 var UserWaitMessageModel = require('../model/UserWaitMessage.js');
 
-var MessageServer = require('../message_server.js');
+// var MessageServer = require('../message_server.js');
 
 var purchase = require('./zero_purchase');
 var weichat_apis = {};
 
+var request = require('request');
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
 
 var send_codes = require('../conf/proj.json').send_wechat;
+var getClient = require('../util/get_weichat_client');
 
 
 router.use('/:code', function (request, response, next_fun) {
@@ -290,8 +292,9 @@ function getXiaoshuo(message, code) {
 
 
 function sendBookMessage(auth, code) {
-    var config = weichat_conf[code];
-    var client = new WechatAPI(config.appid, config.appsecret);
+    // var config = weichat_conf[code];
+    // var client = new WechatAPI(config.appid, config.appsecret);
+    var client = getClient.getClient(code)
     var str = '';
     if (auth.invitees.length < 5) {
         str += '您参与的活动有新进展了\r\n\r\n活动名称：邀请好友解锁小说\r\n活动进度：已完成' + auth.invitees.length + '/5\r\n';
@@ -694,10 +697,14 @@ function getTaobaoke_byCode(config, openid, text, res) {
         console.log('url---------------' + str_url);
         TaobaoUtil.request_taobao_url(str_url, function (err, url) {
             if (err || !url) {
-                MessageServer.getInstance(null).req_title_token(data);
+                request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+                })
+                    // MessageServer.getInstance(null).req_title_token(data);
             } else {
                 data.title = url;
-                MessageServer.getInstance(null).req_title_token(data);
+                request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+                })
+                // MessageServer.getInstance(null).req_title_token(data);
             }
 
         });
@@ -706,15 +713,21 @@ function getTaobaoke_byCode(config, openid, text, res) {
         console.log('code---------------' + code);
         TaobaoUtil.request_taobao_token(code, function (err, url) {
             if (err || !url) {
-                MessageServer.getInstance(null).req_title_token(data);
+                request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+                })
+                // MessageServer.getInstance(null).req_title_token(data);
             } else {
                 data.title = url;
-                MessageServer.getInstance(null).req_title_token(data);
+                request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+                })
+                // MessageServer.getInstance(null).req_title_token(data);
             }
         });
     } else {
         console.log('--------search title--------')
-        MessageServer.getInstance(null).req_title_token(data);
+        request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+        })
+        // MessageServer.getInstance(null).req_title_token(data);
     }
 
 }
@@ -730,7 +743,9 @@ function getTaobaoke(config, openid, text, res) {
             data = result.data;
             data.openid = openid;
             data.code = config.code;
-            MessageServer.getInstance(null).req_token(data);
+            request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+            })
+            // MessageServer.getInstance(null).req_token(data);
         } else {
             res.reply("❋❋❋❋❋❋❋❋❋❋❋❋❋❋\r\n您查询的商品暂时没有优惠！\r\n❋❋❋❋❋❋❋❋❋❋❋❋❋❋");
         }
@@ -831,7 +846,8 @@ async function invite(config, code, openid, res) {
     res.reply(str);
     var time = await mem.timeContent(openid)
     if (!time || Date.now() - time > 5 * 1000) {
-        var client = new WechatAPI(config.appid, config.appsecret);
+        // var client = new WechatAPI(config.appid, config.appsecret);
+        var client = getClient.getClient(code)
         WechatUtil.getuserQr(code, openid, function (err, ticket) {
             if (err) {
                 console.log('-------get ticket------')

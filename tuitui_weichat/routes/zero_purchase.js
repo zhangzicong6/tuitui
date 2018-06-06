@@ -8,6 +8,7 @@ var mem = require('../util/mem.js');
 var ZeroAuthorityModel = require('../model/ZeroAuthority.js');
 var UserModel = require('../model/User.js');
 var moment = require('moment');
+var getClient = require('../util/get_weichat_client');
 
 
 function purchase(openid, config, message,res){
@@ -18,11 +19,12 @@ function purchase(openid, config, message,res){
 }
 async function get_img(openid, config){
 	console.log('====----- 生成图片 -----======')
-	if (!weichat_apis[config.code]) {
-        weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
-    }
-    client = weichat_apis[config.code];
-	var content = JSON.stringify({type:'0_shop',openid:openid});
+    // if (!weichat_apis[config.code]) {
+    //     weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+    // }
+    // client = weichat_apis[config.code];
+    var client = getClient.getClient(config.code)
+    var content = JSON.stringify({type:'0_shop',openid:openid});
 	var ticket = await mem.get(content);
 	console.log('--- ticket ----'+ticket)
 	if(!ticket){

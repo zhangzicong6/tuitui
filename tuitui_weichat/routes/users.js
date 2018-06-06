@@ -15,6 +15,7 @@ router.use('/data', function(req, res, next) {
 	console.log(req.body.orders);
 	var orders = req.body.orders;
 	orders = JSON.parse(orders);
+	var order = "";
 	for (var i = orders.length - 1; i >= 0; i--) {
 		order = orders[i];
 		TaobaoOrderModel.findOneAndUpdate({order_id:order.order_id},{$set :order},{upsert:true,rawResult:true},function(err,order){
