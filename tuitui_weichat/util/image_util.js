@@ -100,13 +100,9 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
             });
         });
     } else {
-        console.log('-------------------')
         exec(resize_cmd, function (error, stdout, stderr) {
             if (error) {
                 console.log(error);
-            }
-            if (errorhead) {
-                console.log(errorhead);
             }
             var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg.png" ' +
                 '"-page" "+272+1046" "' + __dirname + '/user_image/small_' + qr_name + '"' +
