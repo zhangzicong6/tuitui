@@ -194,9 +194,11 @@ function check10V(chapte,req,res,next){
 		return;
 	}
 	var conf = book_wechat_conf[book_id];
-	var client = WechatUtil.getClient(conf.code);
-	
-	client.getUser(openid,function(error,result){
+	// var client = WechatUtil.getClient(conf.code);
+    var client = getClient.getClient(book_id)
+
+
+    client.getUser(openid,function(error,result){
 		if(error){
 			console.log(error);
 		}
