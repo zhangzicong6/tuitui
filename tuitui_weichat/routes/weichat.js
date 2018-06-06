@@ -697,12 +697,12 @@ function getTaobaoke_byCode(config, openid, text, res) {
         console.log('url---------------' + str_url);
         TaobaoUtil.request_taobao_url(str_url, function (err, url) {
             if (err || !url) {
-                request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+                request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
                 })
                     // MessageServer.getInstance(null).req_title_token(data);
             } else {
                 data.title = url;
-                request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+                request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
                 })
                 // MessageServer.getInstance(null).req_title_token(data);
             }
@@ -713,19 +713,19 @@ function getTaobaoke_byCode(config, openid, text, res) {
         console.log('code---------------' + code);
         TaobaoUtil.request_taobao_token(code, function (err, url) {
             if (err || !url) {
-                request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+                request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
                 })
                 // MessageServer.getInstance(null).req_title_token(data);
             } else {
                 data.title = url;
-                request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+                request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
                 })
                 // MessageServer.getInstance(null).req_title_token(data);
             }
         });
     } else {
         console.log('--------search title--------')
-        request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+        request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
         })
         // MessageServer.getInstance(null).req_title_token(data);
     }
@@ -743,7 +743,7 @@ function getTaobaoke(config, openid, text, res) {
             data = result.data;
             data.openid = openid;
             data.code = config.code;
-            request.post('http://localhost:3004/message/taobaoke',{form:data},function(err,response){
+            request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
             })
             // MessageServer.getInstance(null).req_token(data);
         } else {

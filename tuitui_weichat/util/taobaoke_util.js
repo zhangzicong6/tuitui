@@ -2,7 +2,7 @@ require('events').EventEmitter.prototype._maxListeners = 1000;
 
 var request = require('request');
 var async = require('async');
-var MessageServer = require('../message_server.js');
+// var MessageServer = require('../message_server.js');
 
 ApiClient = require('./taobaoke/index.js').ApiClient;
 TopClient = require('./taobaoke/lib/api/topClient.js').TopClient;
@@ -161,7 +161,9 @@ function get_baokuang(obj){
 	var itemid = tmp_arr[1].split('&')[0];
 	obj.url = obj.url.split('?')[0]+'?id='+itemid;
 	console.log(obj)
-	MessageServer.getInstance(null).get_one_baokuan(obj)
+    request.post('http://io.rrdtjj.top/message/baokuan',{form:obj},function(err,response){
+    })
+    // MessageServer.getInstance(null).get_one_baokuan(obj)
 }
 
 
