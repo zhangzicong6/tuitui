@@ -491,7 +491,15 @@ async function bind_user(openid, code, ticket, res) {
                 console.log(err)
             }
         });
-        let father_str = '嗨，【' + father.nickname + '】！您的朋友【' + user.nickname + '】刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
+        var fstr = "嗨！";
+        if (father.nickname) {
+            fstr = '嗨，' + father.nickname + '！'
+        }
+        var sstr = "";
+        if (user.nickname) {
+            sstr = user.nickname
+        }
+        let father_str = fstr + '您的朋友' + sstr + '刚刚关注我啦，您获得【' + father_cash + '】元奖励！' +
             '您的当前余额【' + parseFloat(father.current_balance + father_cash).toFixed(2) + '】元。好友购物后，您也有返利，快去教教他吧！';
         api.sendText(father.openid, father_str, function (err, res) {
             if (err) {
