@@ -157,21 +157,24 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
 function zero_img(headimgurl,ticket, qr_name, callback) {
     var resize_cmd = 'gm "convert" "' + __dirname + '/qr_image/' + qr_name + '" "-resize" "138x" "' + __dirname + '/qr_image/small_' + qr_name + '"';
     if (headimgurl) {
+        console.log('aaaaaaaaaaaaaaaaaaa')
         var resize_head = 'gm "convert" "' + __dirname + '/qr_image/head_' + qr_name + '" "-resize" "159x" "' + __dirname + '/qr_image/smallhead_' + qr_name + '"';
         exec(resize_cmd, function (error, stdout, stderr) {
-            if (error) {
-                console.log(error);
-            }
-            var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+477+1156" "'
-                + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name
-                + '" "-page" "+268+1156"' + __dirname + '/qr_image/smallhead_'+ qr_name + '"'
-            exec(mosaic_cmd, function (error, stdout, stderr) {
+            exec(resize_head, function (errorhead, stdouthead, stderrhead) {
                 if (error) {
                     console.log(error);
                 }
-                memcached.set('zero_' + zero_conf.version + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+                var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+477+1056" "'
+                    + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name
+                    + '" "-page" "+268+1156"' + __dirname + '/qr_image/smallhead_' + qr_name + '"'
+                exec(mosaic_cmd, function (error, stdout, stderr) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    memcached.set('zero_' + zero_conf.version + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+                    });
+                    callback(qr_name);
                 });
-                callback(qr_name);
             });
         });
     }else{
