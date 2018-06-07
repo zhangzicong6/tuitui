@@ -110,10 +110,11 @@ async function luoji(openid,config,ticket){
 	var content = await mem.get(ticket);
 	var str1 = zero_conf.text1;
     var str2 = zero_conf.text2;
-    if (!weichat_apis[config.code]) {
-        weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
-    }
-    var api = weichat_apis[config.code];
+    // if (!weichat_apis[config.code]) {
+    //     weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+    // }
+    // var api = weichat_apis[config.code];
+    var api = getClient.getClient(config.code)
     await api.sendText(openid,str1,function(err,result){
     	if (err) {
 	            console.log(err, '----------------err1')
@@ -153,11 +154,12 @@ async function luoji(openid,config,ticket){
 }
 
 function send_message(auth,config){
-	if (!weichat_apis[config.code]) {
-        weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
-    }
-	var api = weichat_apis[config.code];
-	var proc = auth.invitees.length;
+	// if (!weichat_apis[config.code]) {
+     //    weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
+    // }
+	// var api = weichat_apis[config.code];
+    var api = getClient.getClient(config.code)
+    var proc = auth.invitees.length;
 	UserModel.findOne({openid:auth.openid},{nickname:1,openid:1},function(err,user){
 		console.log('-----------=======0元购======-----获取用户--------')
 		console.log(user)
