@@ -194,9 +194,9 @@ function zero_img(headimgurl,ticket, qr_name, callback) {
 
 function getZeroImg(headimgurl, ticket, callback) {
     memcached.get('zero_' + zero_conf.version + ticket, function (err, qr) {
-        if (qr) {
-            return callback(qr);
-        }
+        // if (qr) {
+        //     return callback(qr);
+        // }
         var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + ticket;
         console.log(qr_url);
         var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
