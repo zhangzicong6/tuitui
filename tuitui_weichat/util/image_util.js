@@ -157,7 +157,7 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
 function zero_img(headimgurl, ticket, qr_name, callback) {
     var resize_cmd = 'gm "convert" "' + __dirname + '/qr_image/' + qr_name + '" "-resize" "138x" "' + __dirname + '/qr_image/small_' + qr_name + '"';
     if (headimgurl) {
-        var resize_head = 'gm "convert" "' + __dirname + '/qr_image/head_' + qr_name + '" "-resize" "159x" "' + __dirname + '/qr_image/smallhead_' + qr_name + '"';
+        var resize_head = 'gm "convert" "' + __dirname + '/qr_image/head_' + qr_name + '" "-resize" "189x" "' + __dirname + '/qr_image/smallhead_' + qr_name + '"';
         exec(resize_cmd, function (error, stdout, stderr) {
             exec(resize_head, function (errorhead, stdouthead, stderrhead) {
                 if (error) {
