@@ -24,6 +24,11 @@ async function get_img(openid, config){
     // }
     // client = weichat_apis[config.code];
     var client = getClient.getClient(config.code)
+    var user = await UserModel.findOne({openid:openid});
+	if(!user.nickname){
+		//获取用户
+        var headimgurl = await nickname(user,client)
+	}
     var content = JSON.stringify({type:'0_shop',openid:openid});
 	var ticket = await mem.get(content);
 	console.log('--- ticket ----'+ticket)
@@ -34,7 +39,7 @@ async function get_img(openid, config){
 		return;
 	}
 	console.log('---------====ticket=====-------'+ticket)
-	var qr_name = await img_compose(ticket);
+	var qr_name = await img_compose(headimgurl,ticket);
 	console.log('---------====qr_name=====-------'+qr_name)
 	var res = await send_img(client,openid,qr_name);
 }
@@ -56,12 +61,23 @@ async function get_qr(client,content){
 	});
 }
 
-async function img_compose(ticket){
+async function img_compose(headimgurl,ticket){
 	return await new Promise((resolve, reject)=>{
-		ImageUtil.getZeroImg(ticket,function(qr_name){
+		ImageUtil.getZeroImg(headimgurl,ticket,function(qr_name){
 			return resolve(qr_name);
 		});
 	});
+}
+
+async function nickname(user,client){
+    return await new Promise((resolve, reject)=>{
+        client.getUser(openid, function (err, data) {
+            user.nickname = data.nickname;
+            user.headimgurl = data.headimgurl;
+            user.save()
+			return resolve(data.headimgurl)
+        })
+    });
 }
 
 async function send_img(client,openid,qr_name){
