@@ -71,7 +71,7 @@ async function img_compose(headimgurl,ticket){
 
 async function nickname(user,client){
     return await new Promise((resolve, reject)=>{
-        client.getUser(openid, function (err, data) {
+        client.getUser(user.openid, function (err, data) {
             user.nickname = data.nickname;
             user.headimgurl = data.headimgurl;
             user.save()
