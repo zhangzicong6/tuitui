@@ -155,7 +155,7 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
 }
 
 function zero_img(headimgurl, ticket, qr_name, callback) {
-    var resize_cmd = 'gm "convert" "' + __dirname + '/qr_image/' + qr_name + '" "-resize" "158x" "' + __dirname + '/qr_image/small_' + qr_name + '"';
+    var resize_cmd = 'gm "convert" "' + __dirname + '/qr_image/' + qr_name + '" "-resize" "168x" "' + __dirname + '/qr_image/small_' + qr_name + '"';
     if (headimgurl) {
         var resize_head = 'gm "convert" "' + __dirname + '/qr_image/head_' + qr_name + '" "-resize" "159x" "' + __dirname + '/qr_image/smallhead_' + qr_name + '"';
         exec(resize_cmd, function (error, stdout, stderr) {
@@ -163,7 +163,7 @@ function zero_img(headimgurl, ticket, qr_name, callback) {
                 if (error) {
                     console.log(error);
                 }
-                var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+475+1170" "'
+                var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+475+1160" "'
                     + __dirname + '/qr_image/small_' + qr_name + '" "-page" "+268+1156" "' + __dirname + '/qr_image/smallhead_' + qr_name
                     + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
 
@@ -182,7 +182,7 @@ function zero_img(headimgurl, ticket, qr_name, callback) {
             if (error) {
                 console.log(error);
             }
-            var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+475+1170" "' + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
+            var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+475+1160" "' + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
             exec(mosaic_cmd, function (error, stdout, stderr) {
                 if (error) {
                     console.log(error);
