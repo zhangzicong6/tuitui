@@ -216,9 +216,9 @@ function getZeroImg(headimgurl, ticket, callback) {
     });
 }
 
-zero_img('ticket-------test', '15275821543044430.jpg', function (name) {
-    console.log(name)
-})
+// zero_img('ticket-------test', '15275821543044430.jpg', function (name) {
+//     console.log(name)
+// })
 
 module.exports.getQRImg = getQRImg
 module.exports.getUserImg = getUserImg
