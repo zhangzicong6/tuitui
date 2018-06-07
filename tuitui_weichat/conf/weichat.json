@@ -295,6 +295,18 @@
 		"url":"http://www.rrdtjj.top/weichat/24",
 		"sub_replay":0,
 		"robot":0,
+		"zero_purchase":0,
+	},
+	"25":{
+		"code":"25",
+		"name":"",
+		"appid":"wx35a06d18fda1c591",
+		"appsecret":"f2e47fe9d43c47a59f2b74543070fed9",
+		"token":"mingxingshuo",
+		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
+		"url":"http://www.rrdtjj.top/weichat/25",
+		"sub_replay":0,
+		"robot":0,
 		"zero_purchase":1
 	}
 
