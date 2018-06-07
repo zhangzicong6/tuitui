@@ -13,9 +13,10 @@ var getClient = require('../util/get_weichat_client');
 
 function purchase(openid, config, message,res){
 	//var str = zero_conf.text;
-	res.reply('');
+	res.reply(config.reply);
 	get_img(openid, config);
-	
+    var ticket = message.Ticket;
+    luoji(openid,config,ticket)
 }
 async function get_img(openid, config){
 	console.log('====----- 生成图片 -----======')
@@ -119,7 +120,7 @@ async function send_img(client,openid,qr_name){
 }
 
 function subscribe(openid, config, message,res){
-	res.reply('Hi，亲爱的，你终于来了呢~完成以下任务就能免费领取超好用的爆款潮牌电动牙刷哦[爱心]')
+	res.reply(config.reply)
 	var ticket = message.Ticket;
 	luoji(openid,config,ticket)
 }
