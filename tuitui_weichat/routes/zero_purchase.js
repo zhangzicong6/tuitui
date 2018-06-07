@@ -16,7 +16,7 @@ function purchase(openid, config, message,res){
 	res.reply('');
     var ticket = message.Ticket;
     luoji(openid,config,ticket)
-    get_img(openid, config);
+    // get_img(openid, config);
 }
 async function get_img(openid, config){
 	console.log('====----- 生成图片 -----======')
