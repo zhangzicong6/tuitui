@@ -120,7 +120,8 @@ async function send_img(client,openid,qr_name){
 }
 
 function subscribe(openid, config, message,res){
-	res.reply(config.str_reply)
+	console.log(zero_conf,zero_conf.str_reply,'--------------config')
+	res.reply(zero_conf.str_reply)
 	var ticket = message.Ticket;
 	luoji(openid,config,ticket)
 }
