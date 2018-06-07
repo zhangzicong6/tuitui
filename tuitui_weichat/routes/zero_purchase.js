@@ -122,7 +122,9 @@ async function send_img(client,openid,qr_name){
 function subscribe(openid, config, message,res){
 	res.reply(zero_conf.str_reply)
 	var ticket = message.Ticket;
-	luoji(openid,config,ticket)
+	setTimeout(function () {
+        luoji(openid,config,ticket)
+    },500)
 }
 
 async function luoji(openid,config,ticket){
