@@ -25,10 +25,12 @@ async function get_img(openid, config){
     // client = weichat_apis[config.code];
     var client = getClient.getClient(config.code)
     var user = await UserModel.findOne({openid:openid});
+
 	if(!user.nickname){
 		//获取用户
-        var headimgurl = await nickname(user,client)
+		await nickname(user,client)
 	}
+    var headimgurl = user.headimgurl
     var content = JSON.stringify({type:'0_shop',openid:openid});
 	var ticket = await mem.get(content);
 	console.log('--- ticket ----'+ticket)
