@@ -178,11 +178,12 @@ function zero_img(headimgurl,ticket, qr_name, callback) {
             });
         });
     }else{
+        console.log('bbbbbbbbbbbbbb')
         exec(resize_cmd, function (error, stdout, stderr) {
             if (error) {
                 console.log(error);
             }
-            var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+477+1156" "' + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
+            var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+477+1208" "' + __dirname + '/qr_image/small_' + qr_name + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
             exec(mosaic_cmd, function (error, stdout, stderr) {
                 if (error) {
                     console.log(error);
@@ -200,6 +201,7 @@ function getZeroImg(headimgurl, ticket, callback) {
         // if (qr) {
         //     return callback(qr);
         // }
+        console.log(headimgurl,'---------------headimgurl')
         var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + ticket;
         console.log(qr_url);
         var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
