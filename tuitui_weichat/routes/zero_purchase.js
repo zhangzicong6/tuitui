@@ -13,10 +13,10 @@ var getClient = require('../util/get_weichat_client');
 
 function purchase(openid, config, message,res){
 	//var str = zero_conf.text;
-	res.reply(config.reply);
-	get_img(openid, config);
+	res.reply(config.str_reply);
     var ticket = message.Ticket;
     luoji(openid,config,ticket)
+    get_img(openid, config);
 }
 async function get_img(openid, config){
 	console.log('====----- 生成图片 -----======')
@@ -120,14 +120,14 @@ async function send_img(client,openid,qr_name){
 }
 
 function subscribe(openid, config, message,res){
-	res.reply(config.reply)
+	res.reply(config.str_reply)
 	var ticket = message.Ticket;
 	luoji(openid,config,ticket)
 }
 
 async function luoji(openid,config,ticket){
 	var content = await mem.get(ticket);
-	var str1 = zero_conf.text1;
+    var str1 = zero_conf.text1;
     var str2 = zero_conf.text2;
     // if (!weichat_apis[config.code]) {
     //     weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
