@@ -13,7 +13,7 @@ var getClient = require('../util/get_weichat_client');
 
 function purchase(openid, config, message,res){
 	//var str = zero_conf.text;
-	res.reply(config.str_reply);
+	res.reply('');
     var ticket = message.Ticket;
     luoji(openid,config,ticket)
     get_img(openid, config);
