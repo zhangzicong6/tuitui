@@ -151,7 +151,9 @@ async function luoji(openid, config, ticket) {
         })
     }, 500)
 
-    await get_img(openid, config);
+    setTimeout(async function () {
+        await get_img(openid, config);
+    }, 1000)
     if (!content) {
         return;
     }
