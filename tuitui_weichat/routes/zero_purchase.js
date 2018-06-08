@@ -15,7 +15,6 @@ function purchase(openid, config, message, res) {
     //var str = zero_conf.text;
     res.reply('');
     var ticket = message.Ticket;
-    console.log(message,'----------------message')
     luoji(openid, config, ticket)
     // get_img(openid, config);
 }
@@ -25,7 +24,6 @@ async function get_img(openid, config) {
     //     weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     // }
     // client = weichat_apis[config.code];
-    console.log(openid,'---------------openid1')
     var client = getClient.getClient(config.code)
     var user = await UserModel.findOne({openid: openid});
 
@@ -37,9 +35,9 @@ async function get_img(openid, config) {
     var content = JSON.stringify({type: '0_shop', openid: openid});
     var ticket = await mem.get(content);
     console.log('--- ticket ----' + ticket)
-    // if (!ticket) {
+    if (!ticket) {
         ticket = await get_qr(client, content);
-    // }
+    }
     if (!ticket) {
         return;
     }
@@ -131,7 +129,7 @@ function subscribe(openid, config, message, res) {
 
 async function luoji(openid, config, ticket) {
     var content = await mem.get(ticket);
-    console.log(openid,'-------------------openid2')
+    console.log()
     var str1 = zero_conf.text1;
     var str2 = zero_conf.text2;
     // if (!weichat_apis[config.code]) {
@@ -161,7 +159,6 @@ async function luoji(openid, config, ticket) {
         return;
     }
     var obj = JSON.parse(content);
-    console.log(obj,'---------------obj')
     var auth = await ZeroAuthorityModel.findOne({openid: obj.openid, action: zero_conf.index});
     if (!auth) {
         auth = new ZeroAuthorityModel({
