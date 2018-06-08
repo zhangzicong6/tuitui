@@ -24,6 +24,7 @@ async function get_img(openid, config) {
     //     weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     // }
     // client = weichat_apis[config.code];
+    console.log(openid,'---------------openid')
     var client = getClient.getClient(config.code)
     var user = await UserModel.findOne({openid: openid});
 
@@ -35,9 +36,9 @@ async function get_img(openid, config) {
     var content = JSON.stringify({type: '0_shop', openid: openid});
     var ticket = await mem.get(content);
     console.log('--- ticket ----' + ticket)
-    if (!ticket) {
+    // if (!ticket) {
         ticket = await get_qr(client, content);
-    }
+    // }
     if (!ticket) {
         return;
     }
