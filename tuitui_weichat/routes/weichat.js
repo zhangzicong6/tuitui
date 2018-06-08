@@ -697,9 +697,11 @@ function getTaobaoke_byCode(config, openid, text, res) {
     data.title = title;
 
     var code = '';
-    /*if (text.search(/￥[0-9a-zA-Z]{11}￥/) != -1) {
-     code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/), 13);
-     }*/
+    if (text.search(/￥[0-9a-zA-Z]{11}￥/) != -1) {
+        code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/), 13);
+     }else if(text.search(/€[0-9a-zA-Z]{11}€/) != -1){
+        code = text.substr(text.search(/€[0-9a-zA-Z]{11}€/), 13);
+     }
 
     var str_url = '';
     if (text.search('http') != -1) {
@@ -724,7 +726,7 @@ function getTaobaoke_byCode(config, openid, text, res) {
 
     } else if (code) {
         console.log('code---------------' + code);
-        TaobaoUtil.request_taobao_token(code, function (err, url) {
+        /*TaobaoUtil.request_taobao_token(code, function (err, url) {
             if (err || !url) {
                 request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
                 })
@@ -735,8 +737,9 @@ function getTaobaoke_byCode(config, openid, text, res) {
                 })
                 // MessageServer.getInstance(null).req_title_token(data);
             }
-        });
+        });*/
     } else {
+        data.title = text
         console.log('--------search title--------')
         request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
         })
