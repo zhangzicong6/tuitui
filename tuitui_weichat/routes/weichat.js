@@ -347,7 +347,7 @@ function getCode(openid, text, res) {
                 if (result) {
                     callback('您已经领取红包啦');
                 } else {
-                    var cash = parseFloat((Math.random() * 0.3 + 0.5).toFixed(2));
+                    var cash = parseFloat((Math.random() * 0.2 + 0.4).toFixed(2));
                     callback(null, cash);
                 }
             });
@@ -408,8 +408,8 @@ function getCode(openid, text, res) {
 }
 
 async function bind_user(openid, code, ticket, res) {
-    let cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
-    let father_cash = parseFloat((Math.random() * 0.3 + 0.6).toFixed(2));
+    let cash = parseFloat((Math.random() * 0.3 + 0.3).toFixed(2));
+    let father_cash = parseFloat((Math.random() * 0.3 + 0.3).toFixed(2));
     let conf = weichat_conf[code];
     let api = new WechatAPI(conf.appid, conf.appsecret);
     var time = await mem.bindContent(openid)
