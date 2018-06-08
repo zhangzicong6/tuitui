@@ -129,6 +129,7 @@ function subscribe(openid, config, message, res) {
 
 async function luoji(openid, config, ticket) {
     var content = await mem.get(ticket);
+    console.log()
     var str1 = zero_conf.text1;
     var str2 = zero_conf.text2;
     // if (!weichat_apis[config.code]) {
