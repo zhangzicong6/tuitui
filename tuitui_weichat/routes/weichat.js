@@ -702,9 +702,9 @@ function getTaobaoke_byCode(config, openid, text, res) {
      }*/
 
     var str_url = '';
-    /*if (text.search('【') != -1 && text.search('http') != -1) {
+    if (text.search('【') != -1 && text.search('http') != -1) {
      str_url = text.split('】')[1].split(' ')[0];
-     }*/
+    }
 
     if (str_url) {
         console.log('url---------------' + str_url);
