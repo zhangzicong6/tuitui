@@ -15,6 +15,7 @@ function purchase(openid, config, message, res) {
     //var str = zero_conf.text;
     res.reply('');
     var ticket = message.Ticket;
+    console.log(message,'----------------message')
     luoji(openid, config, ticket)
     // get_img(openid, config);
 }
