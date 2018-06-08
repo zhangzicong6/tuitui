@@ -24,7 +24,7 @@ async function get_img(openid, config) {
     //     weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     // }
     // client = weichat_apis[config.code];
-    console.log(openid,'---------------openid')
+    console.log(openid,'---------------openid1')
     var client = getClient.getClient(config.code)
     var user = await UserModel.findOne({openid: openid});
 
@@ -130,7 +130,7 @@ function subscribe(openid, config, message, res) {
 
 async function luoji(openid, config, ticket) {
     var content = await mem.get(ticket);
-    console.log()
+    console.log(openid,'-------------------openid2')
     var str1 = zero_conf.text1;
     var str2 = zero_conf.text2;
     // if (!weichat_apis[config.code]) {
@@ -160,6 +160,7 @@ async function luoji(openid, config, ticket) {
         return;
     }
     var obj = JSON.parse(content);
+    console.log(obj,'---------------obj')
     var auth = await ZeroAuthorityModel.findOne({openid: obj.openid, action: zero_conf.index});
     if (!auth) {
         auth = new ZeroAuthorityModel({
