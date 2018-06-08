@@ -685,7 +685,7 @@ function getTaobaoke_byCode(config, openid, text, res) {
         if (text.search('（') != -1) {
             title = text.split('（')[1].split('）')[0];
         } else {
-            title = text.split('【')[1].split('】')[0];
+            title = text.substr(text.indexOf('【')+1,text.lastIndexOf('】')-1);
         }
     } else {
         title = text;
@@ -702,8 +702,8 @@ function getTaobaoke_byCode(config, openid, text, res) {
      }*/
 
     var str_url = '';
-    if (text.search('【') != -1 && text.search('http') != -1) {
-     str_url = text.split('】')[1].split(' ')[0];
+    if (text.search('http') != -1) {
+     str_url = text.substr(text.search('http')).split(' ')[0]
     }
 
     if (str_url) {
