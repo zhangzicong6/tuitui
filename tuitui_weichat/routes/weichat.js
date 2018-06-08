@@ -867,7 +867,11 @@ async function invite(config, code, openid, res) {
                 console.log(err)
             }
             if (ticket) {
-                UserModel.findOne({openid: openid}, function (error, user) {
+                UserModel.findOne({openid: openid}, async function (error, user) {
+                    if (!user.nickname) {
+                        //获取用户
+                        await nickname(user, client)
+                    }
                     ImageUtil.getUserImg(ticket, user.nickname, user.headimgurl, async function (qr_name) {
                         if (qr_name) {
                             var url = __dirname + '/../util/user_image/' + qr_name
@@ -903,6 +907,17 @@ async function invite(config, code, openid, res) {
     }
     memcached.set('usertime_' + openid, Date.now(), 1 * 60, function (err, time) {
         console.log(time, '------------------set time');
+    });
+}
+
+async function nickname(user, client) {
+    return await new Promise((resolve, reject) => {
+        client.getUser(user.openid, function (err, data) {
+            user.nickname = data.nickname;
+            user.headimgurl = data.headimgurl;
+            user.save()
+            return resolve(data.headimgurl)
+        })
     });
 }
 

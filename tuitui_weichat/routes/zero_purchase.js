@@ -184,6 +184,7 @@ function send_message(auth, config) {
     //    weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     // }
     // var api = weichat_apis[config.code];
+    console.log(config,config.code,'-------------------config')
     var api = getClient.getClient(config.code)
     var proc = auth.invitees.length;
     UserModel.findOne({openid: auth.openid}, {nickname: 1, openid: 1}, function (err, user) {
