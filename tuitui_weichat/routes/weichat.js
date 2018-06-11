@@ -413,6 +413,7 @@ async function bind_user(openid, code, ticket, res) {
     let conf = weichat_conf[code];
     let api = new WechatAPI(conf.appid, conf.appsecret);
     var time = await mem.bindContent(openid)
+    console.log(time,Date.now(),'-----------------------time')
     if (!time || Date.now() - time > 5 * 1000) {
         let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
         console.log(type, '---------------type')
