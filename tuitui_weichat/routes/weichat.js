@@ -75,12 +75,12 @@ router.use('/:code', function (request, response, next_fun) {
                             } else if (text === '订单') {
                                 getOrders(openid, res);
                             } else if (text === '个人信息') {
-                                if (request.params.code == 1) {
+                                // if (request.params.code == 1) {
                                     new_getUser(openid, res);
-                                } else {
-                                    getUser(openid, res);
-                                }
-                            } else if (text === '邀请好友' && request.params.code == '1') {
+                                // } else {
+                                //     getUser(openid, res);
+                                // }
+                            } else if (text === '邀请好友') {
                                 invite(config, request.params.code, openid, res);
                             } else if (text === '提现') {
                                 cash(request.params.code, openid, res);
