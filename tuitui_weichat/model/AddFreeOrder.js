@@ -5,7 +5,7 @@ var db = mongoose.createConnection(connect_url);
 
 var AddFreeOrderSchema = new Schema({
   openid: String,
-  type: Number,//1-返利 2-绑定邀请 3-邀请好友 4-回复10000
+  type: Number,//1-返利 2-绑定邀请 3-邀请好友
   cash:Number,
   auction:Number,
   order_number:String,
