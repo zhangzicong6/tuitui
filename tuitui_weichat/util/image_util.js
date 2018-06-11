@@ -85,7 +85,7 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
                 }
                 var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg_nickname.png" ' +
                     '"-page" "+369+1046" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+163+1042" "' + __dirname + '/user_image/smallhead_'
-                    + qr_name + '" "' + ' "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
+                    + qr_name + '" "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
                 console.log(mosaic_cmd,'--------------------mosaic_cmd')
 
                 exec(mosaic_cmd, function (error, stdout, stderr) {
