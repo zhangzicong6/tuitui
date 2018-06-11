@@ -52,7 +52,7 @@ router.get('/', function(req, res, next) {
 			})
 		break;
 		case "delete_one":
-			handler('find', Baokuan, {}, function(result) {
+			handler('find', Baokuan, {class: req.query.class}, function(result) {
 				if (result == '') {
 					res.send({err: "没有查询到此商品的相关信息"})
 				} else {
