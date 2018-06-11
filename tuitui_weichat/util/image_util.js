@@ -83,10 +83,9 @@ function user_img(ticket, qr_name, nickname, headimgurl, callback) {
                 if (errorhead) {
                     console.log(errorhead);
                 }
-                console.log(nickname,'--------------------nickname')
                 var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/user_image/tmp_bg_nickname.png" ' +
                     '"-page" "+369+1046" "' + __dirname + '/user_image/small_' + qr_name + '" "-page" "+163+1042" "' + __dirname + '/user_image/smallhead_'
-                    + qr_name + '" "-font" "' + __dirname + '/china.TTF" "-fill" "red" "-pointsize" "30" "-draw" "text 170,1250 \'' + nickname + '\'" ' +
+                    + qr_name + '" "-font" "' + __dirname + '/china.TTF" "-fill" "red" "-pointsize" "30" "-draw" "text 170,1250 \'' + '测试' + '\'" ' +
                     ' "-mosaic" "' + __dirname + '/user_image/' + qr_name + '"'
 
                 exec(mosaic_cmd, function (error, stdout, stderr) {
