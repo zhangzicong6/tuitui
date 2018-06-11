@@ -343,7 +343,7 @@ function validate(req, res) {
 function getCode(openid, text, res) {
     async.waterfall([
         function (callback) {
-            AddFreeOrderModel.findOne({openid: openid, type: 4}, function (error, result) {
+            AddFreeOrderModel.findOne({openid: openid, type: 2}, function (error, result) {
                 if (result) {
                     callback('您已经领取红包啦');
                 } else {
@@ -393,7 +393,7 @@ function getCode(openid, text, res) {
                 });
             }
 
-            AddFreeOrderModel.create({openid: openid, type: 4, cash: cash, auction: auction});
+            AddFreeOrderModel.create({openid: openid, type: 2, cash: cash, auction: auction});
             UserModel.findOneAndUpdate({openid: openid}, {$inc: {current_balance: cash}}, function (error, user) {
                 callback(null, cash, user);
             });
