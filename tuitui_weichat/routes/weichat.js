@@ -492,11 +492,20 @@ async function bind_user(openid, code, ticket, res) {
             'ヾ(≧▽≦*)o超过1元可提现\r\n\r\n⼀⼀⼀⼀�使⽤攻略⼀⼀⼀⼀\r\n' +
             '<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n' +
             '⽂字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb'
-        api.sendText(openid, str, function (err, res) {
+        let str1 = '省钱助手欢迎您！\r\n回复10000领红包!\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n'
+
+        await api.sendText(openid, str, function (err, res) {
             if (err) {
                 console.log(err)
             }
         });
+        setTimeout(async function () {
+            await api.sendText(openid, str1, function (err, res) {
+                if (err) {
+                    console.log(err)
+                }
+            });
+        },500);
         var fstr = "嗨！";
         if (father.nickname) {
             fstr = '嗨，' + father.nickname + '！'
@@ -865,7 +874,7 @@ async function invite(config, code, openid, res) {
         '好友购物后，您会收到⼀定⽐例的返利（邀请好友多⾮常可观）！';
     res.reply(str);
     var time = await mem.timeContent(openid)
-    if (!time || Date.now() - time > 5 * 1000) {
+    if (!time || Date.now() - time > 30 * 1000) {
         // var client = new WechatAPI(config.appid, config.appsecret);
         var client = getClient.getClient(code)
         WechatUtil.getuserQr(code, openid, function (err, ticket) {
