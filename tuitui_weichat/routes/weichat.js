@@ -176,7 +176,7 @@ async function subscribe(openid, config, message, res) {
         if (config.sub_replay == 0) {
             res.reply('');
         } else {
-            if (config.code == 1 && message.Ticket) {
+            if (message.Ticket) {
                 bind_user(openid, config.code, message.Ticket, res)
             } else {
                 res.reply('省钱助手欢迎您！\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
