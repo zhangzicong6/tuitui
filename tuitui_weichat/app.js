@@ -18,6 +18,7 @@ var reading = require('./routes/reading');
 var youhuiquan = require('./routes/youhuiquan');
 var fetchLink = require('./routes/fetchLink');
 var goodsInfo = require('./routes/goodsInfo');
+var baokuan = require('./routes/baokuan');
 
 var app = express();
 
@@ -64,6 +65,7 @@ app.use('/reading',reading);
 app.use('/youhuiquan',youhuiquan);
 app.use('/fetchlink', fetchLink);
 app.use('/goodsinfo', goodsInfo);
+app.use('/baokuan', baokuan);
 
 app.use(express.static(path.join(__dirname, 'public')));
 

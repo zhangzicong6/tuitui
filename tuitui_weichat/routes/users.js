@@ -5,8 +5,9 @@ var UserModel = require('../model/User.js');
 var UserOrderModel = require('../model/UserOrder.js');
 var TaobaoOrderModel = require('../model/TaobaoOrder.js');
 
-var WechatAPI = require('wechat-api');
+//var WechatAPI = require('wechat-api');
 var weichat_conf = require('../conf/weichat.json');
+var WechatUtil = require('../util/wechat_get.js');
 
 
 
@@ -45,10 +46,28 @@ router.use('/create_menu',function(req, res, next){
 	}
 });
 
+router.use('/upload_complete',function(req,res,next){
+	var code = req.query.code;
+	var config = weichat_conf[code];
+	var client = WechatUtil.getClient(code);
+	var url = __dirname + '/../util/create_fixed/complete.jpeg';
+	client.uploadMedia(url, 'image', function (cerror, result) {
+        if (result) {
+            console.log('------发送图片-----') 
+            console.log(result)
+            res.send(result)
+        } else {
+            console.log(cerror, '-----------------cerror')
+            res.send(cerror)
+        }
+    });
+
+})
+
 function createMenu(code) {
 	var menus = require('../conf/menu.json');
-	var config = weichat_conf[code];
-	var api = new WechatAPI(config.appid, config.appsecret);
+	//var config = weichat_conf[code];
+	var api = WechatUtil.getClient(code);
 	var menu = menus[code];
 	console.log(menu);
 	if(!menu){
@@ -72,6 +91,8 @@ function createMenu(code) {
 	});
 	
 }
+
+
 
 
 module.exports = router;
