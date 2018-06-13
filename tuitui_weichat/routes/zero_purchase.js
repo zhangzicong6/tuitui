@@ -42,9 +42,9 @@ async function get_img(openid, config) {
         return;
     }
     console.log('---------====ticket=====-------' + ticket)
-    var qr_name = await img_compose(headimgurl, ticket);
+    var qr_name = await img_compose(config.code,headimgurl, ticket);
     console.log('---------====qr_name=====-------' + qr_name)
-    var res = await send_img(client, openid, qr_name);
+    var res = await send_img(client, openid,config.code, qr_name);
 }
 
 async function get_qr(client, content) {
@@ -64,9 +64,9 @@ async function get_qr(client, content) {
     });
 }
 
-async function img_compose(headimgurl, ticket) {
+async function img_compose(code,headimgurl, ticket) {
     return await new Promise((resolve, reject) => {
-        ImageUtil.getZeroImg(headimgurl, ticket, function (qr_name) {
+        ImageUtil.getZeroImg(code,headimgurl, ticket, function (qr_name) {
             return resolve(qr_name);
         });
     });
@@ -83,9 +83,9 @@ async function nickname(user, client) {
     });
 }
 
-async function send_img(client, openid, qr_name) {
+async function send_img(client, openid,code, qr_name) {
     return await new Promise((resolve, reject) => {
-        var media_id = mem.get('media_zero_' + zero_conf.version + qr_name);
+        var media_id = mem.get('media_zero_' + zero_conf[code].version + qr_name);
         console.log('-------media_id-----' + media_id);
         if (!media_id) {
             client.sendImage(openid, media_id, function (err, res) {
@@ -100,7 +100,7 @@ async function send_img(client, openid, qr_name) {
             client.uploadMedia(url, 'image', function (cerror, result) {
                 if (result) {
                     console.log('------上传图片-----')
-                    var value = mem.set('media_zero_' + zero_conf.version + qr_name, result.media_id, 7 * 24 * 60 * 60);
+                    var value = mem.set('media_zero_' + zero_conf[code].version + qr_name, result.media_id, 7 * 24 * 60 * 60);
                     console.log('-------mem-----set----' + value);
                     client.sendImage(openid, result.media_id, function (err, res1) {
                         if (err) {
@@ -120,7 +120,7 @@ async function send_img(client, openid, qr_name) {
 }
 
 function subscribe(openid, config, message, res) {
-    res.reply(zero_conf.str_reply)
+    res.reply(zero_conf[config.code].str_reply)
     var ticket = message.Ticket;
     setTimeout(function () {
         luoji(openid, config, ticket)
@@ -129,8 +129,8 @@ function subscribe(openid, config, message, res) {
 
 async function luoji(openid, config, ticket) {
     var content = await mem.get(ticket);
-    var str1 = zero_conf.text1;
-    var str2 = zero_conf.text2;
+    var str1 = zero_conf[config.code].text1;
+    var str2 = zero_conf[config.code].text2;
     // if (!weichat_apis[config.code]) {
     //     weichat_apis[config.code] = new WechatAPI(config.appid, config.appsecret);
     // }
@@ -158,12 +158,12 @@ async function luoji(openid, config, ticket) {
         return;
     }
     var obj = JSON.parse(content);
-    var auth = await ZeroAuthorityModel.findOne({openid: obj.openid, action: zero_conf.index});
+    var auth = await ZeroAuthorityModel.findOne({openid: obj.openid, action: zero_conf[config.code].index});
     if (!auth) {
         auth = new ZeroAuthorityModel({
             openid: obj.openid,
             code: config.code,
-            action: zero_conf.index,
+            action: zero_conf[config].index,
             invitees: [openid]
         });
         auth.save(function (err) {
@@ -172,7 +172,7 @@ async function luoji(openid, config, ticket) {
     } else {
         ZeroAuthorityModel.findOneAndUpdate({
             openid: obj.openid,
-            action: zero_conf.index
+            action: zero_conf[config.code].index
         }, {$addToSet: {invitees: openid}}, {upsert: true, new: true}, function (err, auth) {
             send_message(auth, config);
         });
@@ -191,16 +191,16 @@ function send_message(auth, config) {
         console.log('-----------=======0元购======-----获取用户--------')
         console.log(user)
         if (user) {
-            var str = zero_conf.message.replace(/proc/g, '' + proc).replace('date', moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
-                .replace('nickname', user.nickname).replace('openid', auth.openid.substr(0, 8)).replace('total', '' + zero_conf.total).replace('need', '' + parseInt(zero_conf.total - proc))
+            var str = zero_conf[config.code].message.replace(/proc/g, '' + proc).replace('date', moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
+                .replace('nickname', user.nickname).replace('openid', auth.openid.substr(0, 8)).replace('total', '' + zero_conf[config.code].total).replace('need', '' + parseInt(zero_conf[config.code].total - proc))
             api.sendText(auth.openid, str, function (err, result) {
                 if (err) {
                     console.log(err)
                 }
             });
         } else {
-            var str = zero_conf.message.replace(/proc/g, '' + proc).replace('date', moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
-                .replace('nickname', '').replace('openid', auth.openid.substr(0, 8)).replace('total', '' + zero_conf.total).replace('need', '' + parseInt(zero_conf.total - proc))
+            var str = zero_conf[config.code].message.replace(/proc/g, '' + proc).replace('date', moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
+                .replace('nickname', '').replace('openid', auth.openid.substr(0, 8)).replace('total', '' + zero_conf[config.code].total).replace('need', '' + parseInt(zero_conf[config.code].total - proc))
             api.sendText(auth.openid, str, function (err, result) {
                 if (err) {
                     console.log(err)
@@ -208,8 +208,8 @@ function send_message(auth, config) {
             });
         }
     })
-    if (proc >= zero_conf.total) {
-        api.sendImage(auth.openid, zero_conf.complete_media, function (err, res) {
+    if (proc >= zero_conf[config.code].total) {
+        api.sendImage(auth.openid, zero_conf[config.code].complete_media, function (err, res) {
             if (err) {
                 console.log(err, '----------------err')
             }
@@ -226,12 +226,12 @@ async function get_key(openid, config, message, res) {
         await get_img(openid, config);
     } else if (message.EventKey == 'KEY_ZERO_PROC') {
         res.reply('')
-        var auth = await ZeroAuthorityModel.findOne({openid: openid, action: zero_conf.index});
+        var auth = await ZeroAuthorityModel.findOne({openid: openid, action: zero_conf[config.code].index});
         if (!auth) {
             auth = new ZeroAuthorityModel({
                 openid: openid,
                 code: config.code,
-                action: zero_conf.index,
+                action: zero_conf[config.code].index,
                 invitees: []
             });
             auth.save(function (err) {

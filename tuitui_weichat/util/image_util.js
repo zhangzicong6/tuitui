@@ -154,7 +154,7 @@ function getUserImg(ticket, nickname, headimgurl, callback) {
     });
 }
 
-function zero_img(headimgurl, ticket, qr_name, callback) {
+function zero_img(code,headimgurl, ticket, qr_name, callback) {
     var resize_cmd = 'gm "convert" "' + __dirname + '/qr_image/' + qr_name + '" "-resize" "168x" "' + __dirname + '/qr_image/small_' + qr_name + '"';
     if (headimgurl) {
         var resize_head = 'gm "convert" "' + __dirname + '/qr_image/head_' + qr_name + '" "-resize" "159x" "' + __dirname + '/qr_image/smallhead_' + qr_name + '"';
@@ -163,7 +163,7 @@ function zero_img(headimgurl, ticket, qr_name, callback) {
                 if (error) {
                     console.log(error);
                 }
-                var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/zero_tmp_bg.png" "-page" "+475+1158" "'
+                var mosaic_cmd = 'gm "convert" "-page" "+0+0" "' + __dirname + '/create_fixed/'+code+'_zero_tmp_bg.png" "-page" "+475+1158" "'
                     + __dirname + '/qr_image/small_' + qr_name + '" "-page" "+268+1156" "' + __dirname + '/qr_image/smallhead_' + qr_name
                     + '" "-mosaic" "' + __dirname + '/../public/qr_image/' + qr_name + '"'
 
@@ -171,7 +171,7 @@ function zero_img(headimgurl, ticket, qr_name, callback) {
                     if (error) {
                         console.log(error);
                     }
-                    memcached.set('zero_' + zero_conf.version + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+                    memcached.set('zero_' + zero_conf[code].version + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
                     });
                     callback(qr_name);
                 });
@@ -195,8 +195,8 @@ function zero_img(headimgurl, ticket, qr_name, callback) {
     }
 }
 
-function getZeroImg(headimgurl, ticket, callback) {
-    memcached.get('zero_' + zero_conf.version + ticket, function (err, qr) {
+function getZeroImg(code,headimgurl, ticket, callback) {
+    memcached.get('zero_' + zero_conf[code].version + ticket, function (err, qr) {
         if (qr) {
             return callback(qr);
         }
@@ -208,12 +208,12 @@ function getZeroImg(headimgurl, ticket, callback) {
         if (headimgurl) {
             downloadHead(headimgurl, head_path, function (err1, res1) {
                 downloadFile(qr_url, qr_path, function (err, res) {
-                    zero_img(headimgurl, ticket, qr_name, callback);
+                    zero_img(code,headimgurl, ticket, qr_name, callback);
                 });
             })
         } else {
             downloadFile(qr_url, qr_path, function (err, res) {
-                zero_img(headimgurl, ticket, qr_name, callback);
+                zero_img(code,headimgurl, ticket, qr_name, callback);
             });
         }
     });
