@@ -190,9 +190,10 @@ function send_message(auth, config) {
     UserModel.findOne({openid: auth.openid}, {nickname: 1, openid: 1}, function (err, user) {
         console.log('-----------=======0元购======-----获取用户--------')
         console.log(user)
+        var need = parseInt(zero_conf[config.code].total - proc)
         if (user) {
             var str = zero_conf[config.code].message.replace(/proc/g, '' + proc).replace('date', moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
-                .replace('nickname', user.nickname).replace('openid', auth.openid.substr(0, 8)).replace('total', '' + zero_conf[config.code].total).replace('need', '' + parseInt(zero_conf[config.code].total - proc))
+                .replace('nickname', user.nickname).replace('openid', auth.openid.substr(0, 8)).replace('total', '' + zero_conf[config.code].total).replace('need', '' +(need<0?0:need))
             api.sendText(auth.openid, str, function (err, result) {
                 if (err) {
                     console.log(err)
@@ -200,7 +201,7 @@ function send_message(auth, config) {
             });
         } else {
             var str = zero_conf[config.code].message.replace(/proc/g, '' + proc).replace('date', moment(auth.updateAt).format('YYYY-MM-DD h:mm:ss'))
-                .replace('nickname', '').replace('openid', auth.openid.substr(0, 8)).replace('total', '' + zero_conf[config.code].total).replace('need', '' + parseInt(zero_conf[config.code].total - proc))
+                .replace('nickname', '').replace('openid', auth.openid.substr(0, 8)).replace('total', '' + zero_conf[config.code].total).replace('need', '' +(need<0?0:need) )
             api.sendText(auth.openid, str, function (err, result) {
                 if (err) {
                     console.log(err)
