@@ -163,7 +163,7 @@ async function luoji(openid, config, ticket) {
         auth = new ZeroAuthorityModel({
             openid: obj.openid,
             code: config.code,
-            action: zero_conf[config].index,
+            action: zero_conf[config.code].index,
             invitees: [openid]
         });
         auth.save(function (err) {
