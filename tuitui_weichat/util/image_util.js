@@ -170,9 +170,11 @@ function zero_img(code,headimgurl, ticket, qr_name, callback) {
                 exec(mosaic_cmd, function (error, stdout, stderr) {
                     if (error) {
                         console.log(error);
+                    }else{
+                        console.log('======图片生成完成======-----'+qr_name);
+                        memcached.set('zero_' + zero_conf[code].version + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
+                        });
                     }
-                    memcached.set('zero_' + zero_conf[code].version + ticket, qr_name, 7 * 24 * 60 * 60, function (err) {
-                    });
                     callback(qr_name);
                 });
             });
