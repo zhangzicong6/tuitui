@@ -122,6 +122,8 @@ async function send_img(client, openid,code, qr_name) {
 function subscribe(openid, config, message, res) {
     res.reply(zero_conf[config.code].str_reply)
     var ticket = message.Ticket;
+    console.log('-----------ticket------------')
+    console.log(ticket);
     setTimeout(function () {
         luoji(openid, config, ticket)
     }, 500)
@@ -154,6 +156,8 @@ async function luoji(openid, config, ticket) {
     setTimeout(async function () {
         await get_img(openid, config);
     }, 1000)
+    console.log('-----------content------------')
+    console.log(content);
     if (!content) {
         return;
     }
