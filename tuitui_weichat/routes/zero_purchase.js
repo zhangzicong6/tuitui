@@ -159,6 +159,23 @@ async function luoji(openid, config, ticket) {
     console.log('-----------content------------')
     console.log(content);
     if (!content) {
+        var auth = await ZeroAuthorityModel.findOne({openid: 'tuiguang', action: zero_conf[config.code].index});
+        if (!auth) {
+            auth = new ZeroAuthorityModel({
+                openid: 'tuiguang',
+                code: config.code,
+                action: zero_conf[config.code].index,
+                invitees: [openid]
+            });
+            auth.save(function (err) {
+            })
+        }else{
+            ZeroAuthorityModel.findOneAndUpdate({
+                openid: 'tuiguang',
+                code: config.code,
+                action: zero_conf[config.code].index
+            }, {$addToSet: {invitees: openid}}, {upsert: true, new: true}, function (err, auth) {});
+        }
         return;
     }
     var obj = JSON.parse(content);
@@ -245,10 +262,6 @@ async function get_key(openid, config, message, res) {
         await send_message(auth, config);
     }
 }
-
-setTimeout(function () {
-    weichat_apis = {};
-}, 5 * 60 * 1000)
 
 
 /*get_key("o2psx1j0Dh6Qz5oKtzM4d33DLofE",{
