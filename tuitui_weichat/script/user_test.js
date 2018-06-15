@@ -3,7 +3,7 @@
  */
 
 
-var openid = 'o2psx1sJkLrlZhLOdztuWgu50GZU'
+var openid = 'ooeL60Ro3bnNKfxhlqtN-9rcRA2A'
 
 var WechatUtil = require('../util/wechat_get.js');
 var code = "25";
