@@ -7,7 +7,7 @@
 		"total":15,
 		"message":"会员加入提醒\r\n\r\n又一位小伙伴认可你的人气啦！\r\n昵称：nickname\r\n领取码：openid\r\n你当前的人气值：proc\r\n时间：date\r\n任务目标：total人\r\n已经完成：proc人还需人数：need人\r\n继续努力，马上就可以获得奖励了",
 		"complete_media":"ERDHRZNLO8CkT7KqcMX821gNphH9g0i-ZHqrL1wbJHyxkyQTeGrG9jZJ1_AgVkBo",
-		"version":"5.1"
+		"version":"5.2"
 	},
 	"26":{
 		"index":"1",
