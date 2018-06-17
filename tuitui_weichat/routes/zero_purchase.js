@@ -32,6 +32,7 @@ async function get_img(openid, config) {
         await nickname(user, client)
     }
     var headimgurl = user.headimgurl
+    console.log('headimgurl:'+headimgurl);
     var content = JSON.stringify({type: '0_shop', openid: openid});
     var ticket = await mem.get(content);
     console.log('--- ticket ----' + ticket)

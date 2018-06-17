@@ -203,7 +203,7 @@ function getZeroImg(code,headimgurl, ticket, callback) {
             return callback(qr);
         }
         var qr_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + ticket;
-        console.log(qr_url);
+        console.log('ticket url  :  '+qr_url);
         var qr_name = Date.now() + '' + parseInt(Math.random() * 10000) + '.jpg';
         var qr_path = __dirname + '/qr_image/' + qr_name;
         var head_path = __dirname + '/qr_image/head_' + qr_name;
