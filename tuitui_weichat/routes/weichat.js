@@ -51,7 +51,7 @@ router.use('/:code', function (request, response, next_fun) {
                             if (text == '178') {
                                 return res.reply('☞ <a href="' + config.new_add + ' ">点我打照片</a> ☜')
                             } else {
-                                res.reply('')
+                                return res.reply('')
                             }
                         }
                         if (config.zero_purchase) {
@@ -173,7 +173,7 @@ async function subscribe(openid, config, message, res) {
 
     var code_list = book_wechat_conf.book_wechat_list;
     if (code_list.indexOf(config.code) == -1) {
-        if (config.sub_replay == 0) {
+        if (config.  == 0) {
             res.reply('');
         } else {
             if (message.Ticket) {
