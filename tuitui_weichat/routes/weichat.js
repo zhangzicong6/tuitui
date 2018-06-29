@@ -173,7 +173,7 @@ async function subscribe(openid, config, message, res) {
 
     var code_list = book_wechat_conf.book_wechat_list;
     if (code_list.indexOf(config.code) == -1) {
-        if (config.  == 0) {
+        if (config.sub_replay == 0) {
             res.reply('');
         } else {
             if (message.Ticket) {
