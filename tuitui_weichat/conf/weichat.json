@@ -155,7 +155,8 @@
 		"token":"mingxingshuo",
 		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
 		"url":"http://www.rrdtjj.top/weichat/13",
-		"sub_replay":0,
+		"sub_replay":1,
+		"replay_text":"您好！欢迎关注佩奇文库，爱生活，爱读书，请不要残忍的取消关注啊！我经常给您推荐免费小说，完全免费！先给您推荐五部当下很火的小说，闲暇时间可以看看！点击下方菜单栏，开启您的阅读之旅！",
 		"robot":0,
 		"new_add":"http://mp.weixin.qq.com/s?__biz=MzU2OTU4MzQ0Nw==&mid=100000003&idx=1&sn=83b3c73d0f54e3970adee881d6a7c55e&chksm=7cfd333b4b8aba2d47875c32a5c8d07433230cf797e9f61e8cc329c24a1c98069d09204c231b#rd",
 		"zero_purchase":0
@@ -207,7 +208,8 @@
 		"token":"mingxingshuo",
 		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
 		"url":"http://www.rrdtjj.top/weichat/17",
-		"sub_replay":0,
+		"sub_replay":1,
+		"replay_text":"您好！欢迎关注找券小达人，爱生活，爱购物，请不要残忍的取消关注啊！我会经常跟您分享一些天猫、京东商品优惠券，买东西再也不用花冤枉钱啦！点击下方菜单栏，开启您的省钱之旅。",
 		"robot":0,
 		"new_add":"http://mp.weixin.qq.com/s?__biz=MzU4MjU3NTM1OA==&mid=100000003&idx=1&sn=fd5bea2de1559b5c3a4bbfba329c250e&chksm=7db774924ac0fd84dbce9d94e1b4803be754aa0709b992c1cdf7fed8bc4bdd860a21e7058934#rd",
 		"zero_purchase":0

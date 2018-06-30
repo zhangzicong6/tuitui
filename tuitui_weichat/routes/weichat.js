@@ -47,6 +47,25 @@ router.use('/:code', function (request, response, next_fun) {
                 getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
                     if (message.MsgType === 'text') {
                         var text = message.Content.trim();
+                        if(text == '1'){
+                            if(config.code=='14'){
+                                res.reply({
+                                    type: "image",
+                                    content: {
+                                        mediaId: '8BIjHn-NCjcsMPefmIUHQ-dGx9KADD7OVedZqA1tfcI'
+                                    }   
+                                })
+                            }else if(config.code=='19'){
+                                res.reply({
+                                    type: "image",
+                                    content: {
+                                        mediaId: 'veJ_qc1oNTtEyakMRceec35wEyda9Np67U5Hp3lJtgg'
+                                    }   
+                                })
+                            }else{
+                                res.reply('');
+                            }
+                        }
                         if (config.new_add) {
                             if (text == '178') {
                                 return res.reply('☞ <a href="' + config.new_add + ' ">点我打照片</a> ☜')
@@ -65,25 +84,7 @@ router.use('/:code', function (request, response, next_fun) {
                                 update_sendMessage(openid)
                             }
                             var text = message.Content.trim();
-                            if(text == '1'){
-                                if(config.code=='14'){
-                                    res.reply({
-                                        type: "image",
-                                        content: {
-                                            mediaId: '8BIjHn-NCjcsMPefmIUHQ-dGx9KADD7OVedZqA1tfcI'
-                                        }   
-                                    })
-                                }else if(config.code=='19'){
-                                    res.reply({
-                                        type: "image",
-                                        content: {
-                                            mediaId: 'veJ_qc1oNTtEyakMRceec35wEyda9Np67U5Hp3lJtgg'
-                                        }   
-                                    })
-                                }else{
-                                    res.reply('');
-                                }
-                            }else if (text === '帮助') {
+                            if (text === '帮助') {
                                 // res.reply('文字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb\r\n\r\n———— 省钱攻略 ———— \r\n1.打开手机淘宝，选中购买的产品。\r\n' +
                                 //     '2.长按复制商品标题，分享给我。\r\n3.复制我返回的信息。\r\n4.打开淘宝放入购物车或付款购买。\r\n注:不可使用淘金币进行抵扣\r\n' +
                                 //     '5.点击查看订单，把订单号发给我获得返利。\r\n———— 常用指令———— \r\n账户信息请回复:个人信息\r\n邀请好友请回复:邀请好友\r\n订单查询请回复:订单\r\n余额提现请回复:提现 \r\n详细教程请回复:帮助');
@@ -164,6 +165,7 @@ router.use('/:code', function (request, response, next_fun) {
                                     res.reply('');
                                 }
                             } else if(message.EventKey == 'KEY_MIANFEI_XIAOSHUO'){
+                                console.log('--------menu key -------KEY_MIANFEI_XIAOSHUO-------------')
                                 var str = '路过爱情路过你\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7666/2819717/418763\r\n'+
                                             '冷少的恶魔宠儿\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7669/2819914/418772\r\n'+
                                             '重生之另类青春\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7672/2820303/418776\r\n'+
