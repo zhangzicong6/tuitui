@@ -48,6 +48,7 @@ router.use('/:code', function (request, response, next_fun) {
                     if (message.MsgType === 'text') {
                         var text = message.Content.trim();
                         if(text == '1'){
+                            console.log('text ==1 -----------'+config.code+'-----------'+openid);
                             if(config.code=='14'){
                                 res.reply({
                                     type: "image",
@@ -171,6 +172,7 @@ router.use('/:code', function (request, response, next_fun) {
                                             '重生之另类青春\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7672/2820303/418776\r\n'+
                                             '乱世佳人\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7675/2820651/418785\r\n'+
                                             '凤凰涅槃：上神，请自重\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7667/2819765/418799'
+                                console.log(str);
                                 res.reply(str);
                             }else {
                                 res.reply('');
