@@ -1,12 +1,20 @@
 {
-  "3": {
+  "13": {
     "button": [
-      
+      {
+        "type":"click",
+        "name":"免费小说",
+        "key":"KEY_MIANFEI_XIAOSHUO"
+      }
     ]
   },
-  "2": {
+  "17": {
     "button": [
-      
+      {
+        "type":"view",
+        "name":"优惠总库",
+        "url":"http://wonderfulgame.m.oorggt.top/"
+      }
     ]
   },
   "26":{
