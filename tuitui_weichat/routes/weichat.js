@@ -50,21 +50,21 @@ router.use('/:code', function (request, response, next_fun) {
                         if(text == '1'){
                             console.log('text ==1 -----------'+config.code+'-----------'+openid);
                             if(config.code=='14'){
-                                res.reply({
+                                return res.reply({
                                     type: "image",
                                     content: {
                                         mediaId: '8BIjHn-NCjcsMPefmIUHQ-dGx9KADD7OVedZqA1tfcI'
                                     }   
                                 })
                             }else if(config.code=='19'){
-                                res.reply({
+                                return res.reply({
                                     type: "image",
                                     content: {
                                         mediaId: 'veJ_qc1oNTtEyakMRceec35wEyda9Np67U5Hp3lJtgg'
                                     }   
                                 })
                             }else{
-                                res.reply('');
+                                return res.reply('');
                             }
                         }
                         if (config.new_add) {
