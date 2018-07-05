@@ -1,11 +1,6 @@
 {
   "13": {
     "button": [
-      {
-        "type":"click",
-        "name":"免费小说",
-        "key":"KEY_MIANFEI_XIAOSHUO"
-      }
     ]
   },
   "17": {
