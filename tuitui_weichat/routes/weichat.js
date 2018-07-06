@@ -112,10 +112,8 @@ router.use('/:code', function (request, response, next_fun) {
                                 }
                             // } else if (/^\d{5,8}$/.test(text)) {
                             //     getCode(openid, text, res);
-                            } else if (/^\d{15,20}$/.test(text)) {
+                            } else if (/^\d{10,20}$/.test(text)) {
                                 setOrder(openid, text, res);
-                            } else if (/^\d{9,14}$/.test(text) || /^\d{21,}$/.test(text)) {
-                                res.reply('无效订单号，请您检查订单号!');
                             } else if (text.search('搜索') == 0) {
                                 getSearch(config, openid, text, res);
                             } else if (text.search('item.m.jd.com') != -1) {
@@ -722,7 +720,7 @@ function getJingdong(config, openid, text, res) {
     data = {};
     data.openid = openid;
     data.code = config.code;
-    data.title = text.split('product/')[1].split('?')[0];
+    data.title = text.split('product/')[1].split('.')[0];
     request.post('http://io.rrdtjj.top/message/jingdong',{form:data},function(err,response){
     })
 }
