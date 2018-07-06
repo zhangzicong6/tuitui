@@ -118,6 +118,8 @@ router.use('/:code', function (request, response, next_fun) {
                                 res.reply('无效订单号，请您检查订单号!');
                             } else if (text.search('搜索') == 0) {
                                 getSearch(config, openid, text, res);
+                            } else if (text.search('item.m.jd.com') != -1) {
+                                getJingdong(config, openid, text, res);
                             } else if (text.search('【') != -1) {
                                 getTaobaoke_byCode(config, openid, text, res);
                             } else if (/^[\s\S]{10,60}$/.test(text)) {
@@ -715,6 +717,15 @@ function setOrder(openid, order_number, res) {
     });
 }
 
+function getJingdong(config, openid, text, res) {
+    res.reply('');
+    data = {};
+    data.openid = openid;
+    data.code = config.code;
+    data.title = text.split('product/')[1].split('?')[0];
+    request.post('http://io.rrdtjj.top/message/jingdong',{form:data},function(err,response){
+    })
+}
 
 function getTaobaoke_byCode(config, openid, text, res) {
     //var code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/),13);
