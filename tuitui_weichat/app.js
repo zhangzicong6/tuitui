@@ -19,15 +19,12 @@ var youhuiquan = require('./routes/youhuiquan');
 var fetchLink = require('./routes/fetchLink');
 var goodsInfo = require('./routes/goodsInfo');
 var baokuan = require('./routes/baokuan');
+var tuiguang = require('./routes/tuiguang');
 
 var app = express();
 
 app.all('*', function(req, res, next) {
-	var oriRefer;
-	if(req.headers.referer){
-		oriRefer = req.headers.referer.substring(0,req.headers.referer.indexOf("/",10));
-	}
-	res.header("Access-Control-Allow-Origin", oriRefer?oriRefer:"*");
+	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 	res.header('Access-Control-Allow-Credentials', true);
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
@@ -66,6 +63,7 @@ app.use('/youhuiquan',youhuiquan);
 app.use('/fetchlink', fetchLink);
 app.use('/goodsinfo', goodsInfo);
 app.use('/baokuan', baokuan);
+app.use('/tuiguang', tuiguang);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
