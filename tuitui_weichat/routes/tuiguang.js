@@ -76,7 +76,7 @@ router.post('/novel/add', (req, res, next) => {
 		if(err) {
 			console.log("Error:" + err);
 		} else {
-			res.send({message: 'success', links: 'http://www.rrdtjj.top/tuiguang/novel/' + novelInfo.id})
+			res.send({message: 'success', links: 'http://tiexie0.wang/tuiguang/novel/' + novelInfo.id})
 		}
 	});
 })
