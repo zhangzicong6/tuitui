@@ -61,4 +61,19 @@ router.post('/novel/delete_one', (req, res, next) => {
     })
 })
 
+router.get('/novel/show_id', (req, res, next) => {
+    TuiGuangModel.find({}, function(err, data){
+        if (err) {
+            console.log("Error:" + err);
+        }
+        else {
+            if (data != '') {
+                res.send({data: data})
+            } else {
+                res.send({err: '没有数据'})
+            }
+        }
+    })
+})
+
 module.exports = router;
