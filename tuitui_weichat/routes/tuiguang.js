@@ -9,7 +9,7 @@ var upload = multer({
 });
 
 router.post('/novel/upload', upload.single('imageFile'), function(req, res, next) {
-	fs.rename(req.file.path, __dirname+"../public/images/tuiguang/"+req.file.filename+'.jpg', function(err) {
+	fs.rename(req.file.path, __dirname+"/../public/images/tuiguang/"+req.file.filename+'.jpg', function(err) {
         if (err) {
             throw err;
         }
@@ -17,6 +17,7 @@ router.post('/novel/upload', upload.single('imageFile'), function(req, res, next
     })
     res.send({filename: req.file.filename + '.jpg'});
 })
+
 
 router.post('/novel/add', (req, res, next) => {
 	var novelInfo = {
