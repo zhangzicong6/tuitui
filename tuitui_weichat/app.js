@@ -20,11 +20,12 @@ var fetchLink = require('./routes/fetchLink');
 var goodsInfo = require('./routes/goodsInfo');
 var baokuan = require('./routes/baokuan');
 var tuiguang = require('./routes/tuiguang');
+var qr_code = require('./routes/qr_code');
 
 var app = express();
 
 app.all('*', function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 	res.header('Access-Control-Allow-Credentials', true);
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
@@ -64,6 +65,7 @@ app.use('/fetchlink', fetchLink);
 app.use('/goodsinfo', goodsInfo);
 app.use('/baokuan', baokuan);
 app.use('/tuiguang', tuiguang);
+app.use('/qr_code', qr_code);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
