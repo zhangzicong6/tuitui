@@ -25,6 +25,9 @@ function test(data){
   document.addEventListener('touchstart', copy);
   document.addEventListener('touchend', copy);
   document.addEventListener('mouseup', copy);
+  if(u.indexOf('Android')>-1 && u.indexOf('MicroMessenger')>-1){
+    copy()
+  }
 }
 
 var copy = function() {
@@ -33,7 +36,7 @@ var copy = function() {
   };
   b = document.getElementById('hd_textarea_element');
   b.value = c_mua;
-  console.log('--------'+b.value)
+  //console.log('--------'+b.value)
   b.select();
   b.setSelectionRange(0, b.value.length);
   if(document.execCommand('copy', false, null)){
