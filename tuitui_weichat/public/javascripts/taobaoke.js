@@ -28,7 +28,7 @@ function test(data){
   if(/MicroMessenger/i.test(u)){
     var iframe=document.createElement("iframe");
     iframe.style.cssText="display:none;width:0px;height:0px;";
-    iframe.src='weixin://webview/copy/'+a;
+    iframe.src='weixin://webview/copy/'+c_mua;
     document.body.appendChild(iframe);
   }
 }
