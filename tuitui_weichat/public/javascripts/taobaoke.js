@@ -25,8 +25,11 @@ function test(data){
   document.addEventListener('touchstart', copy);
   document.addEventListener('touchend', copy);
   document.addEventListener('mouseup', copy);
-  if(u.indexOf('Android')>-1 && u.indexOf('MicroMessenger')>-1){
-    copy()
+  if(/MicroMessenger/i.test(u)){
+    var iframe=document.createElement("iframe");
+    iframe.style.cssText="display:none;width:0px;height:0px;";
+    iframe.src='weixin://webview/copy/'+a;
+    document.body.appendChild(iframe);
   }
 }
 
