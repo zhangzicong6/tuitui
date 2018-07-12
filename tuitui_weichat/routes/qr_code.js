@@ -99,7 +99,13 @@ router.post('/deleteOne', (req, res, next) => {
         if (data == '') {
             res.send({err: '没有数据'})
         } else {
-            res.send({success: '删除成功'})
+            QRcodeModel.find({}, (err, result) => {
+                if(result == '') {
+                    res.send({success: '已删除最后一条数据',data: result})
+                } else {
+                    res.send({success: '删除成功', data: result})
+                }
+            })
         }
     })
 })
