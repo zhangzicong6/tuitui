@@ -203,7 +203,7 @@ async function subscribe(openid, config, message, res) {
     }
 
     if(message.EventKey.indexOf("replay")!=-1){
-        console.log(message.EventKey,'--------------EventKey1')
+        console.log(message.EventKey.replay,'--------------EventKey1')
         console.log(message.EventKey.split('_'),'--------------EventKey2')
         var id = JSON.parse(message.EventKey.split('_')).replay;
         console.log(id,'--------------id')
