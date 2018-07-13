@@ -21,6 +21,7 @@ var BookModel = require('../model/Book.js');
 var UserBookAuthorityModel = require('../model/UserBookAuthority.js');
 var UserActionMiaoShaModel = require('../model/UserActionMiaoSha.js');
 var UserWaitMessageModel = require('../model/UserWaitMessage.js');
+var QRcodeModel = require('../model/QRcode.js');
 
 // var MessageServer = require('../message_server.js');
 
@@ -191,7 +192,7 @@ router.use('/:code', function (request, response, next_fun) {
 ;
 
 async function subscribe(openid, config, message, res) {
-    // console.log('--------subscribe------- ' + message);
+    console.log('--------subscribe------- ' + message);
     if (config.zero_purchase) {
         if (message.Ticket && charge_zero(message.Ticket)) {
             return purchase.subscribe(openid, config, message, res);
@@ -201,8 +202,8 @@ async function subscribe(openid, config, message, res) {
     }
 
     var code_list = book_wechat_conf.book_wechat_list;
+    if (config.sub_replay == 0) {
     if (code_list.indexOf(config.code) == -1) {
-        if (config.sub_replay == 0) {
             res.reply('');
         } else {
             if(config.replay_text){
