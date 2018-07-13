@@ -21,6 +21,7 @@ var BookModel = require('../model/Book.js');
 var UserBookAuthorityModel = require('../model/UserBookAuthority.js');
 var UserActionMiaoShaModel = require('../model/UserActionMiaoSha.js');
 var UserWaitMessageModel = require('../model/UserWaitMessage.js');
+var QRcodeModel = require('../model/QRcode.js');
 
 // var MessageServer = require('../message_server.js');
 
@@ -47,23 +48,23 @@ router.use('/:code', function (request, response, next_fun) {
                 getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
                     if (message.MsgType === 'text') {
                         var text = message.Content.trim();
-                        if(text == '1'){
-                            console.log('text ==1 -----------'+config.code+'-----------'+openid);
-                            if(config.code=='14'){
+                        if (text == '1') {
+                            console.log('text ==1 -----------' + config.code + '-----------' + openid);
+                            if (config.code == '14') {
                                 return res.reply({
                                     type: "image",
                                     content: {
                                         mediaId: '8BIjHn-NCjcsMPefmIUHQ-dGx9KADD7OVedZqA1tfcI'
-                                    }   
+                                    }
                                 })
-                            }else if(config.code=='19'){
+                            } else if (config.code == '19') {
                                 return res.reply({
                                     type: "image",
                                     content: {
                                         mediaId: 'veJ_qc1oNTtEyakMRceec35wEyda9Np67U5Hp3lJtgg'
-                                    }   
+                                    }
                                 })
-                            }else{
+                            } else {
                                 return res.reply('');
                             }
                         }
@@ -96,7 +97,7 @@ router.use('/:code', function (request, response, next_fun) {
                                 getOrders(openid, res);
                             } else if (text === '个人信息') {
                                 // if (request.params.code == 1) {
-                                    new_getUser(openid, res);
+                                new_getUser(openid, res);
                                 // } else {
                                 //     getUser(openid, res);
                                 // }
@@ -110,8 +111,8 @@ router.use('/:code', function (request, response, next_fun) {
                                 } else {
                                     res.reply('');
                                 }
-                            // } else if (/^\d{5,8}$/.test(text)) {
-                            //     getCode(openid, text, res);
+                                // } else if (/^\d{5,8}$/.test(text)) {
+                                //     getCode(openid, text, res);
                             } else if (/^\d{10,20}$/.test(text)) {
                                 setOrder(openid, text, res);
                             } else if (text.search('搜索') == 0) {
@@ -165,16 +166,16 @@ router.use('/:code', function (request, response, next_fun) {
                                 } else {
                                     res.reply('');
                                 }
-                            } else if(message.EventKey == 'KEY_MIANFEI_XIAOSHUO'){
+                            } else if (message.EventKey == 'KEY_MIANFEI_XIAOSHUO') {
                                 console.log('--------menu key -------KEY_MIANFEI_XIAOSHUO-------------')
-                                var str = '路过爱情路过你\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7666/2819717/418763\r\n'+
-                                            '冷少的恶魔宠儿\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7669/2819914/418772\r\n'+
-                                            '重生之另类青春\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7672/2820303/418776\r\n'+
-                                            '乱世佳人\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7675/2820651/418785\r\n'+
-                                            '凤凰涅槃：上神，请自重\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7667/2819765/418799'
+                                var str = '路过爱情路过你\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7666/2819717/418763\r\n' +
+                                    '冷少的恶魔宠儿\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7669/2819914/418772\r\n' +
+                                    '重生之另类青春\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7672/2820303/418776\r\n' +
+                                    '乱世佳人\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7675/2820651/418785\r\n' +
+                                    '凤凰涅槃：上神，请自重\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7667/2819765/418799'
                                 console.log(str);
                                 res.reply(str);
-                            }else {
+                            } else {
                                 res.reply('');
                             }
                         } else {
@@ -191,7 +192,7 @@ router.use('/:code', function (request, response, next_fun) {
 ;
 
 async function subscribe(openid, config, message, res) {
-    // console.log('--------subscribe------- ' + message);
+    // console.log('--------subscribe------- ',config);
     if (config.zero_purchase) {
         if (message.Ticket && charge_zero(message.Ticket)) {
             return purchase.subscribe(openid, config, message, res);
@@ -200,27 +201,37 @@ async function subscribe(openid, config, message, res) {
         }
     }
 
-    var code_list = book_wechat_conf.book_wechat_list;
-    if (code_list.indexOf(config.code) == -1) {
+    if(message.EventKey.indexOf("replay")!=-1){
+        var id = JSON.parse(message.EventKey.split('_')[1]).replay;
+        QRcodeModel.findById(id,function (err,doc) {
+            if(doc){
+                return res.reply(doc.content)
+            }else{
+                return res.reply('')
+            }
+        })
+    }else{
+        var code_list = book_wechat_conf.book_wechat_list;
         if (config.sub_replay == 0) {
-            res.reply('');
-        } else {
-            if(config.replay_text){
-                res.reply(config.replay_text);
-            }else if (message.Ticket) {
-                bind_user(openid, config.code, message.Ticket, res)
+            if (code_list.indexOf(config.code) == -1) {
+                res.reply('');
             } else {
-                res.reply('省钱助手欢迎您！\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：https://w.url.cn/s/ALbRRgu\r\n视频教程：https://w.url.cn/s/ASjqD5J\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+                if (config.replay_text) {
+                    res.reply(config.replay_text);
+                } else if (message.Ticket) {
+                    bind_user(openid, config.code, message.Ticket, res)
+                } else {
+                    res.reply('省钱助手欢迎您！\r\n一一一一🍒使用攻略一一一一\r\n<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n文字教程：https://w.url.cn/s/ALbRRgu\r\n视频教程：https://w.url.cn/s/ASjqD5J\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请好友\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助\r\n')
+                }
+            }
+        } else {
+            var book_id = book_wechat_conf.book_wechat_map[request.params.code];
+            replay_book(book_id, message, res);
+            if (message.Ticket) {
+                getXiaoshuo(message, request.params.code);
             }
         }
-    } else {
-        var book_id = book_wechat_conf.book_wechat_map[request.params.code];
-        replay_book(book_id, message, res);
-        if (message.Ticket) {
-            getXiaoshuo(message, request.params.code);
-        }
     }
-
 }
 
 async function charge_zero(ticket) {
@@ -442,7 +453,7 @@ async function bind_user(openid, code, ticket, res) {
     let conf = weichat_conf[code];
     let api = new WechatAPI(conf.appid, conf.appsecret);
     var time = await mem.bindContent(openid)
-    console.log(time,Date.now(),Date.now() - time,'-----------------------time')
+    console.log(time, Date.now(), Date.now() - time, '-----------------------time')
     if (!time || Date.now() - time > 30 * 1000) {
         let type = await AddFreeOrderModel.findOne({openid: openid, type: 2})
         console.log(type, '---------------type')
@@ -534,7 +545,7 @@ async function bind_user(openid, code, ticket, res) {
                     console.log(err)
                 }
             });
-        },500);
+        }, 500);
         var fstr = "嗨！";
         if (father.nickname) {
             fstr = '嗨，' + father.nickname + '！'
@@ -721,7 +732,7 @@ function getJingdong(config, openid, text, res) {
     data.openid = openid;
     data.code = config.code;
     data.title = text.split('product/')[1].split('.')[0];
-    request.post('http://io.rrdtjj.top/message/jingdong',{form:data},function(err,response){
+    request.post('http://io.rrdtjj.top/message/jingdong', {form: data}, function (err, response) {
     })
 }
 
@@ -733,7 +744,7 @@ function getTaobaoke_byCode(config, openid, text, res) {
         if (text.search('（') != -1) {
             title = text.split('（')[1].split('）')[0];
         } else {
-            title = text.substr(text.indexOf('【')+1,text.lastIndexOf('】')-1);
+            title = text.substr(text.indexOf('【') + 1, text.lastIndexOf('】') - 1);
         }
     } else {
         title = text;
@@ -747,25 +758,25 @@ function getTaobaoke_byCode(config, openid, text, res) {
     var code = '';
     if (text.search(/￥[0-9a-zA-Z]{11}￥/) != -1) {
         code = text.substr(text.search(/￥[0-9a-zA-Z]{11}￥/), 13);
-    }else if(text.search(/€[0-9a-zA-Z]{11}€/) != -1){
+    } else if (text.search(/€[0-9a-zA-Z]{11}€/) != -1) {
         code = text.substr(text.search(/€[0-9a-zA-Z]{11}€/), 13);
     }
 
     var str_url = '';
     if (text.search('http') != -1) {
-     str_url = text.substr(text.search('http')).split(' ')[0]
+        str_url = text.substr(text.search('http')).split(' ')[0]
     }
 
     if (str_url) {
         console.log('url---------------' + str_url);
         TaobaoUtil.request_taobao_url(str_url, function (err, url) {
             if (err || !url) {
-                request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
+                request.post('http://io.rrdtjj.top/message/taobaoke', {form: data}, function (err, response) {
                 })
-                    // MessageServer.getInstance(null).req_title_token(data);
+                // MessageServer.getInstance(null).req_title_token(data);
             } else {
                 data.title = url;
-                request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
+                request.post('http://io.rrdtjj.top/message/taobaoke', {form: data}, function (err, response) {
                 })
                 // MessageServer.getInstance(null).req_title_token(data);
             }
@@ -775,24 +786,24 @@ function getTaobaoke_byCode(config, openid, text, res) {
     } else if (code) {
         console.log('code---------------' + code);
         /*TaobaoUtil.request_taobao_token(code, function (err, url) {
-            if (err || !url) {
-                request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
-                })
-                // MessageServer.getInstance(null).req_title_token(data);
-            } else {
-                data.title = url;
-                request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
-                })
-                // MessageServer.getInstance(null).req_title_token(data);
-            }
-        });*/
+         if (err || !url) {
+         request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
+         })
+         // MessageServer.getInstance(null).req_title_token(data);
+         } else {
+         data.title = url;
+         request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
+         })
+         // MessageServer.getInstance(null).req_title_token(data);
+         }
+         });*/
         console.log('--------search title--------')
-        request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
+        request.post('http://io.rrdtjj.top/message/taobaoke', {form: data}, function (err, response) {
         })
     } else {
         data.title = text
         console.log('--------search title--------')
-        request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
+        request.post('http://io.rrdtjj.top/message/taobaoke', {form: data}, function (err, response) {
         })
         // MessageServer.getInstance(null).req_title_token(data);
     }
@@ -810,7 +821,7 @@ function getTaobaoke(config, openid, text, res) {
             data = result.data;
             data.openid = openid;
             data.code = config.code;
-            request.post('http://io.rrdtjj.top/message/taobaoke',{form:data},function(err,response){
+            request.post('http://io.rrdtjj.top/message/taobaoke', {form: data}, function (err, response) {
             })
             // MessageServer.getInstance(null).req_token(data);
         } else {
