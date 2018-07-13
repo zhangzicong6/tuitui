@@ -202,6 +202,14 @@ async function subscribe(openid, config, message, res) {
         }
     }
 
+    if(message.EventKey.indexOf(replay)!=-1){
+        var id = JSON.parse(message.EventKey.split('_')).replay;
+        QRcodeModel.findById(id,function (err,doc) {
+            console.log(err,'-------------err')
+            console.log(doc,'-------------doc')
+        })
+    }
+
     var code_list = book_wechat_conf.book_wechat_list;
     if (config.sub_replay == 0) {
         if (code_list.indexOf(config.code) == -1) {
@@ -216,8 +224,6 @@ async function subscribe(openid, config, message, res) {
             }
         }
     } else {
-        console.log('------------------a')
-        console.log('------------------',request.params.code)
         var book_id = book_wechat_conf.book_wechat_map[request.params.code];
         replay_book(book_id, message, res);
         if (message.Ticket) {
