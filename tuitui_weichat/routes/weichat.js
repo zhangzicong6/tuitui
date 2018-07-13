@@ -135,7 +135,6 @@ router.use('/:code', function (request, response, next_fun) {
                         }
                     } else if (message.MsgType === 'event') {
                         if (message.Event === 'subscribe') {
-                            console.log(message,'-------------------message')
                             subscribe(openid, config, message, res);
                             /*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
                              '账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
@@ -193,7 +192,7 @@ router.use('/:code', function (request, response, next_fun) {
 ;
 
 async function subscribe(openid, config, message, res) {
-    console.log('--------subscribe------- ',config);
+    // console.log('--------subscribe------- ',config);
     if (config.zero_purchase) {
         if (message.Ticket && charge_zero(message.Ticket)) {
             return purchase.subscribe(openid, config, message, res);
@@ -206,14 +205,12 @@ async function subscribe(openid, config, message, res) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
         QRcodeModel.findById(id,function (err,doc) {
             if(doc){
-                res.reply(doc.content)
-                return
+                return res.reply(doc.content)
             }else{
-                res.reply('')
-                return
+                return res.reply('')
             }
         })
-    }
+    }else{
         var code_list = book_wechat_conf.book_wechat_list;
         if (config.sub_replay == 0) {
             if (code_list.indexOf(config.code) == -1) {
@@ -234,7 +231,7 @@ async function subscribe(openid, config, message, res) {
                 getXiaoshuo(message, request.params.code);
             }
         }
-
+    }
 }
 
 async function charge_zero(ticket) {
