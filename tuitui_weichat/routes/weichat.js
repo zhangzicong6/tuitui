@@ -207,9 +207,9 @@ async function subscribe(openid, config, message, res) {
         QRcodeModel.findById(id,function (err,doc) {
             if(doc){
                 console.log(doc.content,'----------------content')
-                return res.replay(doc.content)
+                return res.reply(doc.content)
             }else{
-                return res.replay('')
+                return res.reply('')
             }
         })
     }else{
