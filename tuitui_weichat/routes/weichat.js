@@ -202,8 +202,9 @@ async function subscribe(openid, config, message, res) {
         }
     }
 
-    if(message.EventKey.indexOf(replay)!=-1){
+    if(message.EventKey.indexOf("replay")!=-1){
         var id = JSON.parse(message.EventKey.split('_')).replay;
+        console.log(id,'--------------id')
         QRcodeModel.findById(id,function (err,doc) {
             console.log(err,'-------------err')
             console.log(doc,'-------------doc')
