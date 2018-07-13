@@ -216,6 +216,8 @@ async function subscribe(openid, config, message, res) {
             }
         }
     } else {
+        console.log('------------------a')
+        console.log('------------------',request.params.code)
         var book_id = book_wechat_conf.book_wechat_map[request.params.code];
         replay_book(book_id, message, res);
         if (message.Ticket) {
