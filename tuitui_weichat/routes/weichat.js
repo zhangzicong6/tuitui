@@ -203,13 +203,13 @@ async function subscribe(openid, config, message, res) {
     }
 
     if(message.EventKey.indexOf("replay")!=-1){
-        console.log(message.EventKey,'--------------EventKey1')
-        console.log(message.EventKey.split('_')[1],'--------------EventKey2')
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
-        console.log(id,'--------------id')
         QRcodeModel.findById(id,function (err,doc) {
-            console.log(err,'-------------err')
-            console.log(doc,'-------------doc')
+            if(doc){
+                res.replay(doc.content)
+            }else{
+                res.replay('')
+            }
         })
     }
 
