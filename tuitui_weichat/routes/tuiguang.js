@@ -18,7 +18,6 @@ router.post('/novel/upload', upload.single('imageFile'), function(req, res, next
     res.send({filename: req.file.filename + '.jpg'});
 })
 
-
 router.post('/novel/add', (req, res, next) => {
 	var novelInfo = {
         type: req.body.type,
@@ -30,6 +29,7 @@ router.post('/novel/add', (req, res, next) => {
 		avator: req.body.avator,
 		content: req.body.content,
 		linkUrl: req.body.linkUrl || '',
+        ad_img: req.body.ad_img || '',
 		statisticsUrl: req.body.statisticsUrl
 	}
 	var user = new TuiGuangModel(novelInfo)
@@ -89,6 +89,7 @@ router.post('/novel/update', async(req, res, next) => {
         avator: req.body.avator,
         content: req.body.content,
         linkUrl: req.body.linkUrl || '',
+        ad_img: req.body.ad_img || '',
         statisticsUrl: req.body.statisticsUrl
     }
     var docs = await TuiGuangModel.findByIdAndUpdate(id, message)
