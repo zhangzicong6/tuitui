@@ -18,6 +18,16 @@ router.post('/novel/upload', upload.single('imageFile'), function(req, res, next
     res.send({filename: req.file.filename + '.jpg'});
 })
 
+router.post('/novel/upload_ad', upload.single('ad_img'), function(req, res, next) {
+    fs.rename(req.file.path, __dirname+"/../public/images/tuiguang/"+req.file.filename+'.jpg', function(err) {
+        if (err) {
+            throw err;
+        }
+        console.log('上传成功!');
+    })
+    res.send({filename: req.file.filename + '.jpg'});
+})
+
 router.post('/novel/add', (req, res, next) => {
 	var novelInfo = {
         type: req.body.type,
