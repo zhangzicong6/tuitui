@@ -21,14 +21,15 @@ router.post('/novel/upload', upload.single('imageFile'), function(req, res, next
 
 router.post('/novel/add', (req, res, next) => {
 	var novelInfo = {
-		id: req.body.id,
+        type: req.body.type,
+        id: req.body.id,
 		title: req.body.title,
 		headline: req.body.headline,
 		gonghao: req.body.gonghao,
 		author: req.body.author,
 		avator: req.body.avator,
 		content: req.body.content,
-		linkUrl: req.body.linkUrl,
+		linkUrl: req.body.linkUrl || '',
 		statisticsUrl: req.body.statisticsUrl
 	}
 	var user = new TuiGuangModel(novelInfo)
@@ -36,7 +37,7 @@ router.post('/novel/add', (req, res, next) => {
 		if(err) {
 			console.log("Error:" + err);
 		} else {
-			res.send({message: 'success', links: 'http://www.jswoge.top/tuiguang/novel/' + novelInfo.id})
+            res.send({message: 'success'})
 		}
 	});
 })
@@ -61,7 +62,7 @@ router.post('/novel/delete_one', (req, res, next) => {
     })
 })
 
-router.get('/novel/show_id', (req, res, next) => {
+router.get('/novel/show', (req, res, next) => {
     TuiGuangModel.find({}, function(err, data){
         if (err) {
             console.log("Error:" + err);
@@ -74,6 +75,28 @@ router.get('/novel/show_id', (req, res, next) => {
             }
         }
     })
+})
+
+router.post('/novel/update', async(req, res, next) => {
+    var id = req.body._id
+    var message = {
+        type: req.body.type,
+        id: req.body.id,
+        title: req.body.title,
+        headline: req.body.headline,
+        gonghao: req.body.gonghao,
+        author: req.body.author,
+        avator: req.body.avator,
+        content: req.body.content,
+        linkUrl: req.body.linkUrl || '',
+        statisticsUrl: req.body.statisticsUrl
+    }
+    var docs = await TuiGuangModel.findByIdAndUpdate(id, message)
+    if (docs) {
+        res.send({success: '修改成功'})
+    } else {
+        res.send({err: '修改失败'})
+    }
 })
 
 module.exports = router;

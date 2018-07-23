@@ -4,6 +4,7 @@ var connect_url = require('../conf/proj.json').mongodb;
 var db = mongoose.createConnection(connect_url); 
 
 var TuiGuangSchema = new Schema({
+    type: Boolean,
 	id: String,
 	title: String,
 	headline: String,
