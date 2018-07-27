@@ -351,7 +351,7 @@ function validate(req, res) {
     var nonce = req.query.nonce;
     var echostr = req.query.echostr;
     //1. 将token、timestamp、nonce三个参数进行字典序排序
-    var token = 'mingxingshuo';
+    var token = weichat_conf[req.params.code].token;
 
     var array = new Array(token, timestamp, nonce);
     array.sort();
