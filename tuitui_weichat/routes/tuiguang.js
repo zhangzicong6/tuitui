@@ -18,38 +18,38 @@ router.post('/novel/upload', upload.single('imageFile'), function(req, res, next
     res.send({filename: req.file.filename + '.jpg'});
 })
 
-router.post('/novel/upload_ad', upload.single('ad_img'), function(req, res, next) {
-    fs.rename(req.file.path, __dirname+"/../public/images/tuiguang/"+req.file.filename+'.jpg', function(err) {
-        if (err) {
-            throw err;
-        }
-        console.log('上传成功!');
-    })
-    res.send({filename: req.file.filename + '.jpg'});
-})
-
 router.post('/novel/add', (req, res, next) => {
-	var novelInfo = {
-        type: req.body.type,
-        id: req.body.id,
-		title: req.body.title,
-		headline: req.body.headline,
-		gonghao: req.body.gonghao,
-		author: req.body.author,
-		avator: req.body.avator,
-		content: req.body.content,
-		linkUrl: req.body.linkUrl || '',
-        // ad_img: req.body.ad_img || '',
-		statisticsUrl: req.body.statisticsUrl
-	}
-	var user = new TuiGuangModel(novelInfo)
-	user.save(function(err, data) {
-		if(err) {
-			console.log("Error:" + err);
-		} else {
-            res.send({message: 'success'})
-		}
-	});
+    TuiGuangModel.find({id: req.body.id}, function(err, data){
+        if (err) {
+            console.log("Error:" + err);
+        }else {
+            if (data != '') {
+                res.send({err: '此id已存在'})
+            } else {
+                var novelInfo = {
+                    type: req.body.type,
+                    id: req.body.id,
+                    title: req.body.title,
+                    headline: req.body.headline,
+                    gonghao: req.body.gonghao,
+                    author: req.body.author,
+                    avator: req.body.avator,
+                    content: req.body.content,
+                    linkUrl: req.body.linkUrl || '',
+                    statisticsUrl: req.body.statisticsUrl
+                }
+                var user = new TuiGuangModel(novelInfo)
+                user.save(function(err, data) {
+                    if(err) {
+                        console.log("Error:" + err);
+                    } else {
+                        res.send({message: '创建成功'})
+                    }
+                });
+            }
+        }
+    })
+	
 })
 
 router.post('/novel/delete_one', (req, res, next) => {
@@ -99,7 +99,6 @@ router.post('/novel/update', async(req, res, next) => {
         avator: req.body.avator,
         content: req.body.content,
         linkUrl: req.body.linkUrl || '',
-        // ad_img: req.body.ad_img || '',
         statisticsUrl: req.body.statisticsUrl
     }
     var docs = await TuiGuangModel.findByIdAndUpdate(id, message)
