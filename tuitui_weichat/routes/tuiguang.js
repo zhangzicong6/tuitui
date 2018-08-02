@@ -3,6 +3,7 @@ var router = express.Router();
 var TuiGuangModel = require('../model/TuiGuang.js');
 var multer = require('multer');
 var fs = require('fs')
+var mem = require('../util/mem.js')
 
 var upload = multer({
     dest: __dirname+'/../public/images/tuiguang'
@@ -29,14 +30,18 @@ router.post('/novel/add', (req, res, next) => {
                 var novelInfo = {
                     type: req.body.type,
                     id: req.body.id,
-                    title: req.body.title,
-                    headline: req.body.headline,
-                    gonghao: req.body.gonghao,
-                    author: req.body.author,
-                    avator: req.body.avator,
-                    content: req.body.content,
+                    pageTitle: req.body.pageTitle,
+                    articleTit: req.body.articleTit,
+                    name: req.body.name,
+                    desc: req.body.desc,
+                    picurl: req.body.picurl,
+                    capter1: req.body.capter1,
+                    capter2: req.body.capter2 || '',
                     linkUrl: req.body.linkUrl || '',
-                    statisticsUrl: req.body.statisticsUrl
+                    statisticsUrl1: req.body.statisticsUrl1,
+                    statisticsUrl2: req.body.statisticsUrl2 || '',
+                    channel: req.body.channel,
+                    remarks: req.body.remarks
                 }
                 var user = new TuiGuangModel(novelInfo)
                 user.save(function(err, data) {
@@ -92,17 +97,30 @@ router.post('/novel/update', async(req, res, next) => {
     var message = {
         type: req.body.type,
         id: req.body.id,
-        title: req.body.title,
-        headline: req.body.headline,
-        gonghao: req.body.gonghao,
-        author: req.body.author,
-        avator: req.body.avator,
-        content: req.body.content,
+        pageTitle: req.body.pageTitle,
+        articleTit: req.body.articleTit,
+        name: req.body.name,
+        desc: req.body.desc,
+        picurl: req.body.picurl,
+        capter1: req.body.capter1,
+        capter2: req.body.capter2 || '',
         linkUrl: req.body.linkUrl || '',
-        statisticsUrl: req.body.statisticsUrl
+        statisticsUrl1: req.body.statisticsUrl1,
+        statisticsUrl2: req.body.statisticsUrl2 || '',
+        channel: req.body.channel,
+        remarks: req.body.remarks
     }
     var docs = await TuiGuangModel.findByIdAndUpdate(id, message)
     if (docs) {
+        mem.set('weitiao_'+req.params.index,{},60).then(function(){
+             console.log('---------set weitiao value---------')
+        })
+        mem.set('singlepage_'+req.params.index,{},60).then(function(){
+             console.log('---------set singlepage value---------')
+        })
+        mem.set('multipage_'+req.params.index,{},60).then(function(){
+             console.log('---------set multipage value---------')
+        })
         res.send({success: '修改成功'})
     } else {
         res.send({err: '修改失败'})

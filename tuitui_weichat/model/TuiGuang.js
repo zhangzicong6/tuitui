@@ -4,16 +4,20 @@ var connect_url = require('../conf/proj.json').mongodb;
 var db = mongoose.createConnection(connect_url); 
 
 var TuiGuangSchema = new Schema({
-    type: Boolean,
+    type: Number,
 	id: String,
-	title: String,
-	headline: String,
-	gonghao: String,
-	author: String,
-	avator: String,
-	content: String,
+	pageTitle: String,
+	articleTit: String,
+	name: String,
+	desc: String,
+	picurl: String,
+	capter1: String,
+	capter2: String,
 	linkUrl: String,
-	statisticsUrl: String
+	statisticsUrl1: String,
+	statisticsUrl2: String,
+	channel: String,
+	remarks: String
 });
 
 var TuiGuangModel = db.model('TuiGuang', TuiGuangSchema);
