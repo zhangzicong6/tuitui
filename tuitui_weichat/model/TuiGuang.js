@@ -16,6 +16,7 @@ var TuiGuangSchema = new Schema({
 	linkUrl: String,
 	statisticsUrl1: String,
 	statisticsUrl2: String,
+	tokenCodes: String,
 	channel: String,
 	remarks: String
 });

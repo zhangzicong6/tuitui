@@ -40,6 +40,7 @@ router.post('/novel/add', (req, res, next) => {
                     linkUrl: req.body.linkUrl || '',
                     statisticsUrl1: req.body.statisticsUrl1,
                     statisticsUrl2: req.body.statisticsUrl2 || '',
+                    tokenCodes: req.body.tokenCodes || '',
                     channel: req.body.channel,
                     remarks: req.body.remarks
                 }
@@ -107,6 +108,7 @@ router.post('/novel/update', async(req, res, next) => {
         linkUrl: req.body.linkUrl || '',
         statisticsUrl1: req.body.statisticsUrl1,
         statisticsUrl2: req.body.statisticsUrl2 || '',
+        tokenCodes: req.body.tokenCodes || '',
         channel: req.body.channel,
         remarks: req.body.remarks
     }
