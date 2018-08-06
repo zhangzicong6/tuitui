@@ -79,8 +79,18 @@ router.post('/novel/delete_one', (req, res, next) => {
 })
 
 router.get('/novel/show', (req, res, next) => {
-    var data = TuiGuangModel.find().sort({id: 1});
-    res.send({data: data})
+    TuiGuangModel.find({}, function(err, data){
+        if (err) {
+            console.log("Error:" + err);
+        }
+        else {
+            if (data != '') {
+                res.send({data: data})
+            } else {
+                res.send({err: '没有数据'})
+            }
+        }
+    })
 })
 
 router.post('/novel/update', async(req, res, next) => {

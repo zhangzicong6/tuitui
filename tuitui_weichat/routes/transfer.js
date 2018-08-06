@@ -3,7 +3,7 @@ var router = express.Router();
 var TransferModel = require('../model/Transfer');
 var mem = require('../util/mem.js')
 router.get('/', async(req, res, next) => {
-    var messages = await TransferModel.find().sort({id: 1});
+    var messages = await TransferModel.find();
     res.send({messages: messages})
 })
 
