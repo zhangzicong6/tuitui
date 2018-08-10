@@ -1,20 +1,26 @@
 var express = require('express');
 var router = express.Router();
 var TransferModel = require('../model/Transfer');
+var DomainModel = require('../model/Domain');
 var mem = require('../util/mem.js')
 router.get('/', async(req, res, next) => {
     var messages = await TransferModel.find();
-    res.send({messages: messages})
+    var domain_names = await DomainModel.find();
+    res.send({messages: messages, domain_names: domain_names})
 })
 
 router.get('/update_links', async(req, res, next) => {
-    var messages = await TransferModel.find();
-    var domain_name = req.query.domain_name
+    var domain_name = req.query.domain_name, 
+    messages = await TransferModel.find(),
+    domain_names = await DomainModel.findByIdAndUpdate(req.query.id, {domain_name: domain_name})
     for(var i=0,mLength=messages.length;i<mLength;i++){
         messages[i].links[0] = domain_name + '/tuiguang' + messages[i].links[0].split('/tuiguang')[1]
         var docs = await TransferModel.findByIdAndUpdate(messages[i]._id, {links: messages[i].links})
     }
     res.send({success: '域名修改成功'})
+    mem.set('transfer_'+req.params.index,{},60).then(function(){
+         console.log('---------set transfer value---------')
+    })
 })
 
 router.post('/create', async(req, res, next)=> {
