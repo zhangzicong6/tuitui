@@ -7,6 +7,16 @@ router.get('/', async(req, res, next) => {
     res.send({messages: messages})
 })
 
+router.get('/update_links', async(req, res, next) => {
+    var messages = await TransferModel.find();
+    var domain_name = req.query.domain_name
+    for(var i=0,mLength=messages.length;i<mLength;i++){
+        messages[i].links[0] = domain_name + '/tuiguang' + messages[i].links[0].split('/tuiguang')[1]
+        var docs = await TransferModel.findByIdAndUpdate(messages[i]._id, {links: messages[i].links})
+    }
+    res.send({success: '域名修改成功'})
+})
+
 router.post('/create', async(req, res, next)=> {
     var message = {
         id:req.body.id,
