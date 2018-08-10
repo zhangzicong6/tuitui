@@ -82,7 +82,7 @@ router.post('/novel/delete_one', (req, res, next) => {
 router.get('/novel/show', async(req, res, next) => {
     var messages = await TuiGuangModel.find();
     var domain_names = await DomainModel.find();
-    res.send({data: data, domain_names: domain_names})
+    res.send({data: messages, domain_names: domain_names})
 })
 
 router.post('/novel/update', async(req, res, next) => {
