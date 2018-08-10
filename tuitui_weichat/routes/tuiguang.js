@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var TuiGuangModel = require('../model/TuiGuang.js');
-var DomainModel = require('../model/Domain');
+var DomainModel = require('../model/Domain.js');
 var multer = require('multer');
 var fs = require('fs')
 var mem = require('../util/mem.js')
@@ -79,7 +79,7 @@ router.post('/novel/delete_one', (req, res, next) => {
     })
 })
 
-router.get('/novel/show', (req, res, next) => {
+router.get('/novel/show', async(req, res, next) => {
     var domain_names = await DomainModel.find();
     TuiGuangModel.find({}, function(err, data){
         if (err) {
