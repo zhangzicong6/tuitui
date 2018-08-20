@@ -324,6 +324,30 @@
 		"sub_replay":0,
 		"robot":0,
 		"zero_purchase":1
+	},
+	"27":{
+		"code":"27",
+		"name":"内涵蜜语",
+		"appid":"wx0cb5bb660cc2c1d6",
+		"appsecret":"8e745fedbc07d0122677a6a32860e5c6",
+		"token":"mingxingshuo",
+		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
+		"url":"http://www.rrdtjj.top/weichat/27",
+		"sub_replay":0,
+		"robot":0,
+		"zero_purchase":0
+	},
+	"28":{
+		"code":"28",
+		"name":"内涵秘语",
+		"appid":"wx0cb5bb660cc2c1d6",
+		"appsecret":"8e745fedbc07d0122677a6a32860e5c6",
+		"token":"mingxingshuo",
+		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
+		"url":"http://www.rrdtjj.top/weichat/28",
+		"sub_replay":0,
+		"robot":0,
+		"zero_purchase":0
 	}
 
 }
