@@ -3,12 +3,57 @@
     "button": [
     ]
   },
-  "17": {
+  "27": {
     "button": [
       {
-        "type":"view",
-        "name":"优惠总库",
-        "url":"http://wonderfulgame.m.oorggt.top/"
+        "name":"😍续看",
+        "sub_button":[
+          { 
+            "type":"view",
+            "name":"继续阅读",
+            "url":"https://wxcc7d387636f6a6b0.youshuge.com/read/last/?channel_id=6674"
+          },
+          { 
+            "type":"view",
+            "name":"阅读记录",
+            "url":"https://wxcc7d387636f6a6b0.youshuge.com/historyread/?channel_id=6674"
+          }
+        ]
+      },
+      {
+        "name":"💋小说",
+        "sub_button":[
+          { 
+            "type":"view",
+            "name":"免费专区",
+            "url":"https://wxcc7d387636f6a6b0.youshuge.com/free/?channel_id=6674"
+          },
+          { 
+            "type":"view",
+            "name":"书城首页",
+            "url":"https://wxcc7d387636f6a6b0.youshuge.com/?channel_id=6674"
+          }
+        ]
+      },
+      {
+        "name":"👛书币",
+        "sub_button":[
+          { 
+            "type":"view",
+            "name":"我要充值",
+            "url":"https://wxcc7d387636f6a6b0.youshuge.com/recharge/?channel_id=6674"
+          },
+          { 
+            "type":"view",
+            "name":"签到有礼",
+            "url":"https://wxcc7d387636f6a6b0.youshuge.com/sign?channel_id=6674"
+          },
+          { 
+            "type":"view",
+            "name":"个人信息",
+            "url":"https://wxcc7d387636f6a6b0.youshuge.com/PersonalCenter/?channel_id=6674"
+          }
+        ]
       }
     ]
   },
