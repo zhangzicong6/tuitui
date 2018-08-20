@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var TuiGuangModel = require('../model/TuiGuang.js');
 var DomainModel = require('../model/Domain.js');
+var BannerModel = require('../model/Banner.js');
 var multer = require('multer');
 var fs = require('fs')
 var mem = require('../util/mem.js')
@@ -18,6 +19,18 @@ router.post('/novel/upload', upload.single('imageFile'), function(req, res, next
         console.log('上传成功!');
     })
     res.send({filename: req.file.filename + '.jpg'});
+})
+
+router.post('/update', async (req, res, next) => {
+	let id = '5b76aa2ac3ed4a4798d7045d';
+	let messages = {
+		image: req.body.image,
+		link: req.body.link,
+		position: req.body.position
+	}
+	let docs = await BannerModel.findByIdAndUpdate(id, messages)
+	let docs1 = await BannerModel.find()
+	res.send({success: 'ok', data: docs1})
 })
 
 router.post('/novel/add', (req, res, next) => {
