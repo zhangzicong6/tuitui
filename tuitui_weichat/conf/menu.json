@@ -57,6 +57,45 @@
       }
     ]
   },
+  "13": {
+    "button": [
+      {
+        "type":"view",
+        "name":"最近阅读",
+        "url":" https://m.emeixs.com/Bookcase/last/fromaid/680705577"
+      },
+      {
+        "name":"精品推荐",
+        "sub_button":[
+          { 
+            "type":"view",
+            "name":"书城首页",
+            "url":"https://m.emeixs.com/Index/index/fromaid/680705577"
+          },
+          { 
+            "type":"view",
+            "name":"免费专区",
+            "url":" https://m.emeixs.com/LimitFree/index/fromaid/680705577"
+          }
+        ]
+      },
+      {
+        "name":"用户中心",
+        "sub_button":[
+          { 
+            "type":"view",
+            "name":"个人信息",
+            "url":"https://m.emeixs.com/Myinfo/index/fromaid/680705577"
+          },
+          { 
+            "type":"view",
+            "name":"我要充值",
+            "url":"https://m.emeixs.com/Pay/index/fromaid/680705577"
+          }
+        ]
+      }
+    ]
+  },
   "26":{
   	"button":[
   		{
