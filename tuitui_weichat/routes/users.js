@@ -83,8 +83,19 @@ function createMenu(code) {
 		return
 	}
 	api.removeMenu(function(err,res){
+		if(err){
+			console.log('--------removeMenu-----err-----')
+			console.log(err)
+			console.log(res)
+		}
 		api.createMenu(menu, function(err,res){
+			if(err){
+				console.log('--------createMenu-----err-----')
+				console.log(err)
+				console.log(res)
+			}
 			api.getMenu(function(err,res_m){
+				console.log(err)
 				console.log(JSON.stringify(res_m));
 			});
 		});
