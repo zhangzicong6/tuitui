@@ -346,6 +346,18 @@
 		"sub_replay":0,
 		"robot":0,
 		"zero_purchase":0
+	},
+	"29":{
+		"code":"29",
+		"name":"教你护肤秘籍",
+		"appid":"wx0226d2562843e692",
+		"appsecret":"8578f8984e870cc8160e27c7e72cefcd",
+		"token":"mingxingshuo",
+		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
+		"url":"http://www.rrdtjj.top/weichat/29",
+		"sub_replay":0,
+		"robot":0,
+		"zero_purchase":0
 	}
 
 }
