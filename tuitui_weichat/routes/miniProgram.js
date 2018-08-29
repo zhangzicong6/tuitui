@@ -6,7 +6,7 @@ var multer = require('multer');
 var fs = require('fs')
 
 var upload = multer({
-    dest: './public/uploads'
+    dest: __dirname+'/../public/uploads'
 });
 
 router.post('/upload', upload.single('imageFile'), function(req, res, next) {
