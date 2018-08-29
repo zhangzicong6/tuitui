@@ -22,6 +22,7 @@ var baokuan = require('./routes/baokuan');
 var tuiguang = require('./routes/tuiguang');
 var qr_code = require('./routes/qr_code');
 var transfer = require('./routes/transfer');
+var mp = require('./routes/miniProgram')
 
 var app = express();
 
@@ -70,6 +71,7 @@ app.use('/baokuan', baokuan);
 app.use('/tuiguang', tuiguang);
 app.use('/qr_code', qr_code);
 app.use('/transfer', transfer);
+app.use('/mp',mp)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
