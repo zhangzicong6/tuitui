@@ -4,6 +4,7 @@ var handler = require('../util/db.js')
 var MPModel = require('../model/MiniProgram.js')
 var multer = require('multer');
 var fs = require('fs')
+var mem = require('../util/mem.js');
 
 var upload = multer({
     dest: __dirname+'/../public/uploads'
@@ -71,6 +72,7 @@ router.put('/:id',function(req,res,next){
 			console.log(err);
 			res.send({err:err})
 		}else{
+			mem.set('miniprogram','',10).then(function(){});
 			res.send({success: "修改成功"})
 		}
 	})
@@ -84,6 +86,7 @@ router.put('/show/:id',function(req,res,next){
 			console.log(err);
 			res.send({err:err})
 		}else{
+			mem.set('miniprogram','',10).then(function(){});
 			res.send({success: "修改成功"})
 		}
 	})
@@ -95,6 +98,7 @@ router.delete('/:id',function(req,res,next){
 			console.log(err);
 			res.send({err:err})
 		}else{
+			mem.set('miniprogram','',10).then(function(){});
 			res.send({success: "删除成功"})
 		}
 	})
