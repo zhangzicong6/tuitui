@@ -140,14 +140,15 @@ router.use('/:code', function (request, response, next_fun) {
                              '账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
                         } else if (message.Event === 'SCAN') {
                             if (message.EventKey.indexOf("replay") != -1) {
-                                var id = JSON.parse(message.EventKey.split('_')[1]).replay;
-                                QRcodeModel.findById(id, function (err, doc) {
-                                    if (doc) {
-                                        return res.reply(doc.content)
-                                    } else {
-                                        return res.reply('')
-                                    }
-                                })
+                                console.log(message.EventKey,'-------------------------------')
+                                // var id = JSON.parse(message.EventKey.split('_')[1]).replay;
+                                // QRcodeModel.findById(id, function (err, doc) {
+                                //     if (doc) {
+                                //         return res.reply(doc.content)
+                                //     } else {
+                                //         return res.reply('')
+                                //     }
+                                // })
                             } else {
                                 return res.reply('')
                             }
