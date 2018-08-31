@@ -1,5 +1,6 @@
 /tuitui_weichat/node_modules
 /tuitui_weichat/package-lock.json
+/tuitui_weichat/package.json
 package-lock.json
 /tuitui_weichat/public/images/tuiguang/
 /tuitui_weichat/util/qr_image
