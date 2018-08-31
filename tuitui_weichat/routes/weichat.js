@@ -138,7 +138,7 @@ router.use('/:code', function (request, response, next_fun) {
                             subscribe(openid, config, message, res);
                             /*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
                              '账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
-                        } else if (message.Event === 'scan') {
+                        } else if (message.Event === 'SCAN') {
                             if (message.EventKey.indexOf("replay") != -1) {
                                 var id = JSON.parse(message.EventKey.split('_')[1]).replay;
                                 QRcodeModel.findById(id, function (err, doc) {
