@@ -194,6 +194,8 @@ router.use('/:code', function (request, response, next_fun) {
 
 async function scan(openid, message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
+        console.log('---------message.EventKey---------')
+        console.log(message.EventKey)
         var id = JSON.parse(message.EventKey).replay;
         QRcodeModel.findById(id, function (err, doc) {
             if (doc) {
