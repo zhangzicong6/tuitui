@@ -192,7 +192,7 @@ router.use('/:code', function (request, response, next_fun) {
     }
 });
 
-async function scan(openidmessage, res) {
+async function scan(openid,message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey).replay;
         var tagId = JSON.parse(message.EventKey).tagId;
