@@ -33,7 +33,7 @@ router.post('/create', (req, res, next) => {
         } else {
             var api = weichat_util.getClient(qrInfo.code);
             var _id = data._id;
-            var str = JSON.stringify({replay: _id,tagId:qrInfo.tagId})
+            var str = JSON.stringify({replay: _id})
             api.createLimitQRCode(str, (err, result) => {
                 var qrUrl = api.showQRCodeURL(result.ticket) || '';
                 if (qrUrl == '') {
