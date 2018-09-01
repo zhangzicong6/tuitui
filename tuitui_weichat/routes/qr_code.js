@@ -67,9 +67,10 @@ router.post('/update', (req, res, next) => {
         name: req.body.name,
         content: req.body.content,
         code: req.body.code,
+        qr_code_url: req.body.qr_code_url,
         tagId:req.body.tagId
     }
-    QRcodeModel.findByIdAndUpdate(req.body.id, {qr_code_url: qrInfo}, function (err, data) {
+    QRcodeModel.findByIdAndUpdate(req.body.id, qrInfo, function (err, data) {
         if (err) {
             console.log("Error:" + err);
         }
