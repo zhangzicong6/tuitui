@@ -19,7 +19,7 @@ var UserSchema = new Schema({
   city: String,
   country: String,
   headimgurl: String,
-  tagIds:Array,
+  tagIds:[Number],
   all_count : { type: Number, default:0} ,
   finished_count : { type: Number, default:0},
   unfinished_count : { type: Number, default:0},
