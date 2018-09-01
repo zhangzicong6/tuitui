@@ -223,9 +223,9 @@ async function subscribe(openid, config, message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
         var tagId = JSON.parse(message.EventKey.split('_')[1]).tagId;
-        console.log('tagId----'+tagId)
+        //console.log('tagId----'+tagId)
         UserModel.findOneAndUpdate({"openid":openid},{$addToSet: {tagIds:tagId}},{new:true},function (error,data) {
-            console.log(data)
+            //console.log(data)
             QRcodeModel.findById(id, function (err, doc) {
                 if (doc) {
                     return res.reply(doc.content)
