@@ -196,7 +196,7 @@ async function scan(message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey).replay;
         var tagId = JSON.parse(message.EventKey).tagId;
-        console.log(doc,'------------------------')
+        console.log(id,tagId,'------------------------')
         var doc = await UserModel.findByIdAndUpdate(id,{$addToSet: {tagIds:tagId}})
         console.log(doc,'------------------------')
         QRcodeModel.findById(id, function (err, doc) {

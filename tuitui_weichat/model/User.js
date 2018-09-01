@@ -27,7 +27,6 @@ var UserSchema = new Schema({
   addup_cash : { type: Number, default:0},
   auction:{ type: Number, default:0},
   action_time:Number,
-  tagIds:Array,
   referee:String,
   createAt: {
       type: Date,
