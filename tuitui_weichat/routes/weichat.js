@@ -139,7 +139,7 @@ router.use('/:code', function (request, response, next_fun) {
                             /*res.reply('美淘日记欢迎您！\r\n回复10000或好友邀请码领红包!\r\n一一一一使用攻略一一一一\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n图文教程：http://t.cn/RETghsf\r\n一一一一🍒常用指令一一一一\r\n'+
                              '账户信息请回复：个人信息\r\n订单查询请回复：订单\r\n余额提现请回复：提现\r\n详细教程请回复：帮助');*/
                         } else if (message.Event === 'SCAN') {
-                            scan(message, res)
+                            scan(openid,message, res)
                         } else if (message.Event.toLowerCase() == 'click') {
                             if (message.EventKey == 'KEY_ZERO_LING' || message.EventKey == 'KEY_ZERO_PROC') {
                                 return purchase.get_key(openid, config, message, res)
@@ -192,12 +192,11 @@ router.use('/:code', function (request, response, next_fun) {
     }
 });
 
-async function scan(message, res) {
+async function scan(openidmessage, res) {
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey).replay;
         var tagId = JSON.parse(message.EventKey).tagId;
-        console.log(id,'---------------------')
-        UserModel.findOneAndUpdate({"openid":id},{$addToSet: {tagIds:tagId}},function (data) {
+        UserModel.findOneAndUpdate({"openid":openid},{$addToSet: {tagIds:tagId}},function (data) {
             QRcodeModel.findById(id, function (err, doc) {
                 if (doc) {
                     return res.reply(doc.content)
@@ -224,13 +223,14 @@ async function subscribe(openid, config, message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
         var tagId = JSON.parse(message.EventKey.split('_')[1]).tagId;
-        await UserModel.findByIdAndUpdate(id,{$addToSet: {tagIds:tagId}})
-        QRcodeModel.findById(id, function (err, doc) {
-            if (doc) {
-                return res.reply(doc.content)
-            } else {
-                return res.reply('')
-            }
+        UserModel.findOneAndUpdate({"openid":openid},{$addToSet: {tagIds:tagId}},function (data) {
+            QRcodeModel.findById(id, function (err, doc) {
+                if (doc) {
+                    return res.reply(doc.content)
+                } else {
+                    return res.reply('')
+                }
+            })
         })
     } else {
         if (config.sub_replay == 1) {
