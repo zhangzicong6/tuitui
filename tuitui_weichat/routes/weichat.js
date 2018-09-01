@@ -196,7 +196,8 @@ async function scan(message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey).replay;
         var tagId = JSON.parse(message.EventKey).tagId;
-        var doc = await UserModel.findOneAndUpdate({_id:id},{$addToSet: {tagIds:tagId}})
+        console.log(doc,'------------------------')
+        var doc = await UserModel.findByIdAndUpdate(id,{$addToSet: {tagIds:tagId}})
         console.log(doc,'------------------------')
         QRcodeModel.findById(id, function (err, doc) {
             if (doc) {
@@ -223,7 +224,7 @@ async function subscribe(openid, config, message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
         var tagId = JSON.parse(message.EventKey.split('_')[1]).tagId;
-        await UserModel.findOneAndUpdate({_id:id},{$addToSet: {tagIds:tagId}})
+        await UserModel.findByIdAndUpdate(id,{$addToSet: {tagIds:tagId}})
         QRcodeModel.findById(id, function (err, doc) {
             if (doc) {
                 return res.reply(doc.content)
