@@ -23,7 +23,8 @@ router.post('/create', (req, res, next) => {
     var qrInfo = {
         name: req.body.name,
         content: req.body.content,
-        code: req.body.code
+        code: req.body.code,
+        tagId:req.body.tagId
     }
     var user = new QRcodeModel(qrInfo)
     user.save(function (err, data) {
@@ -32,7 +33,7 @@ router.post('/create', (req, res, next) => {
         } else {
             var api = weichat_util.getClient(qrInfo.code);
             var _id = data._id;
-            var str = JSON.stringify({replay: _id,tagId:2})
+            var str = JSON.stringify({replay: _id})
             api.createLimitQRCode(str, (err, result) => {
                 var qrUrl = api.showQRCodeURL(result.ticket) || '';
                 if (qrUrl == '') {
@@ -62,11 +63,12 @@ router.get('/get_code', (req, res, next) => {
 })
 
 router.post('/update', (req, res, next) => {
-    var name = req.body.name
-    var content = req.body.content
-    var id = req.body.id
-    var str = JSON.stringify({replay: id,tagId:2})
-    QRcodeModel.findByIdAndUpdate(id, {name: name, content: content}, function (err, data) {
+    var qrInfo = {
+        name: req.body.name,
+        content: req.body.content,
+        tagId:req.body.tagId
+    }
+    QRcodeModel.findByIdAndUpdate(req.body.id, qrInfo, function (err, data) {
         if (err) {
             console.log("Error:" + err);
         }

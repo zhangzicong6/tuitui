@@ -13,6 +13,17 @@ router.get('/',function(req,res,next){
 	})
 })
 
+router.get('/get_name',function(req,res,next){
+	TagModel.findOne({_id: req.query.tagId},function(err,result){
+		if(err){
+			console.log(err)
+			res.send({err: err})
+		}else{
+			res.send({success: "查询成功", data: result})
+		}
+	})
+})
+
 router.post('/',function(req,res,next){
 	TagModel.findOne({name:req.body.name},function(err,result){
 		if(err){
