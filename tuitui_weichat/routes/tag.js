@@ -19,6 +19,7 @@ router.post('/',function(req,res,next){
 			console.log(err)
 			res.send({err: err})
 		}else{
+			console.log('result', result)
 			if(result){
 				console.log("有数据")
 				res.send({success: "查询成功", data: result})
