@@ -16,6 +16,7 @@ var MiniProgramSchema = new Schema({
     path: String,
     isShow: Boolean,
     isBanner : Boolean,
+    index : {type:Number,default:0}
 	createAt: {
       type: Date,
       default: Date.now

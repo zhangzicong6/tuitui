@@ -92,6 +92,21 @@ router.put('/show/:id',function(req,res,next){
 	})
 })
 
+router.put('/sort/:id',function(req,res,next){
+	MPModel.findByIdAndUpdate(req.params.id,{
+		index:parseInt(req.params.index)
+	},function(err,result){
+		if(err){
+			console.log(err);
+			res.send({err:err})
+		}else{
+			mem.set('miniprogram','',10).then(function(){});
+			res.send({success: "修改成功"})
+		}
+	})
+})
+
+
 router.delete('/:id',function(req,res,next){
 	MPModel.findByIdAndRemove(req.params.id,function(err,result){
 		if(err){
