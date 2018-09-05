@@ -94,7 +94,7 @@ router.put('/show/:id',function(req,res,next){
 
 router.put('/sort/:id',function(req,res,next){
 	MPModel.findByIdAndUpdate(req.params.id,{
-		index:parseInt(req.params.index)
+		index:parseInt(req.body.index)
 	},function(err,result){
 		if(err){
 			console.log(err);
