@@ -888,7 +888,7 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
             }
 
         }
-    ], function (err, res) {
+    ], function (err, user) {
         if (err) {
             //console.log(err);
         }
