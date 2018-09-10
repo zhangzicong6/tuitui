@@ -148,5 +148,69 @@
   			"key":"KEY_ZERO_PROC"
   		}
   	]
+  },
+  "24":{
+    "button":[
+      {
+        "name":"秘隐藏券",
+        "sub_button":[
+          {
+            "type":"view",
+            "name":"隐藏券首页",
+            "url":"http://mingxingwuwubao3.m.jswoge.top/Index/index"
+          },
+          {
+            "type":"view",
+            "name":"限时疯抢",
+            "url":"http://mingxingwuwubao3.m.jswoge.top/Quickly/index"
+          },
+          {
+            "type":"view",
+            "name":"限时 9.9元",
+            "url":"http://mingxingwuwubao3.m.jswoge.top/index/index/cat/-1/index_app/1/all_hide/1/sort/8"
+          },
+          {
+            "type":"view",
+            "name":"视频购物",
+            "url":"http://mingxingwuwubao3.m.jswoge.top/Index/index/p_cat/3/cat_name/%E8%A7%86%E9%A2%91%E8%B4%AD%E7%89%A9/sort/8.html"
+          }
+        ]
+      },
+      {
+        "type":"click",
+        "name":"邀请有礼",
+        "key":"KEY_BIND_USER"
+      },
+      {
+        "name":"我的",
+        "sub_button":[
+          {
+            "type":"click",
+            "name":"个人中心",
+            "key":"KEY_USER_INFO"
+          },
+          {
+            "type":"click",
+            "name":"奖金提现",
+            "key":"KEY_TIXIAN"
+          },
+          {
+            "type":"view",
+            "name":"新手入门",
+            "url":"https://w.url.cn/s/ALbRRgu"
+          },
+          {
+            "type":"view",
+            "name":"全网搜券",
+            "url":"http://mingxingwuwubao3.m.jswoge.top/Supersearch/index"
+          },
+          {
+            "type":"click",
+            "name":"联系客服",
+            "key":"KEY_KEFU"
+          }
+        ]
+      }
+    ]
   }
 }

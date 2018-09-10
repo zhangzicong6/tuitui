@@ -168,6 +168,23 @@ router.use('/:code', function (request, response, next_fun) {
                                 } else {
                                     res.reply('');
                                 }
+                            } else if (message.EventKey == 'KEY_BIND_USER') {
+                                invite(config, request.params.code, openid, res);
+                            } else if (message.EventKey == 'KEY_USER_INFO') {
+                                new_getUser(openid, res);
+                            } else if (message.EventKey == 'KEY_TIXIAN') {
+                                cash(request.params.code, openid, res);
+                            } else if (message.EventKey == 'KEY_KEFU') {
+                                if (request.params.code == 24) {
+                                    res.reply({
+                                        type: "image",
+                                        content: {
+                                            mediaId: '_RWn42TYx08p0L3UBDwrl8-4ZknNkUOMMcTQMVwQQHI'
+                                        }
+                                    });
+                                } else {
+                                    res.reply('');
+                                }
                             } else if (message.EventKey == 'KEY_MIANFEI_XIAOSHUO') {
                                 console.log('--------menu key -------KEY_MIANFEI_XIAOSHUO-------------')
                                 var str = '路过爱情路过你\r\nhttps://wxda665769f7778172.youshuge.com/guide/read/2897/7666/2819717/418763\r\n' +
