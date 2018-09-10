@@ -817,7 +817,7 @@ function getTaobaoke_byCode(config, openid, text, res) {
         data.title = text
         console.log('--------search title--------')
         request.post('http://io.rrdtjj.top/message/taobaoke', {form: data}, function (err, response) {
-            console.log(response,'-------------------------------')
+            console.log(err,response,'-------------------------------test')
         })
         // MessageServer.getInstance(null).req_title_token(data);
     }
