@@ -24,12 +24,13 @@ var qr_code = require('./routes/qr_code');
 var transfer = require('./routes/transfer');
 var mp = require('./routes/miniProgram');
 var tag = require('./routes/tag')
+var statistics = require('./routes/statistics');
 
 
 var app = express();
 
 app.all('*', function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "http://crm.rrdtjj.top");
+	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 	res.header('Access-Control-Allow-Credentials', true);
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
@@ -75,6 +76,7 @@ app.use('/qr_code', qr_code);
 app.use('/transfer', transfer);
 app.use('/mp',mp)
 app.use('/tag',tag)
+app.use('/statistics',statistics)
 
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -27,6 +27,9 @@ var UserSchema = new Schema({
   addup_cash : { type: Number, default:0},
   auction:{ type: Number, default:0},
   action_time:Number,
+  subscribe_time:Number,
+  unsubscribe_time:Number,
+  subscribe_flag: {type:Boolean,default:true},
   referee:String,
   createAt: {
       type: Date,

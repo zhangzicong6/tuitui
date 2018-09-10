@@ -869,31 +869,39 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
                 openid: openid,
                 code: config.code
             }, {action_time: Date.now()}, function (err, user) {
-                if (!user) {
-                    //console.log('无用户');
-                    callback(null);
-                } else {
-                    callback('用户存在');
-                }
+                callback(null,user);
             });
         },
-        function (callback) {
-            user = {}
-            user.nickname = '';
-            user.openid = openid;
-            user.code = config.code;
-            user.current_balance = 0;
-            user.action_time = Date.now();
-            UserModel.create(user, function (error) {
-                if (error) console.log(error)
-            });
-            //console.log(user);
-            callback(null, null);
+        function (user,callback) {
+            if(!user){
+                user = new UserModel();
+                user.nickname = '';
+                user.openid = openid;
+                user.code = config.code;
+                user.current_balance = 0;
+                user.action_time = Date.now();
+                user.save(function(){
+                    callback(null, user);
+                })
+            }else{
+                callback(null,user)
+            }
 
         }
     ], function (err, res) {
         if (err) {
             //console.log(err);
+        }
+        if(message.MsgType === 'event'){
+            if(message.Event === 'subscribe'){
+                user.subscribe_time =Date.now();
+                user.subscribe_flag = true;
+                user.save(function(){})
+            }else if(message.Event === 'unsubscribe'){
+                user.unsubscribe_time =Date.now();
+                user.subscribe_flag = false;
+                user.save(function(){})
+            }
         }
         next(openid, config, message, request, w_req, w_res);
     });
