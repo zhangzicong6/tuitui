@@ -145,7 +145,7 @@ router.use('/:code', function (request, response, next_fun) {
                                 return purchase.get_key(openid, config, message, res)
                             }
                             if (message.EventKey == 'KEY_GERENZHONGXIN') {
-                                res.reply('好开心，终于等到你的关注 ~\r\n\r\n你往后淘寳可别再花冤枉钱了，下单之前快来查券拿奖金！\r\n\r\n淘寳购物如何拿奖金？\r\n\r\n①☞ 图文教程：< a href="f="https://w.url.cn/s/ALbRRgu">点击">点击查看</ a>\r\n\r\n②☞ 视频教程：< a href="f="https://w.url.cn/s/ASjqD5J">点击">点击查看</ a>\r\n一一一一🍒使用教程简介一一一一 \r\n<搜索优惠>：搜索+商品名称 \r\n<指定商品优惠查询>：请将淘宝商品分享给我！\r\n一一一一🍒常用指令一一一一\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请有礼\r\n订单查询请回复：订单\r\n余额提现请回复：提现')
+                                res.reply('好开心，终于等到你的关注 ~\r\n\r\n你往后淘寳可别再花冤枉钱了，下单之前快来查券拿奖金！\r\n\r\n淘寳购物如何拿奖金？\r\n\r\n①☞ 图文教程：<a href="f="https://w.url.cn/s/ALbRRgu">点击">点击查看</a>\r\n\r\n②☞ 视频教程：<a href="f="https://w.url.cn/s/ASjqD5J">点击">点击查看</a>\r\n一一一🍒使用教程简介一一一 \r\n<搜索优惠>：搜索+商品名称 \r\n<指定商品优惠查询>：请将淘宝商品分享给我！\r\n一一一一🍒常用指令一一一一\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请有礼\r\n订单查询请回复：订单\r\n余额提现请回复：提现')
                             } else if (message.EventKey == 'KEY_MEITAO') {
                                 if (request.params.code == 3) {
                                     res.reply({
@@ -256,8 +256,7 @@ async function subscribe(openid, config, message, res) {
             } else if (message.Ticket) {
                 bind_user(openid, config.code, message.Ticket, res)
             } else {
-                console.log('-----------------------------a')
-                res.reply('好开心，终于等到你的关注 ~\r\n\r\n你往后淘寳可别再花冤枉钱了，下单之前快来查券拿奖金！\r\n\r\n淘寳购物如何拿奖金？\r\n\r\n①☞ 图文教程：< a href="f="https://w.url.cn/s/ALbRRgu">点击">点击查看</ a>\r\n\r\n②☞ 视频教程：< a href="f="https://w.url.cn/s/ASjqD5J">点击">点击查看</ a>\r\n一一一一🍒使用教程简介一一一一 \r\n<搜索优惠>：搜索+商品名称 \r\n<指定商品优惠查询>：请将淘宝商品分享给我！\r\n一一一一🍒常用指令一一一一\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请有礼\r\n订单查询请回复：订单\r\n余额提现请回复：提现')
+                res.reply('好开心，终于等到你的关注 ~\r\n\r\n你往后淘寳可别再花冤枉钱了，下单之前快来查券拿奖金！\r\n\r\n淘寳购物如何拿奖金？\r\n\r\n①☞ 图文教程：<a href="f="https://w.url.cn/s/ALbRRgu">点击">点击查看</a>\r\n\r\n②☞ 视频教程：<a href="f="https://w.url.cn/s/ASjqD5J">点击">点击查看</a>\r\n一一一🍒使用教程简介一一一 \r\n<搜索优惠>：搜索+商品名称 \r\n<指定商品优惠查询>：请将淘宝商品分享给我！\r\n一一一一🍒常用指令一一一一\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请有礼\r\n订单查询请回复：订单\r\n余额提现请回复：提现')
             }
         } else {
             res.reply('');
@@ -563,8 +562,7 @@ async function bind_user(openid, code, ticket, res) {
             'ヾ(≧▽≦*)o超过1元可提现\r\n\r\n⼀⼀⼀⼀�使⽤攻略⼀⼀⼀⼀\r\n' +
             '<搜索优惠>回复：搜索+商品名称\r\n<指定商品优惠查询>请将淘宝商品分享给我！\r\n' +
             '⽂字教程：http://t.cn/Rlz6JkV\r\n视频教程：http://t.cn/RK37GMb'
-        let str1 = '好开心，终于等到你的关注 ~\r\n\r\n你往后淘寳可别再花冤枉钱了，下单之前快来查券拿奖金！\r\n\r\n淘寳购物如何拿奖金？\r\n\r\n①☞ 图文教程：< a href="f="https://w.url.cn/s/ALbRRgu">点击">点击查看</ a>\r\n\r\n②☞ 视频教程：< a href="f="https://w.url.cn/s/ASjqD5J">点击">点击查看</ a>\r\n一一一一🍒使用教程简介一一一一 \r\n<搜索优惠>：搜索+商品名称 \r\n<指定商品优惠查询>：请将淘宝商品分享给我！\r\n一一一一🍒常用指令一一一一\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请有礼\r\n订单查询请回复：订单\r\n余额提现请回复：提现'
-
+        let str1 = '好开心，终于等到你的关注 ~\r\n\r\n你往后淘寳可别再花冤枉钱了，下单之前快来查券拿奖金！\r\n\r\n淘寳购物如何拿奖金？\r\n\r\n①☞ 图文教程：<a href="f="https://w.url.cn/s/ALbRRgu">点击">点击查看</a>\r\n\r\n②☞ 视频教程：<a href="f="https://w.url.cn/s/ASjqD5J">点击">点击查看</a>\r\n一一一🍒使用教程简介一一一 \r\n<搜索优惠>：搜索+商品名称 \r\n<指定商品优惠查询>：请将淘宝商品分享给我！\r\n一一一一🍒常用指令一一一一\r\n账户信息请回复：个人信息\r\n邀请好友请回复：邀请有礼\r\n订单查询请回复：订单\r\n余额提现请回复：提现'
 
         await api.sendText(openid, str, function (err, res) {
             if (err) {
