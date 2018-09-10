@@ -229,7 +229,7 @@ async function scan(openid, message, res) {
 }
 
 async function subscribe(openid, config, message, res) {
-    // console.log('--------subscribe------- ',config);
+    console.log('--------subscribe------- ',config);
     if (config.zero_purchase) {
         if (message.Ticket && charge_zero(message.Ticket)) {
             return purchase.subscribe(openid, config, message, res);
