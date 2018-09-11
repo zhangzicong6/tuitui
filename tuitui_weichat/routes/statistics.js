@@ -147,13 +147,13 @@ Date.prototype.Format = function(fmt)
 
 router.get('/group/:code',function(req,res,next){
 	var code = req.params.code;
+	var space = Number(req.query.space)?Number(req.query.space):15*60*1000;
 	var value;
-	//mem.get('statistics_detail_'+code).then(function(value){
+	mem.get('statistics_detail_'+code+'_'+space).then(function(value){
 		if(value){
 			res.send({data:JSON.parse(value)})
 		}else{
 			var item = weichat_conf[code];
-			var space = 15*60*1000;
 			var times= {}
 			var now = Date.now();
 			var today = new Date().setHours(0, 0, 0, 0);
@@ -282,11 +282,13 @@ router.get('/group/:code',function(req,res,next){
 							}
 							arr = arr.sort(compare_times)
 							result.list =arr
+							mem.set('statistics_detail_'+code+'_'+space,JSON.stringify(result),3*60).then(function(){
+							})
 							return res.send({data:result})
 						})
 			});
 		}
-	//})
+	})
 	
 })
 
