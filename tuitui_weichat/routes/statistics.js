@@ -126,4 +126,180 @@ router.get('/detail/:code',function(req,res,next){
 	
 })
 
+Date.prototype.Format = function(fmt)   
+{ //author: meizz   
+  var o = {   
+    "M+" : this.getMonth()+1,                 //月份   
+    "d+" : this.getDate(),                    //日   
+    "h+" : this.getHours(),                   //小时   
+    "m+" : this.getMinutes(),                 //分   
+    "s+" : this.getSeconds(),                 //秒   
+    "q+" : Math.floor((this.getMonth()+3)/3), //季度   
+    "S"  : this.getMilliseconds()             //毫秒   
+  };   
+  if(/(y+)/.test(fmt))   
+    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
+  for(var k in o)   
+    if(new RegExp("("+ k +")").test(fmt))   
+  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+  return fmt;   
+}
+
+router.get('/group/:code',function(req,res,next){
+	var code = req.params.code;
+	var value;
+	//mem.get('statistics_detail_'+code).then(function(value){
+		if(value){
+			res.send({data:JSON.parse(value)})
+		}else{
+			var item = weichat_conf[code];
+			var space = 15*60*1000;
+			var times= {}
+			var now = Date.now();
+			var today = new Date().setHours(0, 0, 0, 0);
+			var tmp_time = today;
+			while(tmp_time<now){
+				times[tmp_time] = {
+					timestamp: tmp_time,
+					date: new Date(tmp_time).Format("hh:mm:ss"),
+					subscribe_count : 0,
+					unsubscribe_count : 0
+				};
+				tmp_time+=space;
+			}
+			var result={};
+			async.parallel([
+				function(cb){
+					UserModel.count({code:code,subscribe_time:{$gte:today}},function(err,count){
+						cb(err,count)
+					});
+				},
+				function(cb){
+					UserModel.count({code:code,subscribe_time:{$gte:today},subscribe_flag:false},function(err,count){
+						cb(err,count)
+					});
+				}
+			],function(e,rs){
+				result ={
+					subscribe_count : rs[0],
+					unsubscribe_count : rs[1],
+					growth : rs[0]-rs[1],
+					code : item.code,
+					name : item.name,
+				}
+				async.parallel([
+							function(cb){
+								UserModel.aggregate([
+									{
+										$match: {
+											"code" : "2",
+											"subscribe_time":{"$gte":today}
+										}
+									},
+									{
+										$group: {
+											_id: {
+												"$subtract": [
+											        { "$subtract": [ "$subscribe_time", today ] },
+											        { "$mod": [
+											            { "$subtract": [ "$subscribe_time", today ] },
+											            space
+											        ]}
+											    ]
+											},
+											number: {$sum: "$count" }
+											}
+									},
+									{
+										$project: {
+											"_id": 0,
+											"count":{$add:1},
+											"timestamp":{$add :[today,"$_id"]}
+										}
+									},
+									{
+										"$sort": {
+									        "timestamp": -1
+									    }
+									}]).then(function(res0){
+										cb(null,res0)
+										//console.log(res)
+									});
+							},
+							function(cb){
+								UserModel.aggregate([
+									{
+										$match: {
+											"code" : "2",
+											"subscribe_time":{"$gte":today},
+											"subscribe_flag":false
+										}
+									},
+									{
+										$group: {
+											_id: {
+												"$subtract": [
+											        { "$subtract": [ "$unsubscribe_time", today ] },
+											        { "$mod": [
+											            { "$subtract": [ "$unsubscribe_time", today ] },
+											            space
+											        ]}
+											    ]
+											},
+											number: {$sum: "$count" }
+											}
+									},
+									{
+										$project: {
+											"_id": 0,
+											"count":{$add:1},
+											"timestamp":{$add :[today,"$_id"]}
+										}
+									},
+									{
+										"$sort": {
+									        "timestamp": -1
+									    }
+									}]).then(function(res0){
+										cb(null,res0)
+										//console.log(res)
+									});
+							}
+						],function(err,ress){
+							for(var i in ress[0]){
+								var obj = ress[0][i];
+								times[obj.timestamp].subscribe_count=obj.count
+							}
+							for(var i in ress[1]){
+								var obj = ress[1][i];
+								times[obj.timestamp].unsubscribe_count=obj.count
+							}
+							var arr=[]
+							for (var key in times) {
+								var item= times[key]
+								item.growth = item.subscribe_count -item.unsubscribe_count;
+								arr.push(item)
+							}
+							arr = arr.sort(compare_times)
+							result.list =arr
+							return res.send({data:result})
+						})
+			});
+		}
+	//})
+	
+})
+
+function compare_times(x, y) {
+	//比较函数
+    if (x.timestamp < y.timestamp) {
+        return 1;
+    } else if (x.timestamp > y.timestamp) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+
 module.exports = router;
