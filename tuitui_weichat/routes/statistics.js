@@ -41,7 +41,7 @@ router.get('/all',function (req,res,next) {
 	})
 })
 
-router.get('/get_code', async (ctx, next) => {
+router.get('/get_code',  function(req,res, next) => {
 	var codes= [];
 	for (var key in weichat_conf) {
 		codes.push(weichat_conf[key]);
