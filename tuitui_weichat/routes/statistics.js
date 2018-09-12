@@ -207,13 +207,13 @@ router.get('/group/:code',function(req,res,next){
 											        ]}
 											    ]
 											},
-											number: {$sum: 1 }
+											count: {$sum: 1 }
 											}
 									},
 									{
 										$project: {
 											"_id": 0,
-											"number":1,
+											"count":1,
 											"timestamp":{$add :[today,"$_id"]}
 										}
 									},
@@ -246,13 +246,13 @@ router.get('/group/:code',function(req,res,next){
 											        ]}
 											    ]
 											},
-											number: {$sum: "$count" }
+											count: {$sum: 1 }
 											}
 									},
 									{
 										$project: {
 											"_id": 0,
-											"count":{$add:1},
+											"count":1,
 											"timestamp":{$add :[today,"$_id"]}
 										}
 									},
