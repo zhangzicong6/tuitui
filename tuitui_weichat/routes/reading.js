@@ -83,4 +83,35 @@ function read_chapter(req,res){
 	});
 }
 
+router.get('/:book_id', function(req, res, next) {
+	var book_id = req.params.book_id;
+	var chapte_id = req.query.chapte_id;
+	var index = req.query.index;
+	var con = {book_id:book_id};
+	if(chapte_id){
+		con.chapte_id = chapte_id;
+	}
+	if(index){
+		con.index = index;
+	}
+	BookContentModel.findOne(con,function(err,chapte){
+		if(!chapte){
+		}else{
+			var read = {book_id:book_id,chapte_id:chapte.chapte_id,index:chapte.index,bookname:chapte.bookname};
+	
+			UserReadModel.findOneAndUpdate(
+				{book_id:book_id},
+				{$set:read},
+				{upsert:true,rawResult:true},
+				function(error,read){
+					if(error){
+						console.log(error);
+					}
+				}
+			);
+			res.send({ chapte: chapte});
+		}
+	});
+});
+
 module.exports = router;
