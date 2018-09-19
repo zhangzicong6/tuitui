@@ -358,6 +358,18 @@
 		"sub_replay":0,
 		"robot":0,
 		"zero_purchase":0
+	},
+	"30":{
+		"code":"30",
+		"name":"状元文学",
+		"appid":"wx0226d2562843e692",
+		"appsecret":"eab195e1dcbf7b5e467e98f35321362a",
+		"token":"mingxingshuo",
+		"EncodingAESKey":"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
+		"url":"http://www.rrdtjj.top/weichat/30",
+		"sub_replay":0,
+		"robot":0,
+		"zero_purchase":0
 	}
 
 }
