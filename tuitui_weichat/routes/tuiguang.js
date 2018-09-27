@@ -93,7 +93,7 @@ router.post('/novel/delete_one', (req, res, next) => {
 })
 
 router.get('/novel/show', async(req, res, next) => {
-    var messages = await TuiGuangModel.find();
+    var messages = await TuiGuangModel.find({},{capter1:0,capter2:0});
     var domain_names = await DomainModel.find();
     res.send({data: messages, domain_names: domain_names})
 })
@@ -108,14 +108,18 @@ router.post('/novel/update', async(req, res, next) => {
         name: req.body.name,
         desc: req.body.desc,
         picurl: req.body.picurl,
-        capter1: req.body.capter1,
-        capter2: req.body.capter2 || '',
         linkUrl: req.body.linkUrl || '',
         statisticsUrl1: req.body.statisticsUrl1,
         statisticsUrl2: req.body.statisticsUrl2 || '',
         tokenCodes: req.body.tokenCodes || '',
         channel: req.body.channel,
         remarks: req.body.remarks
+    }
+    if(req.body.capter1) {
+        message.capter1= req.body.capter1
+    }
+    if(req.body.capter2) {
+        message.capter2= req.body.capter2
     }
     var docs = await TuiGuangModel.findByIdAndUpdate(id, message)
     if (docs) {
