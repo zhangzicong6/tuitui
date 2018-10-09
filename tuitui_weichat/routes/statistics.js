@@ -149,6 +149,7 @@ router.get('/group/:code',function(req,res,next){
 	var code = req.params.code;
 	var space = Number(req.query.space)?Number(req.query.space):15*60*1000;
 	var value;
+	mem.set('statistics_detail_'+code+'_'+space,'',1).then(function(){})
 	mem.get('statistics_detail_'+code+'_'+space).then(function(value){
 		if(value){
 			res.send({data:JSON.parse(value)})
@@ -192,7 +193,7 @@ router.get('/group/:code',function(req,res,next){
 								UserModel.aggregate([
 									{
 										$match: {
-											"code" : "2",
+											"code" : req.params.code,
 											"subscribe_time":{"$gte":today}
 										}
 									},
@@ -223,14 +224,13 @@ router.get('/group/:code',function(req,res,next){
 									    }
 									}]).then(function(res0){
 										cb(null,res0)
-										//console.log(res)
 									});
 							},
 							function(cb){
 								UserModel.aggregate([
 									{
 										$match: {
-											"code" : "2",
+											"code" : req.params.code,
 											"subscribe_time":{"$gte":today},
 											"subscribe_flag":false
 										}
@@ -262,7 +262,7 @@ router.get('/group/:code',function(req,res,next){
 									    }
 									}]).then(function(res0){
 										cb(null,res0)
-										//console.log(res)
+										
 									});
 							}
 						],function(err,ress){
@@ -282,7 +282,7 @@ router.get('/group/:code',function(req,res,next){
 							}
 							arr = arr.sort(compare_times)
 							result.list =arr
-							mem.set('statistics_detail_'+code+'_'+space,JSON.stringify(result),3*60).then(function(){
+							mem.set('statistics_detail_'+code+'_'+space,JSON.stringify(result),60).then(function(){
 							})
 							return res.send({data:result})
 						})
