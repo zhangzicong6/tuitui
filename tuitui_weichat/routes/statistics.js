@@ -149,7 +149,7 @@ router.get('/group/:code',function(req,res,next){
 	var code = req.params.code;
 	var space = Number(req.query.space)?Number(req.query.space):15*60*1000;
 	var value;
-	mem.set('statistics_detail_'+code+'_'+space,'',1).then(function(){})
+	//mem.set('statistics_detail_'+code+'_'+space,'',1).then(function(){})
 	mem.get('statistics_detail_'+code+'_'+space).then(function(value){
 		if(value){
 			res.send({data:JSON.parse(value)})
