@@ -99,6 +99,12 @@ router.get('/novel/show', async(req, res, next) => {
     res.send({data: messages, domain_names: domain_names})
 })
 
+router.get('/novel/get_content', async(req, res, next) => {
+    var id = req.query._id
+    var messages = await TuiGuangModel.findById(id);
+    res.send({data: messages})
+})
+
 router.post('/novel/update', async(req, res, next) => {
     var id = req.body._id
     var message = {
