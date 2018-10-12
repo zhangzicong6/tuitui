@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var TuiGuangModel = require('../model/TuiGuang.js');
 var DomainModel = require('../model/Domain.js');
+var TokenArrModel = require('../model/TokenArr.js');
 var BannerModel = require('../model/Banner.js');
 var multer = require('multer');
 var fs = require('fs')
@@ -139,6 +140,12 @@ router.post('/novel/update', async(req, res, next) => {
     } else {
         res.send({err: '修改失败'})
     }
+})
+
+router.get('/token_arr', async(req, res, next) => {
+    var tokenArr = req.query.tokenArr;
+    var docs = await TokenArrModel.findByIdAndUpdate('5bc06e2e2f6ed40b684421a4', {tokenArr: tokenArr})
+    res.send({success: '修改成功', data: docs})
 })
 
 module.exports = router;
