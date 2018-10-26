@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css" rel="stylesheet">
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			ul,
+			ol {
+				list-style: none;
+			}
+			
+			a {
+				text-decoration: none;
+				color: #000;
+			}
+			
+			input {
+				outline: none;
+			}
+			
+			img {
+				display: block;
+				border: 0;
+			}
+			
+			.container {
+				margin-top: 60px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<table class="table table-hover table-bordered" id="table">
+				<thead class="thead-dark">
+					<tr class="text-center">
+						<th scope="col">成本</th>
+						<th scope="col">PV</th>
+						<th scope="col">UV</th>
+						<th scope="col">充值</th>
+						<th scope="col">回本</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div>
+		<script src="javascripts/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$.ajax({
+				type:"get",
+				url:"https://5bc82f348bfe5a00131b6ea8.mockapi.io/data",
+				async:true,
+				success: res => {
+					$.each(res, function (i, el) {
+						var html = `
+							<tr class="text-center">
+								<td>${el.pay}</td>
+								<td>${el.pv}</td>
+								<td>${el.uv}</td>
+								<td>${el.recharge}</td>
+								<td>${el.income}</td>
+							</tr>
+						`;
+						$("#table").find('tbody').append(html)
+					})
+				}
+			});
+		</script>
+	</body>
+
+</html>

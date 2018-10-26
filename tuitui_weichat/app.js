@@ -25,6 +25,7 @@ var transfer = require('./routes/transfer');
 var mp = require('./routes/miniProgram');
 var tag = require('./routes/tag')
 var statistics = require('./routes/statistics');
+var alipayLink = require('./routes/alipayLink');
 
 
 var app = express();
@@ -77,6 +78,7 @@ app.use('/transfer', transfer);
 app.use('/mp',mp)
 app.use('/tag',tag)
 app.use('/statistics',statistics)
+app.use('/alipayLink',alipayLink)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
