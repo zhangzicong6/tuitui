@@ -7,13 +7,14 @@ var BannerModel = require('../model/Banner.js');
 var multer = require('multer');
 var fs = require('fs')
 var mem = require('../util/mem.js')
+var juedui_lujing = '/home/work/tuitui_program/project/public/images/tuiguang'
 
 var upload = multer({
-    dest: __dirname+'/../public/images/tuiguang'
+    dest: juedui_lujing
 });
 
 router.post('/novel/upload', upload.single('imageFile'), function(req, res, next) {
-	fs.rename(req.file.path, __dirname+"/../public/images/tuiguang/"+req.file.filename+'.jpg', function(err) {
+	fs.rename(req.file.path, juedui_lujing+"/"+req.file.filename+'.jpg', function(err) {
         if (err) {
             throw err;
         }
