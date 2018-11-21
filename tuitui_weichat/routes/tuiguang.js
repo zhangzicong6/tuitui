@@ -51,14 +51,14 @@ router.post('/novel/add', (req, res, next) => {
                     name: req.body.name,
                     desc: req.body.desc,
                     picurl: req.body.picurl,
-                    capter1: req.body.capter1,
+                    capter1: req.body.capter1 || '',
                     capter2: req.body.capter2 || '',
                     linkUrl: req.body.linkUrl || '',
-                    statisticsUrl1: req.body.statisticsUrl1,
+                    statisticsUrl1: req.body.statisticsUrl1 || '',
                     statisticsUrl2: req.body.statisticsUrl2 || '',
                     tokenCodes: req.body.tokenCodes || '',
-                    channel: req.body.channel,
-                    remarks: req.body.remarks
+                    channel: req.body.channel || '',
+                    remarks: req.body.remarks || ''
                 }
                 var user = new TuiGuangModel(novelInfo)
                 user.save(function(err, data) {
@@ -117,17 +117,17 @@ router.post('/novel/update', async(req, res, next) => {
         desc: req.body.desc,
         picurl: req.body.picurl,
         linkUrl: req.body.linkUrl || '',
-        statisticsUrl1: req.body.statisticsUrl1,
+        statisticsUrl1: req.body.statisticsUrl1 || '',
         statisticsUrl2: req.body.statisticsUrl2 || '',
         tokenCodes: req.body.tokenCodes || '',
-        channel: req.body.channel,
-        remarks: req.body.remarks
+        channel: req.body.channel || '',
+        remarks: req.body.remarks || ''
     }
     if(req.body.capter1) {
-        message.capter1= req.body.capter1
+        message.capter1= req.body.capter1 || ''
     }
     if(req.body.capter2) {
-        message.capter2= req.body.capter2
+        message.capter2= req.body.capter2 || ''
     }
     var docs = await TuiGuangModel.findByIdAndUpdate(id, message)
     if (docs) {
