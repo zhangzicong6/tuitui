@@ -124,10 +124,10 @@ router.post('/novel/update', async(req, res, next) => {
         remarks: req.body.remarks || ''
     }
     if(req.body.capter1) {
-        message.capter1= req.body.capter1 || ''
+        message.capter1= req.body.capter1
     }
     if(req.body.capter2) {
-        message.capter2= req.body.capter2 || ''
+        message.capter2= req.body.capter2
     }
     var docs = await TuiGuangModel.findByIdAndUpdate(id, message)
     if (docs) {
